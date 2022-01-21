@@ -5,6 +5,9 @@
 Lab project concerning datastructures and algorithms, University of Helsinki Tietojenkäsittelytieteen kandidaattiohjelma. 
 Course code TKT20010, spring semester 2022.
 
+## Backlog
+[Backlog](/projects/1)
+
 ## Description
 This project concerns lossless compression methods for text data. I will be comparing two different compression methods on a variety of text files with different properties (ie. actual readable text, generated text content and compression benchmark data). 
 
