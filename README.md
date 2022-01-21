@@ -21,10 +21,10 @@ The program will work from the command line. The user will input a path. The pro
 The time complexity of each of the algorithms used is expected to be O(n). For BTW this implies the use of a suffix array data structure which I will implement for the project.
 
 ## References
-![LZSS]()
-![RLE]()
-![BTW]()
+[LZSS](https://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Storer%E2%80%93Szymanski)
+[RLE](https://en.wikipedia.org/wiki/Run-length_encoding)
+[BTW](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform)
 
 ## Weekly progress reports
-![Week 1](/docs/week1.md)
+[Week 1](/docs/week1.md)
 
