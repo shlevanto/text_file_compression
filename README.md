@@ -25,3 +25,6 @@ The time complexity of each of the algorithms used is expected to be O(n). For B
 ![RLE]()
 ![BTW]()
 
+## Weekly progress reports
+![Week 1](/docs/week1.md)
+
