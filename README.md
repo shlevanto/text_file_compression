@@ -35,4 +35,5 @@ The time complexity of each of the algorithms used is expected to be O(n). For B
 
 [BTW](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform)
 
+And it turned out that there exists a concept of Run Length Encoded Burrows-Wheeler transformation [article](https://drops.dagstuhl.de/opus/volltexte/2017/7321/pdf/LIPIcs-CPM-2017-17.pdf)
 
