@@ -1,9 +1,9 @@
+![GitHub Actions](https://github.com/shlevanto/tiralabra-2022/actions/workflows/main.yml/badge.svg)
+[![codecov](https://codecov.io/gh/shlevanto/tiralabra-2022/branch/main/graph/badge.svg?token=0EE9F994BB)](https://codecov.io/gh/shlevanto/tiralabra-2022)
+
 # tiralabra-2022
 Lab project concerning datastructures and algorithms, University of Helsinki Tietojenkäsittelytieteen kandidaattiohjelma. 
 Course code TKT20010, spring semester 2022.
-
-![GitHub Actions](https://github.com/shlevanto/tiralabra-2022/actions/workflows/main.yml/badge.svg)
-[![codecov](https://codecov.io/gh/shlevanto/tiralabra-2022/branch/main/graph/badge.svg?token=0EE9F994BB)](https://codecov.io/gh/shlevanto/tiralabra-2022)
 
 ## Description
 This project concerns lossless compression methods for text data. I will be comparing two different compression methods on a variety of text files with different properties (ie. actual readable text, generated text content and compression benchmark data). 
@@ -20,11 +20,14 @@ The program will work from the command line. The user will input a path. The pro
 ## Time and space complexity
 The time complexity of each of the algorithms used is expected to be O(n). For BTW this implies the use of a suffix array data structure which I will implement for the project.
 
-## References
-[LZSS](https://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Storer%E2%80%93Szymanski)
-[RLE](https://en.wikipedia.org/wiki/Run-length_encoding)
-[BTW](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform)
-
 ## Weekly progress reports
 [Week 1](/docs/week1.md)
+
+## References
+[LZSS](https://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Storer%E2%80%93Szymanski)
+
+[RLE](https://en.wikipedia.org/wiki/Run-length_encoding)
+
+[BTW](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform)
+
 
