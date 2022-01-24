@@ -21,7 +21,7 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 
 [RLE](https://en.wikipedia.org/wiki/Run-length_encoding)
 
-[BWT](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform)
+[BWT](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform) and [original article](https://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-124.html)
 
 And it turned out that there exists a concept of Run Length Encoded Burrows-Wheeler transformation [article](https://drops.dagstuhl.de/opus/volltexte/2017/7321/pdf/LIPIcs-CPM-2017-17.pdf)
 
