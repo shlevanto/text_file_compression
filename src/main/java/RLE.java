@@ -9,14 +9,14 @@ public class RLE {
         this.size = s.length();
     }
 
-    public void encode() {
+    public Pair encode() {
         if (this.s.equals("")) {
             System.out.println("Can not encode empty string.");
-            return;
+            return null;
         }
         
         char[] source = this.s.toCharArray();
-        System.out.println(source);
+        //System.out.println(source);
 
         int[] counts = new int[this.size];
         char[] chars = new char[this.size];
@@ -45,18 +45,17 @@ public class RLE {
             charIndex++;
         }
 
-        int[] finalCount = new int[charIndex + 1];
+        int[] finalCounts = new int[charIndex + 1];
+        char[] finalChars = new char[charIndex + 1];
 
-        for (int i = 0; i < finalCount.length; i++) {
-            finalCount[i] = counts[i];
+        for (int i = 0; i < finalCounts.length; i++) {
+            finalCounts[i] = counts[i];
+            finalChars[i] = chars[i];
         }
 
-        System.out.println(chars);
-        System.out.println(Arrays.toString(finalCount));
+        Pair result = new Pair(finalChars, finalCounts);
 
-        for (int i = 0; i <= charIndex; i++) {
-            System.out.println(chars[i] + "/" + Integer.toString(finalCount[i]));
-        }
+        return result;
     }
 
     // decode
