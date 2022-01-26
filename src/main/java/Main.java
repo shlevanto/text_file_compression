@@ -1,6 +1,3 @@
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 public class Main {
 
     public static void main(String[] args){
@@ -19,7 +16,11 @@ public class Main {
             method = args[1];
         }
         catch (Exception e) {}
-        
+
+        try {
+            direction = args[2];
+        }
+        catch (Exception e) {}
         try {
             outputPath = args[3];
         }
