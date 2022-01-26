@@ -1,9 +1,18 @@
-public class RLE {
+import java.io.FileWriter;
 
-    public Pair<char[], int[]> encode(String s) {
+public class RLE {
+    private FileIO io;
+
+    public RLE (FileIO io) {
+        this.io = io;
+    }
+
+    public void encode(String inputPath, String outputPath) {
+        String s = this.io.readFile(inputPath);
+        
         if (s.equals("")) {
             System.out.println("Can not encode empty file.");
-            return null;
+            return;
         }
         
         int size = s.length();
@@ -44,14 +53,15 @@ public class RLE {
             finalChars[i] = chars[i];
         }
 
-        Pair<char[], int[]> result = new Pair<>(finalChars, finalCounts);
-
-        return result;
+        writeEncoded(outputPath, finalChars, finalCounts);
     }
 
-    public String decode(String s, int[] counts) {
-        // java stringbuilder here
-        // iterate through chars and counts and build the string
+    public String decode(String path) {
+        Pair<String, int[]> encoded = readEncoded(path);
+        
+        String s = encoded.getFirst();
+        int[] counts = encoded.getSecond();
+
         char[] chars = s.toCharArray();
         
         StringBuilder result = new StringBuilder();
@@ -65,6 +75,40 @@ public class RLE {
         return result.toString();
     }
 
-    // save encoded to file
+    public Pair<String, int[]> readEncoded(String path) {
+        String content = io.readFile(path);
+        
+        String[] parts = content.split("--");
+
+        String encodedContent = parts[0];
+    
+        String encodedCountStrings = parts[1].trim();
+        String[] encodedCountArray = encodedCountStrings.split(",");
+            
+        int[] encodedCounts = new int[encodedContent.length()];
+            
+        for (int i = 0; i < encodedCounts.length; i++) {
+            encodedCounts[i] = Integer.valueOf(encodedCountArray[i]);
+        }
+
+        return new Pair<>(encodedContent, encodedCounts);
+    }
+
+    public void writeEncoded(String outputPath, char[] chars, int[] counts) {
+        try {
+            FileWriter writer = new FileWriter(outputPath);
+            writer.write(chars); 
+            
+            writer.write("--\n");
+            for (int i : counts) {
+                writer.write(Integer.toString(i) + ",");
+            }
+            writer.close();
+        } catch (Exception e) {
+
+        }
+
+
+    }
 
 }
