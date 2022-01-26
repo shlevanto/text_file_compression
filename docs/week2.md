@@ -1,7 +1,7 @@
 # Weekly report 2
 
 ## My activities this week
-Coding the RLE encoding. It seems pretty useless for natural language text files as expected. 
+Coding the RLE encoding. Starting on javadoc. 
 
 ## Progress
 RLE encoding and decoding done.
@@ -14,10 +14,10 @@ I decided to use arrays for this first attempt. It caused some confusion that th
 Getting the read and written files to match proved somewhat tricky. To achieve maximum compression, I do not write the objects to a file. Instead I write the information as strings / characters. This proved to be tricky with line changes and whitespaces becaus some file reading methods seem to ignore them. After some frustration, I got the read and written files to match.
 
 ## Issues, unclarities and questions
-Probably the RLE + BWT require the text to be represented as binary numbers for the characters in the text. I don't see how I could get enough runs from natural language input otherwise.
+Probably the RLE + BWT require the text to be represented as binary numbers for the characters in the text. I don't see how I could get enough runs from natural language input otherwise. Seems that RLE + BWT might be useless for natural language but work well for data represented as binary.
 
 ## Plan for next steps
 Getting started on BWT.
 
 ## Time used
-2 + 7 
+2 + 7 + 1
