@@ -53,7 +53,7 @@ public class RLE {
             finalChars[i] = chars[i];
         }
 
-        Pair result = new Pair(finalChars, finalCounts);
+        Pair<char[], int[]> result = new Pair<>(finalChars, finalCounts);
 
         return result;
     }

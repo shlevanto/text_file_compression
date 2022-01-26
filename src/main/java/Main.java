@@ -1,7 +1,6 @@
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 
 
@@ -28,10 +27,20 @@ public class Main {
         catch (Exception e) {}
         
         if (filepath == null) {
-            //System.out.println("instructions");
+            System.out.println("instructions");
+        }
+
+        else if (filepath.equals("demo")) {
+            System.out.print("Running demo ");
+        }
+
+        else {
+            System.out.print("Compressing file " + filepath + " ");
+
+
             
             // read file to string
-            Path fileName = Path.of("txt");
+            Path fileName = Path.of(filepath);
             String content = "";
             try {
                 content = Files.readString(fileName);
@@ -41,10 +50,10 @@ public class Main {
             
             
             RLE rle = new RLE(content);
-            Pair result = rle.encode();
+            Pair<char[], int[]> result = rle.encode();
 
-            char[] chars = result.getChars();
-            int[] counts = result.getCounts();
+            char[] chars = result.getFirst();
+            int[] counts = result.getSecond();
 
         
             //System.out.println(chars);
@@ -53,7 +62,7 @@ public class Main {
             // write the compressed string and counts to file
            
             try {
-                FileWriter writer = new FileWriter("txtoutput.txt");
+                FileWriter writer = new FileWriter("output.rle");
                 writer.write(chars);
                 writer.write(Arrays.toString(counts));
                 writer.close();
@@ -74,18 +83,6 @@ public class Main {
 
             System.out.println(chars);
             System.out.println(Arrays.toString(counts));
-
-
-
-    
-    }
-
-        else if (filepath.equals("demo")) {
-            System.out.print("Running demo ");
-        }
-
-        else {
-            System.out.print("Compressing file " + filepath + " ");
         }
 
         if (method != null) {

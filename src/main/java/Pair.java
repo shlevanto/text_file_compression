@@ -1,25 +1,25 @@
-public class Pair {
-    private char[] chars;
-    private int[] counts;
+public class Pair<T, P> {
+    private T first;
+    private P second;
     
-    public Pair(char[] chars, int[] counts) {
-        this.chars = chars;
-        this.counts = counts;
+    public Pair(T first, P second) {
+        this.first = first;
+        this.second = second;
     }
 
-    public char[] getChars() {
-        return this.chars;
+    public T getFirst() {
+        return this.first;
     }
 
-    public int[] getCounts() {
-        return this.counts;
+    public P getSecond() {
+        return this.second;
     }
 
-    public void setChars(char[] newChars) {
-        this.chars = newChars;
+    public void setFirst(T newFirst) {
+        this.first = newFirst;
     }
 
-    public void setCounts(int[] newCounts) {
-        this.counts = newCounts;
+    public void setCounts(P newSecond) {
+        this.second = newSecond;
     }
 }
