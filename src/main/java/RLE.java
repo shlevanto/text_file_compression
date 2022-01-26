@@ -1,12 +1,24 @@
 import java.io.FileWriter;
-
+/**
+ * Run length encoding (RLE) of given file.
+ */
 public class RLE {
     private FileIO io;
 
+    /**
+     * 
+     * @param io a FileIO object that handles interactions with files.
+     */
     public RLE (FileIO io) {
         this.io = io;
     }
 
+    /**
+     * Encodes given file with RLE and writes to given location.
+     * 
+     * @param inputPath path of file to be encoded.
+     * @param outputPath path to save the encoded file to.
+     */
     public void encode(String inputPath, String outputPath) {
         String s = this.io.readFile(inputPath);
         
@@ -56,6 +68,13 @@ public class RLE {
         writeEncoded(outputPath, finalChars, finalCounts);
     }
 
+    /**
+     * Decodes a file that was created with the decode() method.
+     * 
+     * @param path path of file to decode.
+     * @return string with the content of the decoding. 
+     * This will be changed to file write at some point.
+     */
     public String decode(String path) {
         Pair<String, int[]> encoded = readEncoded(path);
         
@@ -75,7 +94,13 @@ public class RLE {
         return result.toString();
     }
 
-    public Pair<String, int[]> readEncoded(String path) {
+    /**
+     * Helper function for specifically reading a file created with the encode() method.
+     * @param path is the path of the encoded file.
+     * @return Pair with the characters and their counts in two separate arrays.
+     */
+
+    private Pair<String, int[]> readEncoded(String path) {
         String content = io.readFile(path);
         
         String[] parts = content.split("--");
@@ -94,7 +119,13 @@ public class RLE {
         return new Pair<>(encodedContent, encodedCounts);
     }
 
-    public void writeEncoded(String outputPath, char[] chars, int[] counts) {
+    /**
+     * Helper method for encode(), writes the encoded file.
+     * @param outputPath the path of the output file.
+     * @param chars the encoded characters array.
+     * @param counts the character counts array.
+     */
+    private void writeEncoded(String outputPath, char[] chars, int[] counts) {
         try {
             FileWriter writer = new FileWriter(outputPath);
             writer.write(chars); 
@@ -107,8 +138,5 @@ public class RLE {
         } catch (Exception e) {
 
         }
-
-
     }
-
 }

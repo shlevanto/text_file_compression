@@ -1,12 +1,20 @@
+/**
+ * A data structure with two generic constructors.
+ */
 public class Pair<T, P> {
     private T first;
     private P second;
     
+    /**
+     * Creates a new instance with any two objects.
+     * @param first the first object.
+     * @param second the second object.
+     */
     public Pair(T first, P second) {
         this.first = first;
         this.second = second;
     }
-
+    
     public T getFirst() {
         return this.first;
     }
