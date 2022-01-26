@@ -1,31 +1,22 @@
-import java.util.Arrays;
-
 public class RLE {
-    private String s;
-    private int size;
 
-    public RLE(String s){
-        this.s = s;
-        this.size = s.length();
-    }
-
-    public Pair encode() {
-        if (this.s.equals("")) {
-            System.out.println("Can not encode empty string.");
+    public Pair<char[], int[]> encode(String s) {
+        if (s.equals("")) {
+            System.out.println("Can not encode empty file.");
             return null;
         }
         
-        char[] source = this.s.toCharArray();
-        //System.out.println(source);
-
-        int[] counts = new int[this.size];
-        char[] chars = new char[this.size];
+        int size = s.length();
+        char[] source = s.toCharArray();
+        
+        int[] counts = new int[size];
+        char[] chars = new char[size];
 
         int count = 1;
         int charIndex = 0;
         
-        for (int i = 0; i < this.size; i++) {  
-            if (i == this.size - 1) {
+        for (int i = 0; i < size; i++) {  
+            if (i == size - 1) {
                 // increase the count of counts[i]
                 counts[charIndex] = count;
                 chars[charIndex] = source[i];
@@ -58,7 +49,21 @@ public class RLE {
         return result;
     }
 
-    // decode
+    public String decode(String s, int[] counts) {
+        // java stringbuilder here
+        // iterate through chars and counts and build the string
+        char[] chars = s.toCharArray();
+        
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < chars.length; i++) {
+            for (int j = 0; j < counts[i]; j++) {
+                result.append(chars[i]);
+            }
+        }
+
+        return result.toString();
+    }
 
     // save encoded to file
 
