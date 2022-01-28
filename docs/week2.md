@@ -1,10 +1,10 @@
 # Weekly report 2
 
 ## My activities this week
-Coding the RLE encoding. Starting on javadoc. 
+Coding the RLE encoding and a generic file io module to handle files opeations. Starting on javadoc. Unit tests for FileIO and RLE.
 
 ## Progress
-RLE encoding and decoding done.
+RLE encoding and decoding done. First set of unit tests too.
  
 ## Lessons learned
 The instructions for RLE seem simple, just parse a string with count and character. AABBA becomes 2A2B1A. However I expect the text data to contain numbers in the text and have to take into account encoding for example 9113 which would end up as a string 192113. There is no way of knowing if this decodes to 9113 or 222222222222222222233333333333. So I decide to do two strings. One is the counts, separated by commas and the other one is the characters. The program will handle these as arrays. This is obviously very ineffective if there are no long runs and will end up increasing file size. Testing with a text sample showed that in English factual text there are very few runs at all. I hope that BWT will turn this around. 
@@ -20,4 +20,4 @@ Probably the RLE + BWT require the text to be represented as binary numbers for 
 Getting started on BWT.
 
 ## Time used
-2 + 7 + 1
+2 + 7 + 1 + 2
