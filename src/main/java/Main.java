@@ -43,13 +43,21 @@ public class Main {
             RLE rle = new RLE(io);
             rle.encode(filepath, outputPath);
 
-            io.compressionRatio(filepath, outputPath);
-
+            String a = io.compressionRatio(filepath, filepath);
+            System.out.println(a);
             
             // This has to be reworked
             
             String decoded = rle.decode(outputPath);
-            System.out.println("decoded matches original: " + decoded.equals(io.readFile(filepath)));
+            String original = "";
+
+            try {
+                original = io.readFile(filepath);
+            } catch(Exception e) {
+                System.out.println(e);
+            }
+
+            System.out.println("decoded matches original: " + decoded.equals(original));
 
 
         }

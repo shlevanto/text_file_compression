@@ -20,7 +20,14 @@ public class RLE {
      * @param outputPath path to save the encoded file to.
      */
     public void encode(String inputPath, String outputPath) {
-        String s = this.io.readFile(inputPath);
+        String s = "";
+        
+        try {
+            s = this.io.readFile(inputPath);
+        } catch (Exception e) {
+            System.out.println(e);
+            return;
+        }
         
         if (s.equals("")) {
             System.out.println("Can not encode empty file.");
@@ -101,7 +108,13 @@ public class RLE {
      */
 
     private Pair<String, int[]> readEncoded(String path) {
-        String content = io.readFile(path);
+        String content = "";
+        try {
+            content = io.readFile(path);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
         
         String[] parts = content.split("--");
 

@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -13,15 +15,14 @@ public class FileIO {
      * @param path Path of file to be opened.
      * @return Content of file as a single string.
      */
-    public String readFile(String path) {
+    public String readFile(String path) throws NoSuchFieldException {
         Path fileName = Path.of(path);
         String content = "";
         try {
-            content= Files.readString(fileName);
+            content = Files.readString(fileName);
         } catch (Exception e) {
 
         }
-
         return content;
     }
 
@@ -32,8 +33,15 @@ public class FileIO {
      * @return boolean showing if the content of the files is equal.
      */
     public boolean compareFiles(String pathA, String pathB) {
-        String contentA = readFile(pathA);
-        String contentB = readFile(pathB);
+        String contentA = "A";
+        String contentB = "B";
+        
+        try{
+            contentA = readFile(pathA);
+            contentB = readFile(pathB);
+        } catch (Exception e) {
+
+        }
         
         return contentA.equals(contentB);
     }
@@ -44,17 +52,21 @@ public class FileIO {
      * @param original path of original file.
      * @param compressed path of compressed file.
      */
-    public void compressionRatio(String original, String compressed) {
+    public String compressionRatio(String original, String compressed) {
+        StringBuilder sb = new StringBuilder();
         try {
             double originalBytes = Files.size(Path.of(original));
             double compressedBytes = Files.size(Path.of(compressed));
-            System.out.println("original size: " + originalBytes);
-            System.out.println("compressed size: " + compressedBytes);
             double ratio = compressedBytes / originalBytes;
-            System.out.println("compression ratio: " + String.format("%,.2f", ratio));
+
+            sb.append("original size: " + originalBytes + "\n");
+            sb.append("compressed size: " + compressedBytes + "\n");
+            sb.append("compression ratio: " + String.format("%,.2f", ratio) );
         } catch (Exception e) {
 
         }
+
+        return sb.toString();
     }
 
 }
