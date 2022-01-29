@@ -2,16 +2,27 @@ public class Main {
 
     public static void main(String[] args){
         String filepath = null;
-              
+        String outputPath = null;
         try {
             filepath = args[0];
         }
         catch (Exception e) {
 
         }
+        try {
+            outputPath = args[0];
+        }
+        catch (Exception e) {
+
+        }
+
         
         if (filepath == null) {
             System.out.println("Invalid filepath.");
+        }
+        
+        if (outputPath == null) {
+            outputPath = filepath + "_output";
         }
 
         else {
@@ -37,5 +48,5 @@ public class Main {
 
             System.out.println("decoded matches original: " + decoded.equals(original));
         }
-
+    }
 }

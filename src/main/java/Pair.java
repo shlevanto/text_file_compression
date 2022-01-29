@@ -1,5 +1,7 @@
 /**
  * A data structure with two generic constructors.
+ * @param <T> any java object
+ * @param <P> any java object
  */
 public class Pair<T, P> {
     private T first;
@@ -15,10 +17,18 @@ public class Pair<T, P> {
         this.second = second;
     }
     
+    /**
+     * Getter for first element
+     * @return element T
+     */
     public T getFirst() {
         return this.first;
     }
 
+    /**
+     * Getter for seconf element
+     * @return element T
+     */
     public P getSecond() {
         return this.second;
     }
