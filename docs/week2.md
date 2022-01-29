@@ -20,4 +20,4 @@ Probably the RLE + BWT require the text to be represented as binary numbers for 
 Getting started on BWT.
 
 ## Time used
-2 + 7 + 1 + 2
+12
