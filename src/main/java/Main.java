@@ -67,8 +67,9 @@ public class Main {
 
             System.out.println(io.compressionRatio(filepath, "COMBO_" + outputPath));
 
-            System.out.println(bwt.encode("banana"));
-            System.out.println(bwt.slowDecode("short.txt"));
+            bwt.encode("banana");
+            String bwtDecoded_a = bwt.slowDecode("fastBWT.txt");
+            System.out.println(bwtDecoded);
             
 
         }

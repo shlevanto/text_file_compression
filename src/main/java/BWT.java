@@ -9,21 +9,29 @@ public class BWT {
     }
 
     public String encode(String s) {
-        s += "|";
         SuffixArray sa = new SuffixArray(s);
         int[] suffixArray = sa.get();
-        char[] c = s.toCharArray();
+        char[] c = ("$" + s).toCharArray();
 
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < c.length; i++ ) {
-            System.out.println(c[suffixArray[i]]);
+        for (int i = 0; i < c.length; i++ ) {    
             sb.append(c[suffixArray[i]]);
         }
 
-        return sb.toString();
+        String result = sb.toString();
+        result = result.replace("$", "|");
+
+        try {
+            io.writeFile(sb.toString(), "fastBWT.txt"); 
+        } catch (Exception e) {
+            System.out.println("Error in writing file.");
+        }
+        
+        return result;
 
     }
+
     public void slowEncode(String inputPath, String outputPath) {
         String s = "";
         

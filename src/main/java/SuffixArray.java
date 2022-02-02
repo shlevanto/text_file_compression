@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /** 
- * This is a naive suffix array, will optimize
+ * This is a naive suffix array
 */
 public class SuffixArray {
     private String input;
@@ -10,8 +10,8 @@ public class SuffixArray {
     private int[] suffixArray;
 
     public SuffixArray(String input) {
-        this.input = input;
-        this.suffixes = new String[input.length()];
+        this.input = input + "$";
+        this.suffixes = new String[this.input.length()];
         this.suffixArray = create();
     }
 
@@ -20,23 +20,19 @@ public class SuffixArray {
         HashMap<String, Integer> a = new HashMap<>(); 
 
         for (int i = 0; i < this.suffixes.length; i++) {
-            this.suffixes[i] = "|" + s;
-            a.put("|" + s, i);
+            this.suffixes[i] = s;
+            a.put(s, i);
             s = s.substring(1);
         }
 
         Arrays.sort(this.suffixes);
-
+        
         int[] suffixArray = new int[this.input.length()];
 
-        System.out.println(a);
-
-        System.out.println(suffixArray.length);
         for (int i = 0; i < suffixArray.length; i++) {
             suffixArray[i] = a.get(this.suffixes[i]);
         }
         
-        System.out.println(Arrays.toString(suffixArray));
         return suffixArray;
     }
 
