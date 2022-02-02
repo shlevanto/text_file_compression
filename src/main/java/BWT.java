@@ -8,21 +8,37 @@ public class BWT {
         this.io = io;
     }
 
-    public String slowEncode(String s) {
-        /*String s = "";
+    public String encode(String s) {
+        s += "|";
+        SuffixArray sa = new SuffixArray(s);
+        int[] suffixArray = sa.get();
+        char[] c = s.toCharArray();
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < c.length; i++ ) {
+            System.out.println(c[suffixArray[i]]);
+            sb.append(c[suffixArray[i]]);
+        }
+
+        return sb.toString();
+
+    }
+    public void slowEncode(String inputPath, String outputPath) {
+        String s = "";
         
         try {
             s = this.io.readFile(inputPath);
         } catch (IOException e) {
             System.out.println(e);
-            return s;
+            return;
         }
         
         if (s.equals("")) {
             System.out.println("Can not encode empty file.");
-            return s;
+            return;
         }
-*/
+
         String toEncode = (s + "|");
 
         String[] t = new String[toEncode.length()];
@@ -42,11 +58,24 @@ public class BWT {
             sb.append(c[c.length - 1]);
         }
 
-        return sb.toString();
+        try {
+            io.writeFile(sb.toString(), outputPath); 
+        } catch (Exception e) {
+            System.out.println("Error in writing file.");
+        }
     }
 
-    public String slowDecode(String s) {
-        char[] toDecode = s.toCharArray();
+    public String slowDecode(String inputPath) {
+        String content = "";
+        
+        try {
+            content = this.io.readFile(inputPath);
+        } catch (IOException e) {
+            System.out.println(e);
+            return "Error reading file";
+        }
+        
+        char[] toDecode = content.toCharArray();
         String[] decoded = new String[toDecode.length];
 
         for (int i = 0; i < decoded.length; i++) {
