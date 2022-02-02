@@ -3,6 +3,7 @@ public class Main {
     public static void main(String[] args){
         String filepath = null;
         String outputPath = null;
+        
         try {
             filepath = args[0];
         }
@@ -10,7 +11,7 @@ public class Main {
 
         }
         try {
-            outputPath = args[0];
+            outputPath = args[1];
         }
         catch (Exception e) {
 
@@ -32,7 +33,7 @@ public class Main {
             RLE rle = new RLE(io);
             rle.encode(filepath, outputPath);
 
-            String a = io.compressionRatio(filepath, filepath);
+            String a = io.compressionRatio(filepath, outputPath);
             System.out.println(a);
             
             // This has to be reworked
@@ -47,6 +48,13 @@ public class Main {
             }
 
             System.out.println("decoded matches original: " + decoded.equals(original));
+
+            BWT bwt = new BWT(io);
+            String bwtEncoded = bwt.slowEncode("ours was not to question why, ours was just to do or die");
+
+            System.out.println(bwtEncoded);
+            String bwtDecoded = bwt.slowDecode(bwtEncoded);
+            System.out.println(bwtDecoded);
         }
     }
 }
