@@ -1,4 +1,5 @@
 import java.io.FileWriter;
+import java.io.IOException;
 /**
  * Run length encoding (RLE) of given file.
  */
@@ -24,7 +25,7 @@ public class RLE {
         
         try {
             s = this.io.readFile(inputPath);
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println(e);
             return;
         }
