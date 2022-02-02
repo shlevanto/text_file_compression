@@ -1,4 +1,3 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +14,7 @@ public class FileIO {
      * @param path Path of file to be opened.
      * @return Content of file as a single string.
      */
-    public String readFile(String path) throws NoSuchFieldException {
+    public String readFile(String path) throws IOException {
         Path fileName = Path.of(path);
         String content = "";
         try {
