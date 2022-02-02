@@ -33,12 +33,8 @@ public class Main {
             RLE rle = new RLE(io);
             rle.encode(filepath, outputPath);
 
-            String a = io.compressionRatio(filepath, outputPath);
-            System.out.println(a);
-            
-            // This has to be reworked
-            
-            String decoded = rle.decode(outputPath);
+                       
+            String rleDecoded = rle.decode(outputPath);
             String original = "";
 
             try {
@@ -47,14 +43,34 @@ public class Main {
                 System.out.println(e);
             }
 
-            System.out.println("decoded matches original: " + decoded.equals(original));
+            System.out.println("RLE decoded matches original: " + rleDecoded.equals(original));
 
             BWT bwt = new BWT(io);
-            String bwtEncoded = bwt.slowEncode("ours was not to question why, ours was just to do or die");
+            
+            bwt.slowEncode(filepath, "BWT_" + outputPath);
+            String bwtDecoded = bwt.slowDecode("BWT_" + outputPath);
 
-            System.out.println(bwtEncoded);
-            String bwtDecoded = bwt.slowDecode(bwtEncoded);
-            System.out.println(bwtDecoded);
+            System.out.println("BWT decoded matches original: " + bwtDecoded.equals(original)); 
+
+            System.out.println("And now combined BWT + RLE");
+
+            rle.encode("BWT_" + outputPath, "COMBO_" + outputPath);
+            String comboDecoded_a = rle.decode("COMBO_" + outputPath);
+            try{
+                io.writeFile(comboDecoded_a, "TEMP");
+            } catch (Exception e) {
+
+            }
+            String comboDecoded = bwt.slowDecode("TEMP");
+
+            System.out.println("COMBO decoded matches original: " + comboDecoded.equals(original)); 
+
+            System.out.println(io.compressionRatio(filepath, "COMBO_" + outputPath));
+
+            System.out.println(bwt.encode("banana"));
+            System.out.println(bwt.slowDecode("short.txt"));
+            
+
         }
     }
 }

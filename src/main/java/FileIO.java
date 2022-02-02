@@ -1,3 +1,4 @@
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,6 +24,17 @@ public class FileIO {
 
         }
         return content;
+    }
+
+    public void writeFile(String content, String outputPath) throws IOException{
+        try {
+            FileWriter writer = new FileWriter(outputPath);
+            writer.write(content);
+            writer.close(); 
+            
+        } catch (Exception e) {
+
+        }
     }
 
     /**
