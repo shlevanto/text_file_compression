@@ -1,6 +1,9 @@
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args){
+        
         String filepath = null;
         String outputPath = null;
         
@@ -67,10 +70,13 @@ public class Main {
 
             System.out.println(io.compressionRatio(filepath, "COMBO_" + outputPath));
 
-            bwt.encode("banana");
-            String bwtDecoded_a = bwt.slowDecode("fastBWT.txt");
-            System.out.println(bwtDecoded);
-            
+            String bohemian = "Is this the real life?";
+            String fastEncoded = bwt.encode(bohemian);
+            System.out.println(fastEncoded);
+            String fastDecoded = bwt.decodeLFMap(fastEncoded);
+            System.out.println(fastDecoded);
+            System.out.println(fastDecoded.equals(bohemian));
+                        
 
         }
     }
