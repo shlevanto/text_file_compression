@@ -6,11 +6,14 @@ Got started on BWT. Decided to do a slow / inefficient solution first and then t
 ## Progress
 Slow version of encoding and decoding done. BWT and RLE can also be used in combination.
 Implemented suffix array for encoding.
+Implemented optimized BWT encoding using suffix array and decoding using LF mapping. The decoding has problems handling spaces, because space has lower numerical ASCII value than the beginning of string character $ that I use. 
 
 ## Lessons learned
 Having to switch between String and char[] types can get confusing.
+Characters are confusing...
 
 ## Issues, unclarities and questions
+How can I get rid of the characters $ and |  that I use for beginning and end of string? The compression doesn't work if the text contains them I think.
 
 ## Plan for next steps
 Optimize BWT, implement LZSS.
@@ -18,4 +21,4 @@ Teacher suggested using ByteStream for file handling, have to look into that. So
 Make BWT an option for RLE encoding and implement a method for this.
 
 ## Time used
-7
+10
