@@ -10,7 +10,8 @@ public class SuffixArray {
     private int[] suffixArray;
 
     public SuffixArray(String input) {
-        this.input = input + "$";
+        char last = 0;
+        this.input = input + last ;
         this.suffixes = new String[this.input.length()];
         this.suffixArray = create();
     }
@@ -24,7 +25,7 @@ public class SuffixArray {
             a.put(s, i);
             s = s.substring(1);
         }
-
+    
         Arrays.sort(this.suffixes);
         
         int[] suffixArray = new int[this.input.length()];
@@ -33,6 +34,7 @@ public class SuffixArray {
             suffixArray[i] = a.get(this.suffixes[i]);
         }
         
+    
         return suffixArray;
     }
 

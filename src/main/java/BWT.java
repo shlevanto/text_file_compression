@@ -10,10 +10,10 @@ public class BWT {
     }
 
     public String encode(String s) {
+        char first = 0;
         SuffixArray sa = new SuffixArray(s);
         int[] suffixArray = sa.get();
-        char[] c = ("$" + s).toCharArray();
-        System.out.println(Arrays.toString(c));
+        char[] c = (first + s).toCharArray();
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < c.length; i++ ) {    
@@ -21,9 +21,6 @@ public class BWT {
         }
 
         String result = sb.toString();
-        //result = result.replace("$", "|");
-
-        // write to file here
         
         return result;
 
@@ -76,7 +73,8 @@ public class BWT {
         while (true) {
             String key = l[counter] + String.valueOf(occurance[counter]);
             
-            if (key.equals("$1")) {
+            char stopper = 0;
+            if (key.equals(stopper + "1")) {
                 break;
             }
             
@@ -87,10 +85,6 @@ public class BWT {
                         
         }
         
-        System.out.println(Arrays.toString(decoded));
-        System.out.println(Arrays.toString(l));
-        System.out.println(Arrays.toString(occurance));
-        System.out.println(fMap);
         String result = String.valueOf(decoded);
 
         return result.substring(1);
