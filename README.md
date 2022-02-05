@@ -15,8 +15,10 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 
 ## Weekly progress reports
 [Week 1](/docs/week1.md)
+
 [Week 2](/docs/week2.md)
-[Week 3](/docs/week2.md)
+
+[Week 3](/docs/week3.md)
 
 ## Test documentation
 [Week 3](/docs/test_documentation.md)
