@@ -34,49 +34,22 @@ public class Main {
             
             FileIO io = new FileIO();
             RLE rle = new RLE(io);
-            rle.encode(filepath, outputPath);
+            BWT bwt = new BWT();
 
-                       
-            String rleDecoded = rle.decode(outputPath);
-            String original = "";
+            String content = new String();
 
             try {
-                original = io.readFile(filepath);
-            } catch(Exception e) {
-                System.out.println(e);
-            }
-
-            System.out.println("RLE decoded matches original: " + rleDecoded.equals(original));
-
-            BWT bwt = new BWT(io);
-            
-            bwt.slowEncode(filepath, "BWT_" + outputPath);
-            String bwtDecoded = bwt.slowDecode("BWT_" + outputPath);
-
-            System.out.println("BWT decoded matches original: " + bwtDecoded.equals(original)); 
-
-            System.out.println("And now combined BWT + RLE");
-
-            rle.encode("BWT_" + outputPath, "COMBO_" + outputPath);
-            String comboDecoded_a = rle.decode("COMBO_" + outputPath);
-            try{
-                io.writeFile(comboDecoded_a, "TEMP");
+                content = io.readFile(filepath);
             } catch (Exception e) {
-
+                System.out.println("Can not read file " + filepath);
             }
-            String comboDecoded = bwt.slowDecode("TEMP");
 
-            System.out.println("COMBO decoded matches original: " + comboDecoded.equals(original)); 
+            String encoded = bwt.encode(content);
+            String decoded = bwt.decode(encoded);
+            System.out.println("Optimized BWT encoding works: " + decoded.equals(content));
 
-            System.out.println(io.compressionRatio(filepath, "COMBO_" + outputPath));
-
-            String bohemian = "Is this the real life?";
-            String fastEncoded = bwt.encode(bohemian);
-            System.out.println(fastEncoded);
-            String fastDecoded = bwt.decodeLFMap(fastEncoded);
-            System.out.println(fastDecoded);
-            System.out.println(fastDecoded.equals(bohemian));
-                        
+            
+                                   
 
         }
     }
