@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
@@ -23,13 +25,14 @@ public class Main {
         
         if (filepath == null) {
             System.out.println("Invalid filepath.");
-        }
-        
-        if (outputPath == null) {
-            outputPath = filepath + "_output";
-        }
+        }  
 
         else {
+
+            if (outputPath == null) {
+                outputPath = filepath + "_encoded";
+            }
+
             System.out.println("Compressing file " + filepath + " ");
             
             FileIO io = new FileIO();
@@ -44,12 +47,44 @@ public class Main {
                 System.out.println("Can not read file " + filepath);
             }
 
-            String encoded = bwt.encode(content);
-            String decoded = bwt.decode(encoded);
-            System.out.println("Optimized BWT encoding works: " + decoded.equals(content));
+            // First we check that the encoding and decoding works when we only
+            // handle strings
+            String BWTencoded = bwt.encode(content);
+            Pair <char[], int[]> RLEEncoded = rle.encode(BWTencoded);
 
+            String RLEDecoded = rle.decode(RLEEncoded);
+            String BWTDecoded = bwt.decode(RLEDecoded);
+            System.out.println("Double encoded string matches original: " + BWTDecoded.equals(content));
             
-                                   
+
+            // Second we check that the encoding and decoding works when we handle files
+            ArrayList<byte[]> fna = rle.toByteArrayList(RLEEncoded);
+            try {
+                io.writeByteArray(fna, outputPath);
+            } catch (Exception e) {
+                
+            }
+
+            byte[] doubleEncoded = null;
+            try {
+                doubleEncoded = io.readByteArray(outputPath);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+
+            Pair<char[], int[]> doubleEncodedA = rle.fromByteArray(doubleEncoded);
+
+            String RLEDecodedA = rle.decode(doubleEncodedA);
+            String BWTDecodedA = bwt.decode(RLEDecodedA);
+            System.out.println("Double encoded from file matches original: " + BWTDecodedA.equals(content));
+            
+            
+            // And then we look at the compression rate
+            String compressionResults = io.compressionRatio(filepath, outputPath);
+            System.out.println(compressionResults);
+
+        
+
 
         }
     }

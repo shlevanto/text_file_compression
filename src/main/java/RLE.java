@@ -1,13 +1,15 @@
-import java.io.FileWriter;
-import java.util.Arrays;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
 /**
- * Run length encoding (RLE) of given file.
+ * Implements a Run Length Encoding of string.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
  */
 public class RLE {
     private FileIO io;
 
     /**
-     * 
+     * Constructor
      * @param io a FileIO object that handles interactions with files.
      */
     public RLE (FileIO io) {
@@ -17,8 +19,7 @@ public class RLE {
     /**
      * Encodes given file with RLE and writes to given location.
      * 
-     * @param inputPath path of file to be encoded.
-     * @param outputPath path to save the encoded file to.
+     * @param s String to encode
      */
     public Pair<char[], int []> encode(String s) {
         
@@ -33,7 +34,6 @@ public class RLE {
         
         for (int i = 0; i < size; i++) {  
             if (i == size - 1) {
-                // increase the count of counts[i]
                 counts[charIndex] = count;
                 chars[charIndex] = source[i];
                 break;
@@ -60,13 +60,12 @@ public class RLE {
             finalChars[i] = chars[i];
         }
 
-        System.out.println("RLE encoded: " + Arrays.toString(finalChars) + Arrays.toString(finalCounts));
         return new Pair<char[], int[]>(finalChars, finalCounts);
     }
 
     /**
-     * Decodes a pair of char[] and int[] to String
-     * @param encoded
+     * Decodes a pair of char[] and int[] to String.
+     * @param encoded Pair<char[], int[]> that is encoded by RLE.encode() method.
      * @return
      */
     public String decode(Pair<char[], int[]> encoded) {
@@ -85,54 +84,96 @@ public class RLE {
     }
 
     /**
-     * Helper function for specifically reading a file created with the encode() method.
-     * @param path is the path of the encoded file.
-     * @return Pair with the characters and their counts in two separate arrays.
+     * Creates a list of byte arrays for the FileIO class.
+     * @param pair the encoded data characters and their counts.
+     * @return a list of byte arrays for writing.
      */
+    public ArrayList<byte[]> toByteArrayList(Pair<char[], int[]> pair) {
+        String content = new String(pair.getFirst());
+        int[] counts = pair.getSecond();
+        
+        byte[] contentBytes = null;
+        byte[] countsBytes = new byte[counts.length];
 
-    private Pair<String, int[]> readEncoded(String path) {
-        String content = "";
         try {
-            content = io.readFile(path);
-        } catch (Exception e) {
-            System.out.println(e);
+            contentBytes = content.getBytes("UTF-8");
+        } catch(Exception e) {
+
+        }
+        for (int i = 0; i < countsBytes.length; i++) {
+            countsBytes[i] = (byte) counts[i];
         }
         
-        
-        String[] parts = content.split("--");
+        // Construct a 4 byte header that tells us 
+        // where the counts stop and the characters begin. 
+        // 32 bits should be enough I hope.
 
-        String encodedContent = parts[0];
-    
-        String encodedCountStrings = parts[1].trim();
-        String[] encodedCountArray = encodedCountStrings.split(",");
-            
-        int[] encodedCounts = new int[encodedContent.length()];
-            
-        for (int i = 0; i < encodedCounts.length; i++) {
-            encodedCounts[i] = Integer.valueOf(encodedCountArray[i]);
-        }
+        byte[] header = BigInteger.valueOf(countsBytes.length).toByteArray();
 
-        return new Pair<>(encodedContent, encodedCounts);
-    }
+        if (header.length < 4) {
+            byte[] temp = new byte[4];
 
-    /**
-     * Helper method for encode(), writes the encoded file.
-     * @param outputPath the path of the output file.
-     * @param chars the encoded characters array.
-     * @param counts the character counts array.
-     */
-    private void writeEncoded(String outputPath, char[] chars, int[] counts) {
-        try {
-            FileWriter writer = new FileWriter(outputPath);
-            writer.write(chars); 
-            
-            writer.write("--\n");
-            for (int i : counts) {
-                writer.write(Integer.toString(i) + ",");
+            int i = header.length - 1;
+            int j = temp.length - 1;
+
+            while (i >= 0) {
+                temp[j] = header[i];
+                i--;
+                j--;
             }
-            writer.close();
-        } catch (Exception e) {
 
+            header = temp;
         }
+
+        ArrayList<byte[]> list = new ArrayList<>();
+        list.add(header);
+        list.add(countsBytes);
+        list.add(contentBytes);
+
+        return list;
+        
     }
+    
+    public Pair<char[], int[]> fromByteArray(byte[] content) {
+        // the header is 4 bytes
+        byte[] header = new byte[4];
+
+        for (int i = 0; i < header.length; i++) {
+            header[i] = content[i];
+        }
+
+        BigInteger big = new BigInteger(header);
+        int n = big.intValue();
+
+
+        // so counts start at i = 4 and chars at i = 4 + header
+        int[] counts = new int[n];
+        
+        int countsIndex = 0;
+        for (int i = 4; i < 4 + n; i++) {
+            counts[countsIndex] = (int) content[i];
+            countsIndex++;
+        }
+
+        
+        int charsLength = content.length - n - 4;
+        
+       
+
+        byte[] bytesToString = new byte[charsLength];
+        int charsIndex = 0;
+        
+        for (int i = n + 4; i < content.length; i++) {
+            bytesToString[charsIndex] = content[i];
+            charsIndex++;
+        }
+        
+        
+        char[] chars = (new String(bytesToString, StandardCharsets.UTF_8)).toCharArray();
+        
+        Pair<char[], int[]> result = new Pair<>(chars, counts);
+        
+        return result;
+    } 
+
 }

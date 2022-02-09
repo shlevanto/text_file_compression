@@ -1,11 +1,20 @@
-
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * Implements Burrows-Wheeler Transformation for text / string input.
+ */
 public class BWT {
-
+    /**
+     * Burrows-Wheeler encoding.
+     * @param s String to be encoded.
+     * @return Encoded string.
+     */
     public String encode(String s) {
         char first = 0;
+        
+        // The encoding is based on a sorted suffix array
+        // created and sorted in the SuffixArray class.
         SuffixArray sa = new SuffixArray(s);
         int[] suffixArray = sa.get();
         char[] c = (first + s).toCharArray();
@@ -19,7 +28,11 @@ public class BWT {
         
         return result;
     }
-
+    /**
+     * Burrows-wheeler decoding.
+     * @param s Encoded string.
+     * @return Decoded string.
+     */
     public String decode(String s) {
         char[] f = s.toCharArray();
         Arrays.sort(f);
