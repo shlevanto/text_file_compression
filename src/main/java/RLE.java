@@ -1,5 +1,5 @@
 import java.io.FileWriter;
-import java.io.IOException;
+import java.util.Arrays;
 /**
  * Run length encoding (RLE) of given file.
  */
@@ -20,20 +20,7 @@ public class RLE {
      * @param inputPath path of file to be encoded.
      * @param outputPath path to save the encoded file to.
      */
-    public void encode(String inputPath, String outputPath) {
-        String s = "";
-        
-        try {
-            s = this.io.readFile(inputPath);
-        } catch (IOException e) {
-            System.out.println(e);
-            return;
-        }
-        
-        if (s.equals("")) {
-            System.out.println("Can not encode empty file.");
-            return;
-        }
+    public Pair<char[], int []> encode(String s) {
         
         int size = s.length();
         char[] source = s.toCharArray();
@@ -73,24 +60,19 @@ public class RLE {
             finalChars[i] = chars[i];
         }
 
-        writeEncoded(outputPath, finalChars, finalCounts);
+        System.out.println("RLE encoded: " + Arrays.toString(finalChars) + Arrays.toString(finalCounts));
+        return new Pair<char[], int[]>(finalChars, finalCounts);
     }
 
     /**
-     * Decodes a file that was created with the decode() method.
-     * 
-     * @param path path of file to decode.
-     * @return string with the content of the decoding. 
-     * This will be changed to file write at some point.
+     * Decodes a pair of char[] and int[] to String
+     * @param encoded
+     * @return
      */
-    public String decode(String path) {
-        Pair<String, int[]> encoded = readEncoded(path);
-        
-        String s = encoded.getFirst();
+    public String decode(Pair<char[], int[]> encoded) {
+        char[] chars = encoded.getFirst();
         int[] counts = encoded.getSecond();
 
-        char[] chars = s.toCharArray();
-        
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < chars.length; i++) {
