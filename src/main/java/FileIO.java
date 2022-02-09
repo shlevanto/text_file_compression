@@ -10,7 +10,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 /**
- * Class for generic file IO functionalities such as reading a file to a string, 
+ * Class for generic file IO functionalities such as 
+ * reading a file to a string,
+ * reading and writing files to byte arratys, 
  * comparing two files and generating report for compression ratio.
  */
 
@@ -32,6 +34,12 @@ public class FileIO {
         return content;
     }
 
+    /**
+     * Writes string to file on one line.
+     * @param content String to be writtn to file.
+     * @param outputPath Path of the file to be written to.
+     * @throws IOException
+     */
     public void writeFile(String content, String outputPath) throws IOException {
         try {
             FileWriter writer = new FileWriter(outputPath);
@@ -43,10 +51,16 @@ public class FileIO {
         }
     }
 
-    public void writeByteArray(ArrayList<byte[]> content, String outputPath) throws IOException{
+    /**
+     * Writes a list of byte arrays to a file.
+     * @param content List of byte arrays to wwrite.
+     * @param outputPath Path of output file.
+     * @throws IOException
+     */
+    public void writeByteArray(ArrayList<byte[]> list, String outputPath) throws IOException{
         FileOutputStream fout = new FileOutputStream(outputPath);
             
-        for (byte [] bytes : content) {
+        for (byte [] bytes : list) {
             try {
                 fout.write(bytes);
             } catch (IOException e) {
@@ -55,63 +69,11 @@ public class FileIO {
         } 
         fout.close();
     }
-    /**
-     * Writes an RLE encoded string as bytes
-     * @param pair The char[] int[] pair from RLE.encode()
-     * @param outputPath Path to write to.
-     * @throws IOException
-     */
-    public void writeRLEBytes(Pair<char[], int[]> pair, String outputPath) throws IOException {
-        String content = new String(pair.getFirst());
-        int[] counts = pair.getSecond();
-        
-        byte[] contentBytes = null;
-        byte[] countsBytes = new byte[counts.length];
-
-        try {
-            contentBytes = content.getBytes("UTF-8");
-        } catch(Exception e) {
-
-        }
-        for (int i = 0; i < countsBytes.length; i++) {
-            countsBytes[i] = (byte) counts[i];
-        }
-        
-        // construct a 4 byte header that tells us where the counts stop
-        // and the chracters begin
-
-        byte[] header = BigInteger.valueOf(countsBytes.length).toByteArray();
-
-        if (header.length < 4) {
-            byte[] temp = new byte[4];
-
-            int i = header.length - 1;
-            int j = temp.length - 1;
-
-            while (i >= 0) {
-                temp[j] = header[i];
-                i--;
-                j--;
-            }
-
-            header = temp;
-        }
-        
-        try {
-            FileOutputStream fout = new FileOutputStream(outputPath);
-            fout.write(header);
-            fout.write(countsBytes);
-            fout.write(contentBytes);
-            fout.close();
-        } catch (IOException e) {
-
-        }
-    }
-
-    public Pair<char[], int[]> readRLEBytes(String filepath) throws IOException {
+    
+    public byte[] readByteArray(String filepath) throws IOException {
         File file = new File(filepath);
         byte[] content = new byte[(int) file.length()];
-
+        
         try {
             FileInputStream fin = new FileInputStream(file);
             fin.read(content);
@@ -119,51 +81,12 @@ public class FileIO {
         } catch (IOException e) {
 
         }
-        
-        // the header is 4 bytes
-        byte[] header = new byte[4];
 
-        for (int i = 0; i < header.length; i++) {
-            header[i] = content[i];
-        }
-
-        BigInteger big = new BigInteger(header);
-        int n = big.intValue();
-
-        System.out.println("File IO says there are " + n + " counts");
-
-        // so counts start at i = 4 and chars at i = 4 + header
-        int[] counts = new int[n];
-        
-        int countsIndex = 0;
-        for (int i = 4; i < 4 + n; i++) {
-            counts[countsIndex] = (int) content[i];
-            countsIndex++;
-        }
-
-        
-        int charsLength = content.length - n - 4;
-        
-       
-
-        byte[] bytesToString = new byte[charsLength];
-        int charsIndex = 0;
-        
-        for (int i = n + 4; i < content.length; i++) {
-            bytesToString[charsIndex] = content[i];
-            charsIndex++;
-        }
-        
-        
-        char[] chars = (new String(bytesToString, StandardCharsets.UTF_8)).toCharArray();
-        
-        Pair<char[], int[]> result = new Pair<>(chars, counts);
-        
-        return result;
-        
+        return content;
     }
 
     /**
+     * Compares the content of two files.
      * 
      * @param pathA path of first file.
      * @param pathB path of second file.
@@ -188,6 +111,7 @@ public class FileIO {
      * the size of the original and compressed files, and the compression ratio.
      * @param original path of original file.
      * @param compressed path of compressed file.
+     * @return output of compression rate as string.
      */
     public String compressionRatio(String original, String compressed) {
         StringBuilder sb = new StringBuilder();
