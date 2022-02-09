@@ -3,4 +3,4 @@ build/
 bin/
 *.txt
 *.pdf
-*._encoded
+*_encoded
