@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Class for generic file IO functionalities such as reading a file to a string, 
@@ -63,7 +62,7 @@ public class FileIO {
      * @throws IOException
      */
     public void writeRLEBytes(Pair<char[], int[]> pair, String outputPath) throws IOException {
-        String content = pair.getFirst().toString();
+        String content = new String(pair.getFirst());
         int[] counts = pair.getSecond();
         
         byte[] contentBytes = null;
@@ -97,7 +96,7 @@ public class FileIO {
 
             header = temp;
         }
-
+        
         try {
             FileOutputStream fout = new FileOutputStream(outputPath);
             fout.write(header);
@@ -111,7 +110,6 @@ public class FileIO {
 
     public Pair<char[], int[]> readRLEBytes(String filepath) throws IOException {
         File file = new File(filepath);
-        System.out.println(filepath);
         byte[] content = new byte[(int) file.length()];
 
         try {
@@ -142,19 +140,23 @@ public class FileIO {
             counts[countsIndex] = (int) content[i];
             countsIndex++;
         }
+
         
         int charsLength = content.length - n - 4;
-        byte[] bytesToString = new byte[charsLength];
+        
+       
 
+        byte[] bytesToString = new byte[charsLength];
         int charsIndex = 0;
-        for (int i = 4 + n; i < content.length; i++) {
+        
+        for (int i = n + 4; i < content.length; i++) {
             bytesToString[charsIndex] = content[i];
             charsIndex++;
         }
-        String s = new String(bytesToString, StandardCharsets.UTF_8);
-        System.out.println(s);
+        
+        
         char[] chars = (new String(bytesToString, StandardCharsets.UTF_8)).toCharArray();
-        System.out.println(chars.toString());
+        
         Pair<char[], int[]> result = new Pair<>(chars, counts);
         
         return result;
