@@ -17,18 +17,10 @@ public class Pair<T, P> {
         this.second = second;
     }
     
-    /**
-     * Getter for first element
-     * @return element T
-     */
     public T getFirst() {
         return this.first;
     }
 
-    /**
-     * Getter for seconf element
-     * @return element T
-     */
     public P getSecond() {
         return this.second;
     }
@@ -40,4 +32,19 @@ public class Pair<T, P> {
     public void setCounts(P newSecond) {
         this.second = newSecond;
     }
+
+    public boolean equals(Pair other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+
+        Pair f = (Pair) other;
+        return  this.first == other.getFirst() && this.second == other.getSecond();
+    }
+
+
 }
