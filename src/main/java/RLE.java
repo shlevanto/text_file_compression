@@ -7,7 +7,6 @@ import java.util.ArrayList;
  */
 public class RLE {
     private FileIO io;
-
     /**
      * Constructor
      * @param io a FileIO object that handles interactions with files.

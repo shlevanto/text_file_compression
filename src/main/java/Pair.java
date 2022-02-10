@@ -42,7 +42,6 @@ public class Pair<T, P> {
             return false;
         }
 
-        Pair f = (Pair) other;
         return  this.first == other.getFirst() && this.second == other.getSecond();
     }
 

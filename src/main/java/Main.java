@@ -83,8 +83,10 @@ public class Main {
             String compressionResults = io.compressionRatio(filepath, outputPath);
             System.out.println(compressionResults);
 
-        
+            Pair<char[], int[]> foo = rle.encode("aaabba");
 
+            System.out.println(Arrays.toString(foo.getFirst()));
+            System.out.println(Arrays.toString(foo.getSecond()));
 
         }
     }
