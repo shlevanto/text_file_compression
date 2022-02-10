@@ -1,44 +1,45 @@
 import org.junit.After;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.util.Arrays;
 
 public class RLETest {
-    private FileIO io;
     private RLE rle;
+    private FileIO io;
 
     public RLETest() {
         this.io = new FileIO();
-        this.rle = new RLE(io);
-        try {
-            FileWriter myWriter = new FileWriter("testfile.txt");
-            myWriter.write("aababa");
-            myWriter.close();
-        } catch (Exception e) {
-        }
+        this.rle = new RLE(this.io);
     }
-    
-    @After
-    public void tearDownClass() {
-        File toDelOne = new File("testfile.txt");
-        File toDelTwo = new File("output.txt");
-        try {
-            toDelOne.delete();
-            toDelTwo.delete();
-        } catch (Exception e) {
-            System.out.println("No test files found.");
-        }
+
+    @Test 
+    public void encodingReturnsPair() {
+        String s = "Is this the real life?";
+        Pair<char[], int[]> encoded = this.rle.encode(s);
+
+        assertThat(encoded, instanceOf(Pair.class));
     }
 
     @Test
-    public void encodeDecodeTest() {
-        rle.encode("testfile.txt", "output.txt");
-        File file = new File("output.txt");
-        assertTrue(file.exists());
-        String decoded = rle.decode("output.txt");
-        assertTrue(decoded.equals("aababa"));    
+    public void encodeDecodeMatchesOriginalInputTest() {
+        String s = "Is this just fantasy?";
+        Pair<char[], int[]> encoded = this.rle.encode(s);
+        String decoded = this.rle.decode(encoded);
+        
+        assertEquals(decoded, s);
     }
 
+    @Test 
+    public void simpleEncodingCheck() {
+        String s = "aaabba";
+        Pair<char[], int[]> encoded = this.rle.encode(s);
+        char[] charTarget = {'a', 'b', 'a'};
+        int[] countTarget = {3, 2, 1};
+        
+        assertTrue(Arrays.equals(encoded.getFirst(), charTarget));
+        assertTrue(Arrays.equals(encoded.getSecond(), countTarget));
+
+    }
 }
