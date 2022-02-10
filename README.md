@@ -20,8 +20,10 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 
 [Week 3](/docs/week3.md)
 
+[Week 4](/docs/week4.md)
+
 ## Test documentation
-[Week 3](/docs/test_documentation.md)
+[Week 3-4](/docs/test_documentation.md)
 
 ## References
 [LZSS](https://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Storer%E2%80%93Szymanski)
