@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * A data structure with two generic constructors.
  * @param <T> any java object
@@ -32,18 +34,5 @@ public class Pair<T, P> {
     public void setCounts(P newSecond) {
         this.second = newSecond;
     }
-
-    public boolean equals(Pair other) {
-        if (this == other) {
-            return true;
-        }
-
-        if (other == null || getClass() != other.getClass()) {
-            return false;
-        }
-
-        return  this.first == other.getFirst() && this.second == other.getSecond();
-    }
-
 
 }

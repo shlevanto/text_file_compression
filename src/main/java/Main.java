@@ -84,9 +84,9 @@ public class Main {
             System.out.println(compressionResults);
 
             Pair<char[], int[]> foo = rle.encode("aaabba");
+            Pair<char[], int[]> bar = rle.encode("aaabba");
 
-            System.out.println(Arrays.toString(foo.getFirst()));
-            System.out.println(Arrays.toString(foo.getSecond()));
+            System.out.println(foo.equals(bar));
 
         }
     }
