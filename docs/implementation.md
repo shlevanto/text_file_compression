@@ -1,13 +1,36 @@
 ## Project structure
-
+Each compression algorithm is its own class with encode and decode methods. File interactions are handled with the FileIO class. Pair and SuffixArray are helper classes that implement data structures needed by the compression algorithms.
 
 ## Implemented time and space complexities (big-O complexity analysis of (pseudo)code)
 Pseudocode will come later once I have the code finalized.
+
 ### RLE
-Time complexity O(n), space complexity ?
+Time complexity O(n), space complexity O(n).
+
+function encode(string)
+    chars = stringAsCharArray
+    counts = []
+    for (char in chars) 
+        if char == nextChar
+            counts[charIndex]++
+
+function decode(chars, counts)
+    s = ""
+    for (n in counts)
+        s += char[nIndex]
 
 ### BWT
-Time complexity O(n log n), space complexity n^2?.
+Time complexity O(n log n) due to the sorting of the suffix array, space complexity is n^2, because the suffix array has rows equal to the strings length.
+
+function encode(string)
+    create(suffixArray)
+    sort(suffixArray)
+    encoded getLastColumn(suffixArray)
+
+function decode(string)
+    chars = stringAsCharArray
+    sort(chars)
+    LFMap(chars)
 
 ### LZSS
 
