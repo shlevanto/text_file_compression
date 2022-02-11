@@ -29,7 +29,7 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 [Week 4](/docs/implementation.md)
 
 ## User guide
-The project does not yet have an UI. If you want to see how the program runs, run it with gradle. Put a text file in the root folder of the project and run ```gradle run --args "$file``` where $file is the name of the file to encode.
+The project does not yet have an UI. If you want to see how the program runs, run it with gradle. Put a text file in the root folder of the project and run ```gradle run --args "$file"``` where $file is the name of the file to encode.
 
 I've included two files: poem.txt is a poem in English and nucleotide-sample.txt contains some DNA sequences. The BWT + RLE encoding doesn't compress natural language, but it is effective with content that contains a limited amount of characters. 
 
