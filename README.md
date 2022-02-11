@@ -25,6 +25,11 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 ## Test documentation
 [Week 3-4](/docs/test_documentation.md)
 
+## User guide
+The project does not yet have an UI. If you want to see how the program runs, run it with gradle. Put a text file in the root folder of the project and run ```gradle run --args "$file``` where $file is the name of the file to encode.
+
+I've included two files: poem.txt is a poem in English and nucleotide-sample.txt contains some DNA sequences. The BWT + RLE encoding doesn't compress natural language, but it is effective with content that contains a limited amount of characters. 
+
 ## References
 [LZSS](https://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Storer%E2%80%93Szymanski)
 
