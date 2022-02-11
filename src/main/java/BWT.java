@@ -16,11 +16,11 @@ public class BWT {
         // The encoding is based on a sorted suffix array
         // created and sorted in the SuffixArray class.
         SuffixArray sa = new SuffixArray(s);
-        int[] suffixArray = sa.get();
+        int[] suffixArray = sa.getSuffixArray();
         char[] c = (first + s).toCharArray();
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < c.length; i++ ) {    
+        for (int i = 0; i < c.length; i++) {    
             sb.append(c[suffixArray[i]]);
         }
 

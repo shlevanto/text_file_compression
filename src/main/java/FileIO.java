@@ -3,8 +3,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class FileIO {
      * @param path Path of file to be opened.
      * @return Content of file as a single string.
      */
-    public String readFile(String path) throws IOException {
+    public String readFile(final String path) throws IOException {
         Path fileName = Path.of(path);
         String content = "";
         try {
@@ -37,12 +35,12 @@ public class FileIO {
     /**
      * Writes string to file on one line.
      * @param content String to be writtn to file.
-     * @param outputPath Path of the file to be written to.
+     * @param filepath Path of the file to be written to.
      * @throws IOException
      */
-    public void writeFile(String content, String outputPath) throws IOException {
+    public void writeFile(String content, String filepath) throws IOException {
         try {
-            FileWriter writer = new FileWriter(outputPath);
+            FileWriter writer = new FileWriter(filepath);
             writer.write(content);
             writer.close(); 
             
@@ -53,14 +51,14 @@ public class FileIO {
 
     /**
      * Writes a list of byte arrays to a file.
-     * @param content List of byte arrays to wwrite.
-     * @param outputPath Path of output file.
+     * @param list List of byte arrays to wwrite.
+     * @param filepath Path of output file.
      * @throws IOException
      */
-    public void writeByteArray(ArrayList<byte[]> list, String outputPath) throws IOException{
-        FileOutputStream fout = new FileOutputStream(outputPath);
+    public void writeByteArray(ArrayList<byte[]> list, String filepath) throws IOException {
+        FileOutputStream fout = new FileOutputStream(filepath);
             
-        for (byte [] bytes : list) {
+        for (byte[] bytes : list) {
             try {
                 fout.write(bytes);
             } catch (IOException e) {
@@ -70,6 +68,12 @@ public class FileIO {
         fout.close();
     }
     
+    /**
+     * Reads a file from specified path into an byte array.
+     * @param filepath Path of file to read.
+     * @return Content of file as byte array.
+     * @throws IOException
+     */
     public byte[] readByteArray(String filepath) throws IOException {
         File file = new File(filepath);
         byte[] content = new byte[(int) file.length()];
@@ -96,7 +100,7 @@ public class FileIO {
         String contentA = "A";
         String contentB = "B";
         
-        try{
+        try {
             contentA = readFile(pathA);
             contentB = readFile(pathB);
         } catch (Exception e) {
@@ -122,7 +126,7 @@ public class FileIO {
 
             sb.append("original size: " + originalBytes + "\n");
             sb.append("compressed size: " + compressedBytes + "\n");
-            sb.append("compression ratio: " + String.format("%,.2f", ratio) );
+            sb.append("compression ratio: " + String.format("%,.2f", ratio));
         } catch (Exception e) {
 
         }

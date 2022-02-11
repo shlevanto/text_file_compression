@@ -4,30 +4,26 @@ import java.util.Arrays;
 
 public class Main {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         
         String filepath = null;
         String outputPath = null;
         
         try {
             filepath = args[0];
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
 
         }
         try {
             outputPath = args[1];
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
 
         }
 
         
         if (filepath == null) {
             System.out.println("Invalid filepath.");
-        }  
-
-        else {
+        }  else {
 
             if (outputPath == null) {
                 outputPath = filepath + "_encoded";
@@ -50,7 +46,7 @@ public class Main {
             // First we check that the encoding and decoding works when we only
             // handle strings
             String BWTencoded = bwt.encode(content);
-            Pair <char[], int[]> RLEEncoded = rle.encode(BWTencoded);
+            Pair<char[], int[]> RLEEncoded = rle.encode(BWTencoded);
 
             String RLEDecoded = rle.decode(RLEEncoded);
             String BWTDecoded = bwt.decode(RLEDecoded);

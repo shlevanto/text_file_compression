@@ -3,24 +3,37 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
- * Implements a Run Length Encoding of string.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+ * ?
  */
 public class RLE {
-    private FileIO io;
     /**
-     * Constructor
-     * @param io a FileIO object that handles interactions with files.
+     * FileIO opbject.
      */
-    public RLE (FileIO io) {
-        this.io = io;
+    private FileIO io;
+
+    /**
+     * Sixe of header for file interactions. Set to 4 by default.
+     */
+    private int headerSize;
+    
+    /**
+     * Constructor.
+     * @param ioParam used for writing and reading files.
+     */
+    public RLE(FileIO ioParam) {
+        this.io = ioParam;
+        this.headerSize = 4;
+
     }
 
     /**
      * Encodes given file with RLE and writes to given location.
      * 
      * @param s String to encode
+     * @return a pair with first object holding charaters 
+     * and second object holding run lengths.
      */
-    public Pair<char[], int []> encode(String s) {
+    public Pair<char[], int[]> encode(String s) {
         
         int size = s.length();
         char[] source = s.toCharArray();
@@ -38,7 +51,7 @@ public class RLE {
                 break;
             }
             
-            if (source[i] == source[i+1]) {
+            if (source[i] == source[i + 1]) {
                 chars[charIndex] = source[i];
                 count++;
                 continue;
@@ -65,7 +78,7 @@ public class RLE {
     /**
      * Decodes a pair of char[] and int[] to String.
      * @param encoded Pair<char[], int[]> that is encoded by RLE.encode() method.
-     * @return
+     * @return decoded content as string.
      */
     public String decode(Pair<char[], int[]> encoded) {
         char[] chars = encoded.getFirst();
@@ -96,7 +109,7 @@ public class RLE {
 
         try {
             contentBytes = content.getBytes("UTF-8");
-        } catch(Exception e) {
+        } catch (Exception e) {
 
         }
         for (int i = 0; i < countsBytes.length; i++) {
@@ -109,8 +122,8 @@ public class RLE {
 
         byte[] header = BigInteger.valueOf(countsBytes.length).toByteArray();
 
-        if (header.length < 4) {
-            byte[] temp = new byte[4];
+        if (header.length < this.headerSize) {
+            byte[] temp = new byte[this.headerSize];
 
             int i = header.length - 1;
             int j = temp.length - 1;
@@ -132,10 +145,15 @@ public class RLE {
         return list;
         
     }
-    
+
+    /**
+     * 
+     * @param content read from an RLE encoded file.
+     * @return characters and their counts for decode -method.
+     */
     public Pair<char[], int[]> fromByteArray(byte[] content) {
         // the header is 4 bytes
-        byte[] header = new byte[4];
+        byte[] header = new byte[this.headerSize];
 
         for (int i = 0; i < header.length; i++) {
             header[i] = content[i];
@@ -149,20 +167,20 @@ public class RLE {
         int[] counts = new int[n];
         
         int countsIndex = 0;
-        for (int i = 4; i < 4 + n; i++) {
+        for (int i = this.headerSize; i < this.headerSize + n; i++) {
             counts[countsIndex] = (int) content[i];
             countsIndex++;
         }
 
         
-        int charsLength = content.length - n - 4;
+        int charsLength = content.length - n - this.headerSize;
         
        
 
         byte[] bytesToString = new byte[charsLength];
         int charsIndex = 0;
         
-        for (int i = n + 4; i < content.length; i++) {
+        for (int i = n + this.headerSize; i < content.length; i++) {
             bytesToString[charsIndex] = content[i];
             charsIndex++;
         }
