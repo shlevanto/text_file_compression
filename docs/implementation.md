@@ -1,7 +1,21 @@
 ## Project structure
+
+
 ## Implemented time and space complexities (big-O complexity analysis of (pseudo)code)
-## Comparative performance and complexity analysis if applicable
+Pseudocode will come later once I have the code finalized.
+### RLE
+Time complexity O(n), space complexity ?
+
+### BWT
+Time complexity O(n log n), space complexity n^2?.
+
+### LZSS
+
+## Comparative performance
+
 ## Possible flaws and improvements
+At the moment I have issues with file size as BWT handles the encoding using the whole content of the file as one string. I think I need to break it into chunks to be able to handle bigger files.
+
 ## Sources
 [LZSS](https://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Storer%E2%80%93Szymanski)
 
