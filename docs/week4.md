@@ -3,6 +3,7 @@
 ## My activities this week
 - File handling to be done with bytes / byte arrays. The files are initially read as strings because the algorithms are handling strings. Encoded files are written and read using bytearrays.
 - More unit tests to cover different use cases.
+- Configured and appeased checkstyle, added checkstyle to Github Actions CI build.
 
 ## Progress
 - Changed RLE to work on strings and Pair<char[], int[]> objects. All i/o operations will be moved to FileIO class.
@@ -22,4 +23,4 @@
 - I think it is now time to tackle LZSS. I will leave UI for last, because it is goint to be very simple command line based.
 
 ## Time used
-10
+12
