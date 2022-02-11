@@ -47,3 +47,11 @@ jacocoTestReport {
 
 check.dependsOn jacocoTestReport
 
+tasks.withType(Checkstyle) {
+  reports {
+    html.enabled = true
+  }
+  maxErrors = 15
+  maxWarnings = 10
+}
+

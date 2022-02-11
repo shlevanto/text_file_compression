@@ -19,6 +19,8 @@ jobs:
       run: chmod +x gradlew
     - name: Run tests with gradle
       run: ./gradlew test
+    - name: Run checkstyle
+      run: ./gradlew checkstyleMain
     - name: Code coverage report
       run: ./gradlew jacocoTestReport
     - name: Data to Codecov
