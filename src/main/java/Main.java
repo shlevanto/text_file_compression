@@ -1,7 +1,6 @@
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
+/**
+ * The application doesn't have UI yet, so it is run from the Class at the moment.
+ */
 public class Main {
 
     public static void main(String[] args) {
@@ -43,8 +42,8 @@ public class Main {
                 System.out.println("Can not read file " + filepath);
             }
 
-            // First we check that the encoding and decoding works when we only
-            // handle strings
+            // First we show that the encoding and decoding 
+            // works when we only handle strings
             String BWTencoded = bwt.encode(content);
             Pair<char[], int[]> RLEEncoded = rle.encode(BWTencoded);
 
@@ -53,7 +52,7 @@ public class Main {
             System.out.println("Double encoded string matches original: " + BWTDecoded.equals(content));
             
 
-            // Second we check that the encoding and decoding works when we handle files
+            // Second we show that the encoding and decoding works when we handle files
             ArrayList<byte[]> fna = rle.toByteArrayList(RLEEncoded);
             try {
                 io.writeByteArray(fna, outputPath);
@@ -75,7 +74,7 @@ public class Main {
             System.out.println("Double encoded from file matches original: " + BWTDecodedA.equals(content));
             
             
-            // And then we look at the compression rate
+            // And finally we look at the compression rate
             String compressionResults = io.compressionRatio(filepath, outputPath);
             System.out.println(compressionResults);
 
