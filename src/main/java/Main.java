@@ -20,7 +20,7 @@ public class Main {
         } catch (Exception e) {
 
         }
-
+g
         
         if (filepath == null) {
             System.out.println("Invalid filepath.");
