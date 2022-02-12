@@ -20,7 +20,7 @@ function decode(chars, counts)
         s += char[nIndex]
 
 ### BWT
-Time complexity O(n log n) due to the sorting of the suffix array, space complexity is n^2, because the suffix array has rows equal to the strings length.
+Time complexity O(n log n) due to the sorting of the suffix array in encoding and sorting of the encoded string in the decoding method. Space complexity might be n^2, because the suffix array has rows equal to the strings length?
 
 function encode(string)
     create(suffixArray)
