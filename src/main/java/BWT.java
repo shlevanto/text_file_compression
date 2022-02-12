@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 /**
  * Implements Burrows-Wheeler Transformation for text / string input.
+ * The algorithm is explained in more detail in implementation document.
  */
 public class BWT {
     /**
@@ -29,16 +30,25 @@ public class BWT {
         return result;
     }
     /**
-     * Burrows-wheeler decoding.
+     * Burrows-wheeler decoding using LF mapping algorithm.
      * @param s Encoded string.
      * @return Decoded string.
      */
     public String decode(String s) {
         char[] f = s.toCharArray();
+        // In theory BWT makes an array of all the rotations of
+        // a string and then sorts the array. The encoded string is
+        // the last letters of each rotation in this sorted array.
+        // For decoding, we know that the first letters of this array is 
+        // the characters of the original string in sorted order. 
         Arrays.sort(f);
+        
+        // Here we keep the counts and orders of the characters.
         HashMap<Character, Integer> fCounts = new HashMap<>();
         HashMap<String, Integer> fMap = new HashMap<>();
 
+        // LF mapping needs to know how many of each character
+        // there is and what their order is. We use HashMaps for this.
         for (int i = 0; i < f.length; i++) {
             char key = f[i];
             int count = 1;
@@ -52,10 +62,13 @@ public class BWT {
             fMap.put(indexed, i);
         }
         
+        // L is the encoded string that we want to decode.
         char[] l = s.toCharArray();
         int[] occurance = new int[l.length];
         HashMap<Character, Integer> lCounts = new HashMap<>();
 
+        // Here we count the occurance and order of each character
+        // in L.
         for (int i = 0; i < l.length; i++) {
             char key = l[i];
             int count = 1;
@@ -67,6 +80,7 @@ public class BWT {
             occurance[i] = count;
         }
 
+        // And then we build the decoded string.
         char[] decoded = new char[l.length];
         int decoderIndex = decoded.length - 1; 
         StringBuilder sb = new StringBuilder();
@@ -77,6 +91,8 @@ public class BWT {
         
         int counter = 0;
 
+        // We build the decoded string until we get to the indicator char = 0
+        // that marks the end of the string.
         while (true) {
             String key = l[counter] + String.valueOf(occurance[counter]);
             
@@ -94,6 +110,8 @@ public class BWT {
         
         String result = String.valueOf(decoded);
 
+        // We leave out the stopper character 
+        // when returning the decoded string.
         return result.substring(1);
 
     }

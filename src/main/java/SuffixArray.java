@@ -14,7 +14,7 @@ public class SuffixArray {
      */
     private String[] suffixes;
     /**
-     * The suffix array indexes.
+     * The suffix array of indexes.
      */
     private int[] suffixArray;
 
@@ -27,20 +27,26 @@ public class SuffixArray {
 
     private int[] create() {
         String s = this.input;
-        HashMap<String, Integer> a = new HashMap<>(); 
+        HashMap<String, Integer> originalIndex = new HashMap<>(); 
 
+        // First we store the original index of each suffix
+        // into a HashMap.
         for (int i = 0; i < this.suffixes.length; i++) {
             this.suffixes[i] = s;
-            a.put(s, i);
+            originalIndex.put(s, i);
             s = s.substring(1);
         }
-    
+        
+        // Then we sort the array of suffixes.
         Arrays.sort(this.suffixes);
         
         int[] newSuffixArray = new int[this.input.length()];
 
+        // And finally we go through the sorted suffixes
+        // saving the original index of each suffix to the actual
+        // suffix array data structure.
         for (int i = 0; i < newSuffixArray.length; i++) {
-            newSuffixArray[i] = a.get(this.suffixes[i]);
+            newSuffixArray[i] = originalIndex.get(this.suffixes[i]);
         }
         
     
