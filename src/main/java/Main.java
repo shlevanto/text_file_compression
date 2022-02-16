@@ -34,6 +34,7 @@ public class Main {
             FileIO io = new FileIO();
             RLE rle = new RLE(io);
             BWT bwt = new BWT();
+            LZSS lzss = new LZSS();
 
             String content = new String();
 
@@ -83,6 +84,12 @@ public class Main {
             Pair<char[], int[]> bar = rle.encode("aaabba");
 
             System.out.println(foo.equals(bar));
+
+            // LZSS
+            String s = "SAM SAM";
+            lzss.encode(s);
+
+
 
         }
     }
