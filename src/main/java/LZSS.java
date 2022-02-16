@@ -11,9 +11,10 @@ public class LZSS {
     
     public void encode(String s) {
         byte[] bytes = s.getBytes();
-
+        System.out.println("String length: " + bytes.length);
         //HashMap<Integer, Byte> buffer = new HashMap<>();
         ArrayList<Byte> buffer = new ArrayList<>();
+        
 
         for (int i = 0; i < bytes.length; i++) {
             byte b = bytes[i];
@@ -31,7 +32,7 @@ public class LZSS {
                 // keep checking next characters until no match
                 int j = 1;
                 while (true) {
-                    if (i + j >= bytes.length) {
+                    if (i + j >= bytes.length || index + j >= buffer.size() - 1) {
                         break;
                     } else {
                         byte nextByte = bytes[i + j];
@@ -45,16 +46,17 @@ public class LZSS {
                     }
                 }
                 
-                i += length - 1;
+                i += length;
                 System.out.println(offset + "," + length);
             
             } else {
                 System.out.println((char) b);
+                buffer.add(b);
             }
             // If the token is longer than the text it’s representing, don’t output a token
             // Add the text to the search buffer and continue
             // If not, add the character to the search buffer and continue
-            buffer.add(b);
+            
         }
 
     }
