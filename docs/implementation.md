@@ -33,6 +33,7 @@ function decode(string)
     LFMap(chars)
 
 ### LZSS
+For the LZSS algorithm, I drew inspiration from [The Hitchhiker's Guide to Compression](https://go-compression.github.io/algorithms/lzss/).
 
 ## Comparative performance
 
