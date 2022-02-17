@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.io.ObjectOutputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -26,10 +27,21 @@ public class Main {
         if (filepath == null) {
             // System.out.println("Invalid filepath.");
             // LZSS
+            FileIO io = new FileIO();
             LZSS lzss = new LZSS();
-            String s = "SAM_PIF_SAM_SAM";
-            lzss.encode(s);
+            String s = new String();
+            s = "is this the real life? is this just fantasy?";
+            /*
+            try {
+                s = io.readFile("poem.txt");
+            } catch (Exception e) {
+                System.out.println("Can not read file " + filepath);
+            }*/
+            Pair<ArrayList<Character>, ArrayDeque<Pair>> njum = lzss.encode(s);
+            String njam = lzss.decode(njum);
 
+            System.out.println(njam);
+            
 
         }  else {
 

@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
 
 public class LZSS {
 
@@ -9,12 +9,12 @@ public class LZSS {
 
     }
     
-    public void encode(String s) {
+    public Pair<ArrayList<Character>, ArrayDeque<Pair>> encode(String s) {
         char[] chars = s.toCharArray();
         System.out.println("String length: " + chars.length);
-        //HashMap<Integer, Byte> buffer = new HashMap<>();
         ArrayList<Character> buffer = new ArrayList<>();
-        
+        ArrayList<Character> encoded = new ArrayList<>();
+        ArrayDeque<Pair<Integer, Integer>> tokens = new ArrayDeque<>();
 
         for (int i = 0; i < chars.length; i++) {
             char c = chars[i];
@@ -54,19 +54,52 @@ public class LZSS {
                     buffer.add(chars[i+k]);
                 }
                 i += length -1;
-                System.out.println(offset + "," + length);
+                encoded.add((char) 0);
+                tokens.add(new Pair(offset, length));
             
             } else {
                 // If not, add the character to the search buffer and continue
-                System.out.println(c);
+                encoded.add(c);
                 buffer.add(c);
             }
             
             // TODO If the token is longer than the text it’s representing, don’t output a token
             
             
+        }
+        return new Pair(encoded, tokens);       
+    }
+
+    public String decode(Pair<ArrayList<Character>, ArrayDeque<Pair>> input) {
+        ArrayList<Character> chars = input.getFirst();
+        ArrayDeque<Pair> tokens = input.getSecond();
+        ArrayList<Character> decoded = new ArrayList();
+        
+        for (int i = 0; i < chars.size(); i++) {
             
+            if (chars.get(i) == 0) {
+                Pair<Integer, Integer> token = tokens.pop();
+                int offset = token.getFirst();
+                int length = token.getSecond();
+                int current = decoded.size();
+                
+                int j = 0;
+                while (j < length) {
+                    decoded.add(chars.get(current - offset + j));
+                    j++;
+                } 
+
+                
+            } else {
+                decoded.add(chars.get(i));
+            }
         }
 
+        StringBuilder sb = new StringBuilder();
+
+        for (char c : decoded) {
+            sb.append(c);
+        }
+        return sb.toString();
     }
 }
