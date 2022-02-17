@@ -16,7 +16,7 @@ public class Main {
             filepath = args[0];
         } catch (Exception e) {
 
-        }
+        } 
         try {
             outputPath = args[1];
         } catch (Exception e) {
@@ -27,7 +27,7 @@ public class Main {
             // System.out.println("Invalid filepath.");
             // LZSS
             LZSS lzss = new LZSS();
-            String s = "AA FAA";
+            String s = "SAM_PIF_SAM_SAM";
             lzss.encode(s);
 
 

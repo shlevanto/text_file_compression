@@ -10,21 +10,25 @@ public class LZSS {
     }
     
     public void encode(String s) {
-        byte[] bytes = s.getBytes();
-        System.out.println("String length: " + bytes.length);
+        char[] chars = s.toCharArray();
+        System.out.println("String length: " + chars.length);
         //HashMap<Integer, Byte> buffer = new HashMap<>();
-        ArrayList<Byte> buffer = new ArrayList<>();
+        ArrayList<Character> buffer = new ArrayList<>();
         
 
-        for (int i = 0; i < bytes.length; i++) {
-            byte b = bytes[i];
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
             // Check if it’s seen the character before
-            boolean encountered = buffer.contains(b);
-
+            boolean encountered = buffer.contains(c);
+            
+            for (char foo : buffer) {
+            //    System.out.print((char) foo);  
+            }
+            //System.out.println("");
             // If so, check the next character and prepare a token to be outputted
             if (encountered) {
                 // calculate offset
-                int index = buffer.indexOf(b);
+                int index = buffer.indexOf(c);
                 int offset = i - index;
                 // initialize length
                 int length = 1;
@@ -32,12 +36,12 @@ public class LZSS {
                 // keep checking next characters until no match
                 int j = 1;
                 while (true) {
-                    if (i + j >= bytes.length || index + j >= buffer.size() - 1) {
+                    if (i + j >= chars.length || index + j >= buffer.size() - 1) {
                         break;
                     } else {
-                        byte nextByte = bytes[i + j];
-                        byte nextBuffer = buffer.get(index + j);
-                        if (nextByte == nextBuffer) {
+                        char nextChar = chars[i + j];
+                        char nextBuffer = buffer.get(index + j);
+                        if (nextChar == nextBuffer) {
                             length++;
                         } else {
                             break;
@@ -45,17 +49,22 @@ public class LZSS {
                         j++;
                     }
                 }
-                
-                i += length;
+                // Add all characters from token to buffer
+                for (int k = 0; k < length; k++) {
+                    buffer.add(chars[i+k]);
+                }
+                i += length -1;
                 System.out.println(offset + "," + length);
             
             } else {
-                System.out.println((char) b);
-                buffer.add(b);
+                // If not, add the character to the search buffer and continue
+                System.out.println(c);
+                buffer.add(c);
             }
-            // If the token is longer than the text it’s representing, don’t output a token
-            // Add the text to the search buffer and continue
-            // If not, add the character to the search buffer and continue
+            
+            // TODO If the token is longer than the text it’s representing, don’t output a token
+            
+            
             
         }
 
