@@ -67,6 +67,7 @@ public class LZSS {
             
             
         }
+        System.out.println("***");
         return new Pair(encoded, tokens);       
     }
 
@@ -74,29 +75,32 @@ public class LZSS {
         ArrayList<Character> chars = input.getFirst();
         ArrayDeque<Pair> tokens = input.getSecond();
         ArrayList<Character> decoded = new ArrayList();
-        
+        int decodedIndex = decoded.size();
+
         for (int i = 0; i < chars.size(); i++) {
-            
-            if (chars.get(i) == 0) {
+            char c = chars.get(i);
+            if (c == 0) {
                 Pair<Integer, Integer> token = tokens.pop();
                 int offset = token.getFirst();
                 int length = token.getSecond();
-                int current = decoded.size();
-                
+
+                // deconstruct token
                 int j = 0;
                 while (j < length) {
-                    decoded.add(chars.get(current - offset + j));
+                    char toAdd = decoded.get(decodedIndex - offset + j);
+                    decoded.add(toAdd);
                     j++;
-                } 
-
+                }
+                decodedIndex += length;
+                
                 
             } else {
-                decoded.add(chars.get(i));
+                decoded.add(c);
+                decodedIndex++;
             }
         }
-
+        
         StringBuilder sb = new StringBuilder();
-
         for (char c : decoded) {
             sb.append(c);
         }

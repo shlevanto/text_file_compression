@@ -23,6 +23,10 @@ public class Main {
         } catch (Exception e) {
 
         }
+
+        ArrayList<Integer> poo = new ArrayList<>();
+        poo.add(1);
+        
         
         if (filepath == null) {
             // System.out.println("Invalid filepath.");
@@ -30,17 +34,17 @@ public class Main {
             FileIO io = new FileIO();
             LZSS lzss = new LZSS();
             String s = new String();
-            s = "is this the real life? is this just fantasy?";
-            /*
+            s = "Is this the real life? Is this just fantasy?";
+            
             try {
                 s = io.readFile("poem.txt");
             } catch (Exception e) {
                 System.out.println("Can not read file " + filepath);
-            }*/
+            }
             Pair<ArrayList<Character>, ArrayDeque<Pair>> njum = lzss.encode(s);
             String njam = lzss.decode(njum);
 
-            System.out.println(njam);
+            System.out.println(njam.equals(s));
             
 
         }  else {
