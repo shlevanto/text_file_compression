@@ -34,35 +34,19 @@ public class Main {
             // LZSS
             FileIO io = new FileIO();
             LZSS lzss = new LZSS();
-            BWT bwt = new BWT();
             String s = new String();
-            s = "SAMSUNG SAM PIF SAMSUNG BOB";
+            s = "SAMSUNG SAM PIF SAMSUNG";
             
-            String fule = "dosto.txt";
-        
-            try {
-                s = io.readFile(fule);
-            } catch (Exception e) {
-                System.out.println("Can not read file " + filepath);
-            }
             
-            //String njim = bwt.encode(s);
-            String njum = lzss.encode(s);
-            //System.out.println(njum);
-            String njam = lzss.decode(njum);
+            byte[] njum = lzss.encode(s);
             
-            try {
-               io.writeFile(njum, fule + "_encoded");
-            } catch (Exception e) {
-
-            }
+            
             
         }  else {
 
             if (outputPath == null) {
                 outputPath = filepath + "_encoded";
             }
-
             System.out.println("Compressing file " + filepath + " ");
             
             FileIO io = new FileIO();
