@@ -38,7 +38,7 @@ public class Main {
             String s = new String();
             s = "SAMSUNG SAM PIF SAMSUNG BOB";
             
-            String fule = "sam-i-am.txt";
+            String fule = "poem.txt";
         
             try {
                 s = io.readFile(fule);
@@ -54,7 +54,7 @@ public class Main {
             try {
                io.writeFile(njum, fule + "_encoded");
             } catch (Exception e) {
-                
+
             }
             
         }  else {
