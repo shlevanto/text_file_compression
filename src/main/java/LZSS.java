@@ -5,6 +5,7 @@ import java.util.ArrayDeque;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 
 public class LZSS {
 
@@ -12,15 +13,24 @@ public class LZSS {
 
     }
     
-    public String encode(String s) {
+    public byte[] encode(String s) {
         char[] chars = s.toCharArray();
         ArrayList<Character> buffer = new ArrayList<>();
     
         StringBuilder sb = new StringBuilder();
-        
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         for (int i = 0; i < chars.length; i++) {
             char c = chars[i];
+            
+            // for the bytestream we need the UTF-8 encoded byte of the character
+            int utfChar = 0;
+            try {
+                utfChar = (int) Character.toString(chars[i]).getBytes("UTF-8")[0];
+            } catch (Exception e) {
+            
+            }
             // Check if it’s seen the character before
             boolean encountered = buffer.contains(c);
             
@@ -48,12 +58,24 @@ public class LZSS {
                         j++;
                     }
                 }
-                // construct a byte[] token
+                // construct a string token
                 String marker = String.valueOf((char) 0);
                 String token = marker + offset + "," + length + marker;
+
                 // Add all characters from token to buffer
-                if (token.length() < length) {
+                if (length > 6) {
+                    // construct a 6 byte token
+                    byte[] byteToken = tokenToBytes(offset, length);
+                    
+                    // append token to string
                     sb.append(token);
+
+                    // append token to bytestream
+                    try{
+                        bos.write(byteToken);
+                    } catch (Exception e) {
+
+                    }
                     for (int k = 0; k < length; k++) {
                         buffer.add(chars[i+k]);
                     }
@@ -61,24 +83,65 @@ public class LZSS {
                     
                 } else {
                     buffer.add(c);
+                    // add to string
                     sb.append(c);
+
+                    // add to bytestream
+                    try{
+                        bos.write(utfChar);
+                    } catch (Exception e) {
+
+                    }
                 }
             } else {
                 // If not, add the character to the search buffer and continue
                 buffer.add(c);
                 sb.append(c);
+                // add to bytestream
+                try {
+                        bos.write(utfChar);
+                } catch (Exception e) {
+                        
+                }
             }
         }
         
-        System.out.println("Encoded length: " + sb.length());
+        System.out.println("Encoded length: " + bos.size());
         System.out.println("String length: " + s.length());
-        float compression = ((float) sb.length() / s.length());
+        float compression = ((float) bos.size() / s.length());
         System.out.println("Compression rate: " + compression);      
 
-        return sb.toString();
+        // return sb.toString();
+        return bos.toByteArray();
     }
 
-    
+    public String decodeBytes(byte[] input) {
+        StringBuilder sb = new StringBuilder();
+        
+        for (int i = 0; i < input.length; i++) {
+            byte b = input[i];
+            if (b != 0) {
+                byte[] byteToString = {b};
+                sb.append(new String(byteToString, StandardCharsets.UTF_8));
+                continue;
+            } else {
+                // deconstruct token
+                byte[] tokenBytes = Arrays.copyOfRange(input, i, i + 6);
+                int[] tokenInts = bytesToToken(tokenBytes);
+                int offset = tokenInts[0];
+                int length = tokenInts[1];
+
+                System.out.println("token: " + offset + "," + length);
+
+                String replacement = sb.substring(sb.length() - offset, sb.length() - offset + length);
+                sb.append(replacement);
+                i += 7; // token length + 1 
+            }
+
+        }
+        
+        return sb.toString();
+    }
     public String decode(String input) {
         char[] chars = input.toCharArray();
         StringBuilder sb = new StringBuilder();
