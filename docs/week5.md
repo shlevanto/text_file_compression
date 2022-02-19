@@ -4,18 +4,22 @@
 - LZSS
 - BWT in chunks can now handle bigger strings, file handling needs to be updated.
 - Updating file operations.
+- Peer review.
 
 ## Progress
-- LZ77 achieved. Encoding and decoding works. Now to add the SS element ie. check token is smaller than the part that is replaced.
+- LZSS works on a conceptual level / with strings. 
 - The chunked BWT can now be saved to file, but there are some issues.
 
 ## Lessons learned
-- My file handling has some issues. Now the compression rate is highly negative... 
+- Filesizes can get surprisingly large...
 
 ## Issues, unclarities and questions
+- LZSS sliding buffer window
+- Why is the filesize for the chunked BWT + RLE so big? It should compress the large DNA nucleotide file but it doesn't...
 
 ## Plan for next steps
-- The Pair Class gets too messy. I should probably make it an interface and have separate data structures for RLE and LZSS encoded text to hold the encoded result.
+- LZSS needs a sliding window for the search buffer in order to make it more effective. If the offset gets too long, it wont tokenize. 
+- The encodings should be broken up into smaller methods. For example LZSS could use tokenize and deTokenize. Token could maybe be a class?
 
 ## Time used
-12
+14
