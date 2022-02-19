@@ -30,23 +30,33 @@ public class Main {
         
         if (filepath == null) {
             // System.out.println("Invalid filepath.");
+
             // LZSS
             FileIO io = new FileIO();
             LZSS lzss = new LZSS();
+            BWT bwt = new BWT();
             String s = new String();
-            s = "Is this the real life? Is this just fantasy?";
+            s = "SAMSUNG SAM PIF SAMSUNG BOB";
             
+            String fule = "sam-i-am.txt";
+        
             try {
-                s = io.readFile("poem.txt");
+                s = io.readFile(fule);
             } catch (Exception e) {
                 System.out.println("Can not read file " + filepath);
             }
-            Pair<ArrayList<Character>, ArrayDeque<Pair>> njum = lzss.encode(s);
-            String njam = lzss.decode(njum);
-
-            System.out.println(njam.equals(s));
             
-
+            //String njim = bwt.encode(s);
+            String njum = lzss.encode(s);
+            System.out.println(njum);
+            String njam = lzss.decode(njum);
+            
+            try {
+               io.writeFile(njum, fule + "_encoded");
+            } catch (Exception e) {
+                
+            }
+            
         }  else {
 
             if (outputPath == null) {
@@ -109,16 +119,17 @@ public class Main {
 
             System.out.println(foo.equals(bar));
 
+            String fule = "poem.txt";
             // BWT+RLE in chunks
             String tolstoy = new String();
             try {
-                tolstoy = io.readFile("tolstoy.txt");
+                tolstoy = io.readFile(fule);
             } catch (Exception e) {
                 System.out.println("Can not read file " + filepath);
             }
 
             // split into chunks
-            int chunkSize = 4096;
+            int chunkSize = 512;
             int start = 0;
             int noOfChunks = tolstoy.length() / chunkSize;
             
@@ -135,50 +146,25 @@ public class Main {
             // and remainder
             chunks.add(tolstoy.substring(start));
 
-            // BWT encode all chunks
-            ArrayList<String> encodedChunks = new ArrayList<>();
+            // BWT encode all chunks and combine to one string
+            StringBuilder chunkSb = new StringBuilder();
 
             for (String chunk : chunks) {
-                encodedChunks.add(bwt.encode(chunk));
+                chunkSb.append(bwt.encode(chunk));
             }
 
-            // RLE encode all chunks
-            ArrayList<Pair<char[], int[]>> doubleChunks = new ArrayList<>();
+            // RLE encode this string
+            Pair<char[], int[]> chunkedRle = rle.encode(chunkSb.toString());
 
-            for (String chunk : encodedChunks) {
-                doubleChunks.add(rle.encode(chunk));
-            }
+            // Save to file
+            ArrayList<byte[]> chunkToFile = rle.toByteArrayList(chunkedRle);
 
-            // write to file
             try {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
-                ObjectOutputStream oos = new ObjectOutputStream(bos);
-                oos.writeObject(doubleChunks);
-                oos.close();
-                byte[] data = bos.toByteArray();
-                ArrayList<byte[]> dataList = new ArrayList<>();
-                dataList.add(data);
-                io.writeByteArray(dataList, "tolstoy.txt_encoded");
+                io.writeByteArray(chunkToFile, fule + "_encoded");
             } catch (Exception e) {
-                System.out.println("Exception!");
+
             }
-
-            // RLE decode all chunks
-            ArrayList<String> decodedDoubleChunks = new ArrayList<>();
-
-            for (Pair<char[], int[]> pair : doubleChunks) {
-                decodedDoubleChunks.add(rle.decode(pair));
-            }
-
-            StringBuilder sb = new StringBuilder();
             
-            for (String chunk : decodedDoubleChunks) {
-                sb.append(bwt.decode(chunk));
-            }
-
-            String chunksDecoded = sb.toString();
-            System.out.println(chunksDecoded.equals(tolstoy));
-
 
         
 

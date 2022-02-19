@@ -1,7 +1,9 @@
 import java.util.HashMap;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ArrayDeque;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 
 public class LZSS {
 
@@ -9,22 +11,18 @@ public class LZSS {
 
     }
     
-    public Pair<ArrayList<Character>, ArrayDeque<Pair>> encode(String s) {
+    public String encode(String s) {
         char[] chars = s.toCharArray();
-        System.out.println("String length: " + chars.length);
         ArrayList<Character> buffer = new ArrayList<>();
-        ArrayList<Character> encoded = new ArrayList<>();
-        ArrayDeque<Pair<Integer, Integer>> tokens = new ArrayDeque<>();
+    
+        StringBuilder sb = new StringBuilder();
+        
 
         for (int i = 0; i < chars.length; i++) {
             char c = chars[i];
             // Check if it’s seen the character before
             boolean encountered = buffer.contains(c);
             
-            for (char foo : buffer) {
-            //    System.out.print((char) foo);  
-            }
-            //System.out.println("");
             // If so, check the next character and prepare a token to be outputted
             if (encountered) {
                 // calculate offset
@@ -49,60 +47,75 @@ public class LZSS {
                         j++;
                     }
                 }
+
+                String marker = String.valueOf((char) 0);
+                String token = marker + offset + "," + length + marker;
                 // Add all characters from token to buffer
-                for (int k = 0; k < length; k++) {
-                    buffer.add(chars[i+k]);
+                if (token.length() < length) {
+                    sb.append(token);
+                    for (int k = 0; k < length; k++) {
+                        buffer.add(chars[i+k]);
+                    }
+                    i += length -1;
+                    
+                } else {
+                    buffer.add(c);
+                    sb.append(c);
                 }
-                i += length -1;
-                encoded.add((char) 0);
-                tokens.add(new Pair(offset, length));
-            
             } else {
                 // If not, add the character to the search buffer and continue
-                encoded.add(c);
                 buffer.add(c);
-            }
-            
-            // TODO If the token is longer than the text it’s representing, don’t output a token
-            
-            
-        }
-        System.out.println("***");
-        return new Pair(encoded, tokens);       
-    }
-
-    public String decode(Pair<ArrayList<Character>, ArrayDeque<Pair>> input) {
-        ArrayList<Character> chars = input.getFirst();
-        ArrayDeque<Pair> tokens = input.getSecond();
-        ArrayList<Character> decoded = new ArrayList();
-        int decodedIndex = decoded.size();
-
-        for (int i = 0; i < chars.size(); i++) {
-            char c = chars.get(i);
-            if (c == 0) {
-                Pair<Integer, Integer> token = tokens.pop();
-                int offset = token.getFirst();
-                int length = token.getSecond();
-
-                // deconstruct token
-                int j = 0;
-                while (j < length) {
-                    char toAdd = decoded.get(decodedIndex - offset + j);
-                    decoded.add(toAdd);
-                    j++;
-                }
-                decodedIndex += length;
-                
-                
-            } else {
-                decoded.add(c);
-                decodedIndex++;
+                sb.append(c);
             }
         }
         
+        System.out.println("Encoded length: " + sb.length());
+        System.out.println("String length: " + s.length());
+        float compression = ((float) sb.length() / s.length());
+        System.out.println("Compression rate: " + compression);      
+
+        return sb.toString();
+    }
+
+    
+    public String decode(String input) {
+        char[] chars = input.toCharArray();
         StringBuilder sb = new StringBuilder();
-        for (char c : decoded) {
-            sb.append(c);
+        
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c != 0) {
+                sb.append(c);
+                continue;
+            } else {
+                // deconstruct token
+                StringBuilder token = new StringBuilder();
+                int tokenIndex = i+1;
+
+
+                while (true) {
+                    if (chars[tokenIndex] == 0 || tokenIndex >= chars.length - 1) {
+                        break;
+                    }
+                    token.append(chars[tokenIndex]);
+                    tokenIndex++;
+                }
+
+                String tokenString = token.toString();
+                
+                String[] tokenParts = tokenString.split(",");
+                int offset = Integer.valueOf(tokenParts[0]);
+                int length = Integer.valueOf(tokenParts[1]);
+
+          
+                String replacement = sb.substring(sb.length() - offset, sb.length() - offset + length);
+                sb.append(replacement);
+                
+                
+                i += tokenString.length() + 1;
+                
+            }
+
         }
         return sb.toString();
     }
