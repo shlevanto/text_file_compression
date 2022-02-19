@@ -1,5 +1,5 @@
 ## Project structure
-Each compression algorithm is its own class with encode and decode methods. File interactions are handled with the FileIO class. Pair and SuffixArray are helper classes that implement data structures needed by the compression algorithms.
+Each compression algorithm is its own class with encode and decode methods. The compression will work on UTF-8 encoded text. File interactions are handled with the FileIO class. Pair and SuffixArray are helper classes that implement data structures needed by the compression algorithms.
 
 ## Implemented time and space complexities (big-O complexity analysis of (pseudo)code)
 Pseudocode will come later once I have the code finalized.
