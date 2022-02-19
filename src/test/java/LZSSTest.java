@@ -5,45 +5,34 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.ArrayDeque;
 
 public class LZSSTest {
-    private LZSS rle;
+    private LZSS lzss;
     private FileIO io;
 
     public LZSSTest() {
         io = new FileIO();
-        lzss = new LZSS(io);
+        lzss = new LZSS();
     }
 
     @Test 
-    public void encodingReturnsPair() {
+    public void encodingReturnsString() {
         String s = "Is this the real life?";
-        Pair<ArrayList<Character>, ArrayDeque<Pair>> encoded = lzss.encode(s);
+        String encoded = lzss.encode(s);
 
-        assertThat(encoded, instanceOf(Pair.class));
+        assertThat(encoded, instanceOf(String.class));
     }
-/*
+
     @Test
     public void encodeDecodeMatchesOriginalInputTest() {
-        String s = "Is this just fantasy?";
-        Pair<char[], int[]> encoded = rle.encode(s);
-        String decoded = rle.decode(encoded);
+        String s = "Is this just fantasy? Caught in a land slide. No escape from reality.";
+        String encoded = lzss.encode(s);
+        String decoded = lzss.decode(encoded);
         
         assertEquals(decoded, s);
     }
-
-    @Test 
-    public void simpleEncodingTest() {
-        String s = "aaabba";
-        Pair<char[], int[]> encoded = rle.encode(s);
-        char[] charTarget = {'a', 'b', 'a'};
-        int[] countTarget = {3, 2, 1};
-        
-        assertTrue(Arrays.equals(encoded.getFirst(), charTarget));
-        assertTrue(Arrays.equals(encoded.getSecond(), countTarget));
-
-    }
-
+/*
     @Test
     public void toByteArrayTest() {
         String s = "aaabba";
@@ -66,9 +55,7 @@ public class LZSSTest {
 
         assertTrue(Arrays.equals(chars, new char[]{97, 98}));
         assertTrue(Arrays.equals(counts, new int[]{2, 1}));
-
-
-*/
         
     }
+    */
 }
