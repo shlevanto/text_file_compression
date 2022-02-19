@@ -38,7 +38,7 @@ public class Main {
             String s = new String();
             s = "SAMSUNG SAM PIF SAMSUNG BOB";
             
-            String fule = "poem.txt";
+            String fule = "dosto.txt";
         
             try {
                 s = io.readFile(fule);
@@ -48,7 +48,7 @@ public class Main {
             
             //String njim = bwt.encode(s);
             String njum = lzss.encode(s);
-            System.out.println(njum);
+            //System.out.println(njum);
             String njam = lzss.decode(njum);
             
             try {

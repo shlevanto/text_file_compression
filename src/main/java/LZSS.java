@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.ArrayDeque;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigInteger;
 
 public class LZSS {
 
@@ -47,7 +48,7 @@ public class LZSS {
                         j++;
                     }
                 }
-
+                // construct a byte[] token
                 String marker = String.valueOf((char) 0);
                 String token = marker + offset + "," + length + marker;
                 // Add all characters from token to buffer
@@ -107,6 +108,11 @@ public class LZSS {
                 int offset = Integer.valueOf(tokenParts[0]);
                 int length = Integer.valueOf(tokenParts[1]);
 
+                byte[] tokenBytes = tokenToBytes(offset, length);
+                int[] tokenFromBytes = bytesToToken(tokenBytes);
+
+                System.out.println("stringtoken: " + offset + "," + length);
+                System.out.println("bytetoken: " + Arrays.toString(tokenFromBytes));
           
                 String replacement = sb.substring(sb.length() - offset, sb.length() - offset + length);
                 sb.append(replacement);
@@ -118,5 +124,32 @@ public class LZSS {
 
         }
         return sb.toString();
+    }
+
+    private byte[] tokenToBytes(int offset, int length) {
+        byte[] tokenBytes = new byte[6];
+
+        // tokenBytes[0] = 0 --> marks the beginning of the token
+        
+        // offset is packed in 3 bytes
+        tokenBytes[1] = (byte) ((offset >> 16) & 0xff);
+        tokenBytes[2] = (byte) ((offset >> 8) & 0xff);
+        tokenBytes[3] = (byte) (offset & 0xff);
+
+        // length is packed in 2 bytes
+        tokenBytes[4] = (byte) ((length >> 8) & 0xff);
+        tokenBytes[5] = (byte) (length & 0xff);
+
+        return tokenBytes;
+    }
+
+    private int[] bytesToToken(byte[] tokenBytes) {
+        byte[] offsetBytes = Arrays.copyOfRange(tokenBytes, 1, 4);
+        byte[] lengthBytes = Arrays.copyOfRange(tokenBytes, 4, 6);
+
+        int offset = new BigInteger(offsetBytes).intValue();
+        int length = new BigInteger(lengthBytes).intValue();
+
+        return new int[]{offset, length};
     }
 }
