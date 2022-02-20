@@ -57,7 +57,7 @@ public class Main {
                 System.out.println("Can not read file " + filepath);
             }
 
-            /*
+            
             System.out.println("BWT + RLE encoding without chunks: ");
             // First we show that the encoding and decoding 
             // works when we only handle strings
@@ -70,7 +70,6 @@ public class Main {
             
 
             // Second we show that the encoding and decoding works when we handle files
-            // ArrayList<byte[]> fna = rle.toByteArrayList(RLEEncoded);
             byte[] fna = rle.toBytes(RLEEncoded);
             
             try {
@@ -81,10 +80,11 @@ public class Main {
 
             byte[] doubleEncoded = null;
             try {
-                doubleEncoded = io.readByteArray(outputPath);
+                doubleEncoded = io.readByteArray("_bwtrle_" + outputPath);
             } catch (Exception e) {
                 System.out.println(e);
             }
+
 
             Pair<char[], int[]> doubleEncodedA = rle.fromBytes(doubleEncoded);
 
@@ -103,7 +103,7 @@ public class Main {
             // And finally we look at the compression rate
             compressionResults = io.compressionRatio(filepath, "_bwtrle_" + outputPath);
             System.out.println(compressionResults);
-        */
+        
             System.out.println("*****");
             
             System.out.println("LZSS encoding, no sliding window: ");
