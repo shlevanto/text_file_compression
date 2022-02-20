@@ -25,12 +25,9 @@ public class LZSS {
             char c = chars[i];
             
             // for the bytestream we need the UTF-8 encoded byte of the character
-            int utfChar = 0;
-            try {
-                utfChar = (int) Character.toString(chars[i]).getBytes("UTF-8")[0];
-            } catch (Exception e) {
+            int utfChar = (int) chars[i];
             
-            }
+                
             // Check if it’s seen the character before
             boolean encountered = buffer.contains(c);
             
@@ -120,9 +117,9 @@ public class LZSS {
         
         for (int i = 0; i < input.length; i++) {
             byte b = input[i];
-            if (b != 0) {
-                byte[] byteToString = {b};
-                sb.append(new String(byteToString, StandardCharsets.UTF_8));
+                       
+            if (b != 0) {    
+                sb.append((char) b);
                 continue;
             } else {
                 // deconstruct token
@@ -131,11 +128,11 @@ public class LZSS {
                 int offset = tokenInts[0];
                 int length = tokenInts[1];
 
-                System.out.println("token: " + offset + "," + length);
+                // System.out.println("token: " + offset + "," + length);
 
                 String replacement = sb.substring(sb.length() - offset, sb.length() - offset + length);
                 sb.append(replacement);
-                i += 7; // token length + 1 
+                i += 5; // jump to end of token
             }
 
         }
