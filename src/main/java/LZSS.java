@@ -1,9 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 
 public class LZSS {
 
