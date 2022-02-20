@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ArrayDeque;
 import java.io.ObjectOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * The application doesn't have UI yet, so it is run from the Class at the moment.
@@ -29,17 +31,7 @@ public class Main {
         
         
         if (filepath == null) {
-            // System.out.println("Invalid filepath.");
-
-            // LZSS
-            FileIO io = new FileIO();
-            LZSS lzss = new LZSS();
-            String s = new String();
-            s = "SAMSUNG SAM PIF SAMSUNG";
-            
-            
-            byte[] njum = lzss.encode(s);
-            
+            System.out.println("Invalid filepath.");
             
             
         }  else {
@@ -48,9 +40,12 @@ public class Main {
                 outputPath = filepath + "_encoded";
             }
             System.out.println("Compressing file " + filepath + " ");
-            
+            String compressionResults = new String();
+
+            System.out.println("*****");
+
             FileIO io = new FileIO();
-            RLE rle = new RLE(io);
+            RLE rle = new RLE();
             BWT bwt = new BWT();
             LZSS lzss = new LZSS();
 
@@ -62,6 +57,8 @@ public class Main {
                 System.out.println("Can not read file " + filepath);
             }
 
+            /*
+            System.out.println("BWT + RLE encoding without chunks: ");
             // First we show that the encoding and decoding 
             // works when we only handle strings
             String BWTencoded = bwt.encode(content);
@@ -73,9 +70,11 @@ public class Main {
             
 
             // Second we show that the encoding and decoding works when we handle files
-            ArrayList<byte[]> fna = rle.toByteArrayList(RLEEncoded);
+            // ArrayList<byte[]> fna = rle.toByteArrayList(RLEEncoded);
+            byte[] fna = rle.toBytes(RLEEncoded);
+            
             try {
-                io.writeByteArray(fna, outputPath);
+                io.writeByteArray(fna, "_bwtrle_" + outputPath);
             } catch (Exception e) {
                 
             }
@@ -87,69 +86,86 @@ public class Main {
                 System.out.println(e);
             }
 
-            Pair<char[], int[]> doubleEncodedA = rle.fromByteArray(doubleEncoded);
+            Pair<char[], int[]> doubleEncodedA = rle.fromBytes(doubleEncoded);
 
             String RLEDecodedA = rle.decode(doubleEncodedA);
             String BWTDecodedA = bwt.decode(RLEDecodedA);
             System.out.println("Double encoded from file matches original: " + BWTDecodedA.equals(content));
             
+            try {
+                io.writeFile(BWTDecodedA, filepath + "_bwtrle_restored");    
+            } catch (Exception e) {
+
+            }
+
+            System.out.println("Decoded written to file matches original file: " + io.compareFiles(filepath, filepath + "_bwtrle_restored"));
             
             // And finally we look at the compression rate
-            String compressionResults = io.compressionRatio(filepath, outputPath);
+            compressionResults = io.compressionRatio(filepath, "_bwtrle_" + outputPath);
+            System.out.println(compressionResults);
+        */
+            System.out.println("*****");
+            
+            System.out.println("LZSS encoding, no sliding window: ");
+            String s = new String();
+            
+            byte[] lzssEncoded = lzss.encode(content);
+            String lzssDecoded = lzss.decodeBytes(lzssEncoded);
+            
+            byte[] lzssFromFile = null;
+            
+            try{ 
+                io.writeByteArray(lzssEncoded, "_lzss_" + outputPath);
+                lzssFromFile = io.readByteArray("_lzss_" + outputPath);
+            } catch (IOException e) {
+                
+            }
+
+            String lzzsDecodedFromFile = lzss.decodeBytes(lzssFromFile);
+
+            System.out.println("Decoded from file matches original: " + content.equals(lzzsDecodedFromFile));
+            
+            try {
+                io.writeFile(lzzsDecodedFromFile, filepath + "_lzss_restored");    
+            } catch (Exception e) {
+                
+            }
+            
+
+            System.out.println("Decoded written to file matches original file: " + io.compareFiles(filepath, filepath + "_lzss_restored"));
+            
+            // And finally we look at the compression rate
+            compressionResults = io.compressionRatio(filepath, "_lzss_" + outputPath);
             System.out.println(compressionResults);
 
-            Pair<char[], int[]> foo = rle.encode("aaabba");
-            Pair<char[], int[]> bar = rle.encode("aaabba");
 
-            System.out.println(foo.equals(bar));
-
-            String fule = "poem.txt";
+            System.out.println("*****");
+            
+            
             // BWT+RLE in chunks
+            String flaa = new String();
+            //long genome
+            flaa = "poem.txt";
+            // short example
+            //flaa = "one.txt";
             String tolstoy = new String();
             try {
-                tolstoy = io.readFile(fule);
+                tolstoy = io.readFile(flaa);
             } catch (Exception e) {
                 System.out.println("Can not read file " + filepath);
             }
 
-            // split into chunks
-            int chunkSize = 512;
-            int start = 0;
-            int noOfChunks = tolstoy.length() / chunkSize;
-            
-            ArrayList<String> chunks = new ArrayList<>();
+            BWTRLE bwtRle = new BWTRLE();
+            ArrayList<Pair<char[], int[]>> bwtRleEncoded = bwtRle.encode(tolstoy);
 
-            // add full chunks
-            for (int i = 0; i < noOfChunks; i++) {
-                int end = start + chunkSize;
-                String k = tolstoy.substring(start, end);
-                chunks.add(k);
-                start += chunkSize;
-            }
-            
-            // and remainder
-            chunks.add(tolstoy.substring(start));
-
-            // BWT encode all chunks and combine to one string
-            StringBuilder chunkSb = new StringBuilder();
-
-            for (String chunk : chunks) {
-                chunkSb.append(bwt.encode(chunk));
+            int size = 0;
+            for (Pair<char[], int[]> pair : bwtRleEncoded) {
+                size += rle.toBytes(pair).length;
             }
 
-            // RLE encode this string
-            Pair<char[], int[]> chunkedRle = rle.encode(chunkSb.toString());
-
-            // Save to file
-            ArrayList<byte[]> chunkToFile = rle.toByteArrayList(chunkedRle);
-
-            try {
-                io.writeByteArray(chunkToFile, fule + "_encoded");
-            } catch (Exception e) {
-
-            }
-            
-
+            String doubleEncodedDecoded = bwtRle.decode(bwtRleEncoded);
+            System.out.println("Chunk encoding - decoding works with strings: " + tolstoy.equals(doubleEncodedDecoded));
+            System.out.println("String encoding ratio: " + (tolstoy.length() / (float) size));
         
 
 
