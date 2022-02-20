@@ -55,7 +55,7 @@ public class FileIO {
      * @param filepath Path of output file.
      * @throws IOException
      */
-    public void writeByteArray(ArrayList<byte[]> list, String filepath) throws IOException {
+    public void writeByteArrayList(ArrayList<byte[]> list, String filepath) throws IOException {
         FileOutputStream fout = new FileOutputStream(filepath);
             
         for (byte[] bytes : list) {
@@ -65,6 +65,18 @@ public class FileIO {
 
             }   
         } 
+        fout.close();
+    }
+
+    public void writeByteArray(byte[] bytes, String filepath) throws IOException {
+        FileOutputStream fout = new FileOutputStream(filepath);
+            
+        try {
+            fout.write(bytes);
+        }
+        catch (IOException e) {
+
+        }
         fout.close();
     }
     
