@@ -74,14 +74,14 @@ public class Main {
             byte[] fna = rle.toBytes(RLEEncoded);
             
             try {
-                io.writeByteArray(fna, "_bwtrle_" + outputPath);
+                io.writeByteArray(fna, outputPath + "_bwtrle");
             } catch (Exception e) {
                 
             }
 
             byte[] doubleEncoded = null;
             try {
-                doubleEncoded = io.readByteArray("_bwtrle_" + outputPath);
+                doubleEncoded = io.readByteArray(outputPath + "_bwtrle");
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -102,7 +102,7 @@ public class Main {
             System.out.println("Decoded written to file matches original file: " + io.compareFiles(filepath, filepath + "_bwtrle_restored"));
             
             // And finally we look at the compression rate
-            compressionResults = io.compressionRatio(filepath, "_bwtrle_" + outputPath);
+            compressionResults = io.compressionRatio(filepath, outputPath + "_bwtrle");
             System.out.println(compressionResults);
         
             System.out.println("*****");
@@ -116,8 +116,8 @@ public class Main {
             byte[] lzssFromFile = null;
             
             try{ 
-                io.writeByteArray(lzssEncoded, "_lzss_" + outputPath);
-                lzssFromFile = io.readByteArray("_lzss_" + outputPath);
+                io.writeByteArray(lzssEncoded, outputPath + "_lzss");
+                lzssFromFile = io.readByteArray(outputPath + "_lzss");
             } catch (IOException e) {
                 
             }
