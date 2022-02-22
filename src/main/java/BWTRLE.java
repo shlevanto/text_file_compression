@@ -1,15 +1,20 @@
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 public class BWTRLE {
     
     private BWT bwt;
     private RLE rle;
-    final int chunkSize;
+    private int chunkSize;
+    private Config properties;
 
-    public BWTRLE () {
+    public BWTRLE(Config properties) {
         this.bwt = new BWT();
         this.rle = new RLE();
-        this.chunkSize = 4096; // this should come from a config file
+        this.chunkSize = properties.getBwtChunkSize();
     }
 
     public ArrayList<Pair<char[], int[]>> encode(String s) {
