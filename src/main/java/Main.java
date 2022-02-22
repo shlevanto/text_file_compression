@@ -12,6 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
         
+        Config config = new Config();
         String filepath = null;
         String outputPath = null;
         
@@ -155,7 +156,7 @@ public class Main {
                 System.out.println("Can not read file " + filepath);
             }
 
-            BWTRLE bwtRle = new BWTRLE();
+            BWTRLE bwtRle = new BWTRLE(config);
             ArrayList<Pair<char[], int[]>> bwtRleEncoded = bwtRle.encode(tolstoy);
 
             int size = 0;

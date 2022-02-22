@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class for generic file IO functionalities such as 
@@ -138,7 +139,7 @@ public class FileIO {
 
             sb.append("original size: " + originalBytes + "\n");
             sb.append("compressed size: " + compressedBytes + "\n");
-            sb.append("compression ratio: " + String.format("%,.2f", ratio));
+            sb.append("compression ratio: " + String.format("%,.2f", ratio) + " of original size.");
         } catch (Exception e) {
 
         }
