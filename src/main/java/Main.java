@@ -5,6 +5,15 @@ import java.io.ObjectOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+
+import config.Config;
+import tool.Pair;
+import IO.FileIO;
+import compressor.BWT;
+import compressor.BWTRLE;
+import compressor.LZSS;
+import compressor.RLE;
+
 /**
  * The application doesn't have UI yet, so it is run from the Class at the moment.
  */

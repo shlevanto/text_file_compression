@@ -1,3 +1,5 @@
+package tool;
+
 /**
  * A data structure with two generic constructors.
  * @param <T> any java object

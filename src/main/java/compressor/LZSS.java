@@ -1,7 +1,11 @@
+package compressor;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
+
+import tool.Token;
 
 public class LZSS {
 

@@ -1,5 +1,9 @@
+package compressor;
+
 import java.util.Arrays;
 import java.util.HashMap;
+
+import tool.SuffixArray;
 
 /**
  * Implements Burrows-Wheeler Transformation for text / string input.

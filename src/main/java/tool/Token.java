@@ -1,3 +1,5 @@
+package tool;
+
 import java.util.Arrays;
 import java.math.BigInteger;
 
