@@ -31,7 +31,19 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 [Week 4](/docs/implementation.md)
 
 ## User guide
-The project does not yet have an UI. If you want to see how the program runs, run it with gradle. Put a text file in the root folder of the project and run ```gradle run --args "$file"``` where $file is the name of the file to encode.
+The project has a simple command line interface. 
+```
+Usage: <main class> [-hv] -m=<method> <filepath>
+      <filepath>          The file to compress.
+  -h, --help              displays a help message
+  -m, --method=<method>   compression method: 'l' for LZSS or 'b' for BWT + RLE
+  -v, --verify            verifies that the decompression matches original
+                            content
+```
+I don't have a build yet, nut you can run it with gradle using
+```
+./gradlew <filename> -m <l or b>
+```
 
 I've included two files: poem.txt is a poem in English and nucleotide-sample.txt contains some DNA sequences. The BWT + RLE encoding doesn't compress natural language, but it is effective with content that contains a limited amount of characters. 
 
