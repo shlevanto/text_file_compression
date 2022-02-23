@@ -40,7 +40,7 @@ jacocoTestReport {
     classDirectories.setFrom(files(classDirectories.files.collect {
       fileTree(dir: it, exclude: [
         "**Main.class",
-        "**UI.class"
+        "**Cli.class"
         ])
       }))
     }
