@@ -23,14 +23,14 @@ public class Config {
         this.properties = new Properties();
         try {
             FileInputStream fis = new FileInputStream("config.properties");
-            this.properties.load(new InputStreamReader(fis, Charset.forName("UTF-8")));
+            this.properties.load(new InputStreamReader(fis, Charset.forName("UTF-8")));          
+            this.bwtChunkSize = Integer.valueOf(this.properties.getProperty("bwtChunkSize"));
+            this.rleMaxRunLength = Integer.valueOf(this.properties.getProperty("rleMaxRunLength"));
+            this.lzssBufferSize = Integer.valueOf(this.properties.getProperty("lzssBufferSize"));
+            this.lzssTokenSize = Integer.valueOf(this.properties.getProperty("lzssTokenSize"));
 
-        this.bwtChunkSize = Integer.valueOf(this.properties.getProperty("bwtChunkSize"));
-        this.rleMaxRunLength = Integer.valueOf(this.properties.getProperty("rleMaxRunLength"));
-        this.lzssBufferSize = Integer.valueOf(this.properties.getProperty("lzssBufferSize"));
-        this.lzssTokenSize = Integer.valueOf(this.properties.getProperty("lzssTokenSize"));
         } catch (Exception e) {
-
+            System.out.println("Read from config fails.");
         }
         
     }
@@ -50,6 +50,5 @@ public class Config {
     public int getLzssTokenSize() {
         return this.lzssTokenSize;
     }
-    
     
 }
