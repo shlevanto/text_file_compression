@@ -16,23 +16,12 @@ public class LZSS {
     private int tokenSize;
 
     public LZSS(Config properties) {
-        this.properties = properties;
         this.bufferSize = properties.getLzssBufferSize();
         this.tokenSize = properties.getLzssTokenSize();
         
     }
 
-    private int indexOfElement(char[] buffer, char element, int startingIndex, int stop) {
-        for (int i = startingIndex; i < stop; i++) {
-            if (buffer[i] == element) {
-                return i;
-            }
-        }
-        
-        return -1;
-    }
-
-    private int indexOfByteElement(byte[] buffer, byte element, int startingIndex, int stop) {
+    private int indexOfElement(byte[] buffer, byte element, int startingIndex, int stop) {
         for (int i = startingIndex; i < stop; i++) {
             if (buffer[i] == element) {
                 return i;
@@ -68,7 +57,7 @@ public class LZSS {
             }
             
             // the index of c in the buffer
-            int encountered = indexOfByteElement(buffer, c, slide, i);
+            int encountered = indexOfElement(buffer, c, slide, i);
             
             // If so, check the next character and prepare a token to be outputted
             if (encountered > 0) {
@@ -139,19 +128,16 @@ public class LZSS {
     }
 
     public String decode(byte[] input) {
-        //ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ArrayList<Byte> bos = new ArrayList<>();
+        // Here we use ArrayList instead of Stream, because
+        // token deconstruction is more efficient and neat
+        // using sublists.
+        ArrayList<Byte> decoded = new ArrayList<>();
 
         for (int i = 0; i < input.length; i++) {
             byte b = input[i];
                        
             if (b != 0) {    
-                try {
-                    //bos.write(b);
-                    bos.add(b);
-                } catch (Exception e) {
-                    //TODO: handle exception
-                }
+                decoded.add(b);
                 continue;
             } else {
                 // deconstruct token
@@ -160,26 +146,20 @@ public class LZSS {
                 int offset = tokenInts[0];
                 int length = tokenInts[1];
                 
-                //byte[] replacement = Arrays.copyOfRange(input, i - offset, offset + length);
+                // get bytes indicated by token
+                List<Byte> replacement = decoded.subList(decoded.size() - offset, decoded.size() - offset + length);
                 
-                List<Byte> replacement = bos.subList(bos.size() - offset, bos.size() - offset + length);
-                // String replacement = sb.substring(sb.length() - offset, sb.length() - offset + length);
-                try {
-                    //bos.write(replacement);
-                    bos.addAll(replacement);
-                } catch (Exception e) {
-                    //TODO: handle exception
-                }
+                // add bytes to decoded
+                decoded.addAll(replacement);
+                
                 i += this.tokenSize; // jump to end of token
             }
-
         }
         
-        //byte[] result = bos.toByteArray();
-        byte[] result = new byte[bos.size()];
+        byte[] result = new byte[decoded.size()];
 
         for (int i = 0; i < result.length; i++) {
-            result[i] = bos.get(i);
+            result[i] = decoded.get(i);
         }
 
         return new String(result, StandardCharsets.UTF_8);
