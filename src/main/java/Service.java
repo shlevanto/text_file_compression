@@ -30,7 +30,6 @@ public class Service {
         this.encoded = null;
         this.decoded = new String();
         this.filepath = filepath;
-        this.outputPath = filepath + "_encoded";
     }
 
     public void run() {
@@ -38,23 +37,19 @@ public class Service {
         readFile();
 
         if (this.method.equals("l")) {
-            runLzss(filepath, outputPath);
+            runLzss();
         }
         
         if (this.method.equals("b")) {
             // run bwtrle
         }
 
-        if (checkCompression) {
-            // run checkCompression
-            check();
-        }
-
         System.exit(0);
     }
 
-    public void runLzss(String filepath, String outputPath) {
+    public void runLzss() {
         LZSS lzss = new LZSS(this.config);
+        String outputPath = this.filepath + "_lzss";
         
         System.out.println("LZSS encoding, with sliding window: ");
         
@@ -63,11 +58,16 @@ public class Service {
 
         byte[] lzssFromFile = null;
         
-        System.out.println(io.compressionRatio(filepath, "_lzss_" + outputPath));
+        System.out.println(io.compressionRatio(filepath, outputPath));
+
+        if (this.checkCompression) {
+            check(outputPath);
+        }
     
     }
 
-    private void check() {
+    private void check(String outputPath) {
+        
         System.out.println("Decoded string matches original string: " + this.content.equals(this.decoded));
     }
 
