@@ -47,17 +47,20 @@ public class Service {
 
         if (checkCompression) {
             // run checkCompression
+            check();
         }
+
+        System.exit(0);
     }
 
     public void runLzss(String filepath, String outputPath) {
-        LZSS lzss = new LZSS(this.config, this.io);
-
+        LZSS lzss = new LZSS(this.config);
+        
         System.out.println("LZSS encoding, with sliding window: ");
         
-        this.encoded = lzss.encode(content);
-        this.decoded = lzss.decodeBytes(this.encoded);
-        
+        this.encoded = lzss.encode(this.content);
+        this.decoded = lzss.decode(this.encoded);
+
         byte[] lzssFromFile = null;
         
         System.out.println(io.compressionRatio(filepath, "_lzss_" + outputPath));
@@ -65,7 +68,7 @@ public class Service {
     }
 
     private void check() {
-
+        System.out.println("Decoded string matches original string: " + this.content.equals(this.decoded));
     }
 
 
