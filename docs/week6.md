@@ -2,12 +2,13 @@
 
 ## My activities this week
 - Working on LZSS and project structure. 
-- Command line interface
+- Built Command line interface.
 ## Progress
 - LZSS works with byte arrays and files.
+- Changed LZSS so that String is converted to byte[], not char[] before encoding as some UTF-8 characters don't fit into a single byte.
 - Project structure arranged into packages.
 - LZSS sliding window works.
-- Command line interface with picocli.
+- Simple but working command line interface implemented with picocli -library.
 
 ## Lessons learned
 - In some texts, there are left and right quotation marks. There is no 8-bit representation of these so my encoding only works if the character can be represented in 8 bit format.
@@ -20,4 +21,4 @@
 ## Plan for next steps
 
 ## Time used
-13
+14
