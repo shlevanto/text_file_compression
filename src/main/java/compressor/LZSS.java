@@ -1,8 +1,8 @@
 package compressor;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +18,6 @@ public class LZSS {
     public LZSS(Config properties) {
         this.bufferSize = properties.getLzssBufferSize();
         this.tokenSize = properties.getLzssTokenSize();
-        
     }
 
     private int indexOfElement(byte[] buffer, byte element, int startingIndex, int stop) {
@@ -27,7 +26,7 @@ public class LZSS {
                 return i;
             }
         }
-        
+
         return -1;
     }
 
