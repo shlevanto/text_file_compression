@@ -43,19 +43,17 @@ public class LZSS {
             return null;
         }
 
-        
-
         int offset = i - index;
         int length = 1;
         
         // keep checking next characters until no match
         int j = 1;
         while (true) {
-            if(index + j > i) {
+            if(i + j >= chars.length || index + j >= i) {
                 return null;
             }
             //System.out.println("Does next match?");
-            byte nextChar = chars[index + j];
+            byte nextChar = chars[i + j];
             byte nextBuffer = buffer[index + j];
 
             if (nextChar == nextBuffer) {
@@ -66,13 +64,14 @@ public class LZSS {
             } else if (length < this.tokenSize) {
                 // This is causing some problems...
                 //System.out.println("Search again from " + index + 1);
-                match(chars, buffer, c, index + 1 + length, i); 
+                //match(chars, buffer, c, index + 1, i); 
+                return null;
             } else {
                 //System.out.println("Making token");
                 int[] token = {offset, length};
                 return token;
             }
-            j++;
+            //j++;
         }
         
     }
@@ -132,7 +131,7 @@ public class LZSS {
                 }
                 
                 // jump over tokenized part
-                i += length -1;
+                i += length - 1;
                     
                 } 
             }
