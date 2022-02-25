@@ -1,3 +1,5 @@
+package cli;
+
 import java.util.Arrays;
 
 import picocli.CommandLine;
@@ -11,6 +13,7 @@ import compressor.BWT;
 import compressor.BWTRLE;
 import compressor.LZSS;
 import compressor.RLE;
+import service.Service;
 
 
 public class Cli implements Runnable{
