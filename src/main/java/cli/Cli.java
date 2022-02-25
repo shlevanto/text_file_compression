@@ -1,5 +1,6 @@
 package cli;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import picocli.CommandLine;
@@ -50,8 +51,12 @@ public class Cli implements Runnable{
             return;
         } 
 
-        Service service = new Service(config, method, checkCompression, filepath);    
-        service.run();
+        try {
+            Service service = new Service(config, method, checkCompression, filepath);    
+            service.run();
+        } catch (IOException e) {
+            
+        }
         
     }
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.io.ByteArrayOutputStream;
 
 import tool.Pair;
 import config.Config;
@@ -22,9 +23,7 @@ public class BWTRLE {
         this.chunkSize = properties.getBwtChunkSize();
     }
 
-
-/*    
-    public ArrayList<Pair<char[], int[]>> encode(String s) {
+    public byte[] encode(String s) {
         
         int start = 0;
         int noOfChunks = s.length() / this.chunkSize;
@@ -43,30 +42,46 @@ public class BWTRLE {
         chunks.add(s.substring(start));
 
         // BWT encode all chunks
-        ArrayList<Pair<char[], int[]>> encodedChunks = new ArrayList<>();
+        ArrayList<byte[]> encodedChunks = new ArrayList<>();
 
         for (String chunk : chunks) {
             String bwtEncoded = this.bwt.encode(chunk);
-            Pair<char[], int[]> doubleEncoded = this.rle.encode(bwtEncoded);
+            byte[] doubleEncoded = this.rle.encode(bwtEncoded);
             encodedChunks.add(doubleEncoded);
         }
 
-        return encodedChunks;
+        return toBytes(encodedChunks);
     }
 
-    public String decode (ArrayList<Pair<char[], int[]>> encodedChunks) {
-        // And decode
+    public String decode (byte[] encodedChunks) {
+        // partition to chunks according to chunkSize
+        // rle decode each chunk
+        // bwt decode each chunk
+        
+        // And make a string
         StringBuilder sbChunksDecoded = new StringBuilder();
 
-        for (Pair<char[], int[]> pair : encodedChunks) {
-            String rleDecoded = this.rle.decode(pair);
-            String bwtDecoded = this.bwt.decode(rleDecoded);
-            sbChunksDecoded.append(bwtDecoded);
+        return "";
+    }
+
+    private byte[] toBytes(ArrayList<byte[]> encodedChunks) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        for (byte[] chunk : encodedChunks) {
+            try {
+                bos.write(chunk);
+            } catch (Exception e) {
+
+            }   
         }
         
-        String chunkEncodedDecoded = sbChunksDecoded.toString();
+        try {
+            bos.close();    
+        } catch (Exception e) {
 
-        return chunkEncodedDecoded;
+        }
+        
+        return bos.toByteArray();
     }
-*/
+
 }

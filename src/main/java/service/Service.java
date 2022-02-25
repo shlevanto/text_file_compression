@@ -24,7 +24,7 @@ public class Service {
     private String filepath;
     private String outputPath;
 
-    public Service(Config config, String method, boolean checkCompression, String filepath) {
+    public Service(Config config, String method, boolean checkCompression, String filepath) throws IOException {
         this.config = config;
         this.io = new FileIO();
         this.method = method;
@@ -59,7 +59,7 @@ public class Service {
         this.encoded = lzss.encode(this.content);
         this.decoded = lzss.decode(this.encoded);
 
-        byte[] lzssFromFile = null;
+        writeFile(this.encoded, outputPath);
         
         System.out.println(io.compressionRatio(filepath, outputPath));
 
@@ -73,18 +73,10 @@ public class Service {
         BWTRLE bwtrle = new BWTRLE(this.config);
         String outputPath = this.filepath + "_bwtrle";
         
-        /*
-        System.out.println("BWT + RLE encoding, with chunk size " + this.config.getBwtChunkSize());
-    
-        ArrayList<Pair<char[],int[]>> encoded = bwtrle.encode(this.content);
-        this.decoded = bwtrle.decode(encoded);
-        */
+        System.out.println("BWT + RLE compression, with chunk size " + this.config.getBwtChunkSize());
 
-        System.out.println("RLE");
-        RLE rle = new RLE();
-
-        this.encoded = rle.encode(this.content);
-        this.decoded = rle.decode(this.encoded);
+        this.encoded = bwtrle.encode(this.content);
+        //this.decoded = rle.decode(this.encoded);
 
         System.out.println(this.decoded);
 
@@ -107,7 +99,15 @@ public class Service {
             System.out.println("Can not read file " + filepath);
         }
     }
-    
+
+    private void writeFile(byte[] bytes, String outputPath) {
+        try {
+            io.writeByteArray(bytes, outputPath);
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+    }
+ 
 }
 
 /*
