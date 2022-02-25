@@ -22,6 +22,8 @@ public class BWTRLE {
         this.chunkSize = properties.getBwtChunkSize();
     }
 
+
+/*    
     public ArrayList<Pair<char[], int[]>> encode(String s) {
         
         int start = 0;
@@ -66,4 +68,5 @@ public class BWTRLE {
 
         return chunkEncodedDecoded;
     }
+*/
 }

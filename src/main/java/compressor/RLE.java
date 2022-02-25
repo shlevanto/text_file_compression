@@ -3,6 +3,7 @@ package compressor;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.io.ByteArrayOutputStream;
 
 import tool.Pair;
@@ -20,13 +21,18 @@ public class RLE {
      * @return a pair with first object holding charaters 
      * and second object holding run lengths.
      */
-    public Pair<char[], int[]> encode(String s) {
-        
-        int size = s.length();
-        char[] source = s.toCharArray();
-        
+    public byte[] encode(String s) {
+        byte[] source = null;
+
+        try {
+            source = s.getBytes("UTF-8");
+        } catch (Exception e) {
+
+        }
+        int size = source.length;
+
         int[] counts = new int[size];
-        char[] chars = new char[size];
+        byte[] chars = new byte[size];
 
         int count = 1;
         int charIndex = 0;
@@ -52,14 +58,16 @@ public class RLE {
         }
 
         int[] finalCounts = new int[charIndex + 1];
-        char[] finalChars = new char[charIndex + 1];
+        byte[] finalChars = new byte[charIndex + 1];
 
         for (int i = 0; i < finalCounts.length; i++) {
             finalCounts[i] = counts[i];
             finalChars[i] = chars[i];
         }
 
-        return new Pair<char[], int[]>(finalChars, finalCounts);
+        Pair <byte[], int[]> result = new Pair<byte[], int[]>(finalChars, finalCounts);
+        
+        return toBytes(result); 
     }
 
     /**
@@ -67,23 +75,29 @@ public class RLE {
      * @param encoded Pair<char[], int[]> that is encoded by RLE.encode() method.
      * @return decoded content as string.
      */
-    public String decode(Pair<char[], int[]> encoded) {
-        char[] chars = encoded.getFirst();
-        int[] counts = encoded.getSecond();
-
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < chars.length; i++) {
-            for (int j = 0; j < counts[i]; j++) {
-                result.append(chars[i]);
+    public String decode(byte[] encoded) {
+        ArrayList<Byte> decoded = new ArrayList<>();
+        
+        for (int i = 0; i < encoded.length; i += 2) {
+            int count = encoded[i];
+            byte c = encoded[i+1];
+            
+            for (int j = 0; j < count; j++) {
+                decoded.add(c);
             }
         }
 
-        return result.toString();
+        byte[] result = new byte[decoded.size()];
+
+        for (int i = 0; i < result.length; i++) {
+            result[i] = decoded.get(i);
+        }
+
+        return new String(result, StandardCharsets.UTF_8);
     }
     
-    public byte[] toBytes(Pair<char[], int[]> pair) {
-        char[] chars = pair.getFirst();
+    public byte[] toBytes(Pair<byte[], int[]> pair) {
+        byte[] chars = pair.getFirst();
         int[] counts = pair.getSecond();
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
@@ -102,9 +116,7 @@ public class RLE {
 
         }
         
-
         return bos.toByteArray();
-        
     }
 
     public Pair<char[], int[]> fromBytes(byte[] input) {

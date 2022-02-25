@@ -72,11 +72,21 @@ public class Service {
     public void runBwtRle() {
         BWTRLE bwtrle = new BWTRLE(this.config);
         String outputPath = this.filepath + "_bwtrle";
-
+        
+        /*
         System.out.println("BWT + RLE encoding, with chunk size " + this.config.getBwtChunkSize());
     
         ArrayList<Pair<char[],int[]>> encoded = bwtrle.encode(this.content);
         this.decoded = bwtrle.decode(encoded);
+        */
+
+        System.out.println("RLE");
+        RLE rle = new RLE();
+
+        this.encoded = rle.encode(this.content);
+        this.decoded = rle.decode(this.encoded);
+
+        System.out.println(this.decoded);
 
         if (this.checkCompression) {
             check(outputPath);
