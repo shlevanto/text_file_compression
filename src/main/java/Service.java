@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.io.IOException;
 
 import config.Config;
@@ -41,7 +42,7 @@ public class Service {
         }
         
         if (this.method.equals("b")) {
-            // run bwtrle
+            runBwtRle();
         }
 
         System.exit(0);
@@ -51,7 +52,7 @@ public class Service {
         LZSS lzss = new LZSS(this.config);
         String outputPath = this.filepath + "_lzss";
         
-        System.out.println("LZSS encoding, with sliding window: ");
+        System.out.println("LZSS encoding, with sliding window size " + this.config.getLzssBufferSize() + " and token size " + this.config.getLzssTokenSize());
         
         this.encoded = lzss.encode(this.content);
         this.decoded = lzss.decode(this.encoded);
@@ -65,6 +66,21 @@ public class Service {
         }
     
     }
+
+    public void runBwtRle() {
+        BWTRLE bwtrle = new BWTRLE(this.config);
+        String outputPath = this.filepath + "_bwtrle";
+
+        System.out.println("BWT + RLE encoding, with chunk size " + this.config.getBwtChunkSize());
+    
+        ArrayList<Pair<char[],int[]>> encoded = bwtrle.encode(this.content);
+        this.decoded = bwtrle.decode(encoded);
+
+        if (this.checkCompression) {
+            check(outputPath);
+        }
+    }
+
 
     private void check(String outputPath) {
         
