@@ -16,7 +16,7 @@ public class Config {
     private int rleMaxRunLength;
     private int lzssBufferSize;
     private int lzssTokenSize;
-    
+    private int lzssMaxIterations;
     
 
     public Config() {
@@ -28,6 +28,7 @@ public class Config {
             this.rleMaxRunLength = Integer.valueOf(this.properties.getProperty("rleMaxRunLength"));
             this.lzssBufferSize = Integer.valueOf(this.properties.getProperty("lzssBufferSize"));
             this.lzssTokenSize = Integer.valueOf(this.properties.getProperty("lzssTokenSize"));
+            this.lzssMaxIterations = Integer.valueOf(this.properties.getProperty("lzssMaxIterations"));
 
         } catch (Exception e) {
             System.out.println("Read from config fails.");
@@ -49,6 +50,10 @@ public class Config {
 
     public int getLzssTokenSize() {
         return this.lzssTokenSize;
+    }
+
+    public int getLzssMaxIterations() {
+        return this.lzssMaxIterations;
     }
     
 }
