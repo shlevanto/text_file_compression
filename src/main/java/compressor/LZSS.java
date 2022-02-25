@@ -166,7 +166,7 @@ public class LZSS {
                 // add bytes to decoded
                 decoded.addAll(replacement);
                 
-                i += this.tokenSize; // jump to end of token
+                i += this.tokenSize - 1; // jump to end of token
             }
         }
         
