@@ -29,51 +29,45 @@ public class LZSS {
                 return i;
             }
         }
-
         return -1;
     }
 
     private int[] match(byte[] chars, byte[] buffer, byte c, int startingIndex, int i) {
+        // find index of matching character
         int index = indexOfElement(buffer, c, startingIndex, i);
-        //System.out.println("Find match for index: " + i);
-        //System.out.println("Looking from " + slide + " to " + i);
-        //System.out.println("Searching for: " + (char) c ); 
+        
         if (index < 0) {
-            //System.out.println("Match not found.");
             return null;
         }
 
         int offset = i - index;
         int length = 1;
         
-        // keep checking next characters until no match
+        // keep checking next characters for as long as they match
         int j = 1;
         while (true) {
             if(i + j >= chars.length || index + j >= i) {
                 return null;
             }
-            //System.out.println("Does next match?");
             byte nextChar = chars[i + j];
             byte nextBuffer = buffer[index + j];
 
             if (nextChar == nextBuffer) {
-                //System.out.println("Increasing length.");
                 length++;
                 j++;
                 continue;
             } else if (length < this.tokenSize) {
-                // This is causing some problems...
-                //System.out.println("Search again from " + index + 1);
-                //match(chars, buffer, c, index + 1, i); 
+                // if the match is shorter than the 
+                // the size of a token, look for the next match
+                match(chars, buffer, c, index + 1, i); 
                 return null;
             } else {
-                //System.out.println("Making token");
+                // if the match to be replaced is longer than
+                // the token replacing it, make a token
                 int[] token = {offset, length};
                 return token;
             }
-            //j++;
         }
-        
     }
 
     public byte[] encode(String s) {
@@ -84,23 +78,22 @@ public class LZSS {
 
         }
 
-        // System.out.println(Arrays.toString(chars));
         byte[] buffer = new byte[chars.length];
-        
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         int slide = 0;
 
         for (int i = 0; i < chars.length; i++) {
             byte c = chars[i];
+        
             // if i is more than buffersize, slide is increased
-            // so the search for the matching character starts att slide
-            // an buffer size is kept constant
-            
+            // so the search for the matching character starts at slide
+            // and buffer size is kept constant    
             if (i > this.bufferSize) {
                 slide++;
             }
             
+            // find a matching character sequence
             int[] token = match(chars, buffer, c, slide, i);
 
             if (token == null) {
@@ -125,19 +118,16 @@ public class LZSS {
 
                 }
                 
-                // write token to buffer
+                // write tokenized characters to buffer
                 for (int k = 0; k < length; k++) {
                     buffer[i + k] = chars[i + k];
                 }
                 
-                // jump over tokenized part
+                // jump over tokenized part and continue
                 i += length - 1;
-                    
                 } 
             }
-        System.out.println("Original: " + chars.length);
-        System.out.println("Encoded: " + bos.size());
-        System.out.println("Compression ratio: " + (1.0 * bos.size() / chars.length));
+        
         return bos.toByteArray();
     }
 
