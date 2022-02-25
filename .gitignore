@@ -5,3 +5,5 @@ bin/
 *.pdf
 *_encoded*
 *_restored*
+*_lzss
+*_bwtrle
