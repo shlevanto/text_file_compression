@@ -1,4 +1,7 @@
+package service;
+
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.io.IOException;
 
 import config.Config;
@@ -21,7 +24,7 @@ public class Service {
     private String filepath;
     private String outputPath;
 
-    public Service(Config config, String method, boolean checkCompression, String filepath) {
+    public Service(Config config, String method, boolean checkCompression, String filepath) throws IOException {
         this.config = config;
         this.io = new FileIO();
         this.method = method;
@@ -41,7 +44,7 @@ public class Service {
         }
         
         if (this.method.equals("b")) {
-            // run bwtrle
+            runBwtRle();
         }
 
         System.exit(0);
@@ -51,12 +54,12 @@ public class Service {
         LZSS lzss = new LZSS(this.config);
         String outputPath = this.filepath + "_lzss";
         
-        System.out.println("LZSS encoding, with sliding window: ");
+        System.out.println("LZSS encoding, with sliding window size " + this.config.getLzssBufferSize() + " and token size " + this.config.getLzssTokenSize());
         
         this.encoded = lzss.encode(this.content);
         this.decoded = lzss.decode(this.encoded);
 
-        byte[] lzssFromFile = null;
+        writeFile(this.encoded, outputPath);
         
         System.out.println(io.compressionRatio(filepath, outputPath));
 
@@ -65,6 +68,23 @@ public class Service {
         }
     
     }
+
+    public void runBwtRle() {
+        BWTRLE bwtrle = new BWTRLE(this.config);
+        String outputPath = this.filepath + "_bwtrle";
+        
+        System.out.println("BWT + RLE compression, with chunk size " + this.config.getBwtChunkSize());
+
+        this.encoded = bwtrle.encode(this.content);
+        //this.decoded = rle.decode(this.encoded);
+
+        System.out.println(this.decoded);
+
+        if (this.checkCompression) {
+            check(outputPath);
+        }
+    }
+
 
     private void check(String outputPath) {
         
@@ -79,7 +99,15 @@ public class Service {
             System.out.println("Can not read file " + filepath);
         }
     }
-    
+
+    private void writeFile(byte[] bytes, String outputPath) {
+        try {
+            io.writeByteArray(bytes, outputPath);
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+    }
+ 
 }
 
 /*
