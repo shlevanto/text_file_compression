@@ -1,12 +1,9 @@
 package service;
 
-import java.util.Arrays;
-import java.util.ArrayList;
 import java.io.IOException;
 
 import config.Config;
-import tool.Pair;
-import IO.FileIO;
+import io.FileIO;
 import compressor.BWT;
 import compressor.BWTRLE;
 import compressor.LZSS;
@@ -14,14 +11,42 @@ import compressor.RLE;
 
 
 public class Service {
+    /**
+     * Config injected from Main.
+     */
     private Config config;
+    /**
+     * Handles file operations.
+     */
     private FileIO io;
+    /**
+     * Compression method, comes from Cli.
+     */
     private String method;
+    /**
+     * Option: do we want to check that the compression was valid?
+     * Checks if decompressed matches original.
+     */
     private boolean checkCompression;
+    /**
+     * Content to be encoded.
+     */
     private String content;
+    /**
+     * Stores the encoded content.
+     */
     private byte[] encoded;
+    /**
+     * Stores the decoded content.
+     */
     private String decoded;
+    /**
+     * Filepath that content is read from.
+     */
     private String filepath;
+    /**
+     * Filepath that encoded text is saved to.
+     */
     private String outputPath;
 
     public Service(Config config, String method, boolean checkCompression, String filepath) throws IOException {
@@ -35,6 +60,10 @@ public class Service {
         this.filepath = filepath;
     }
 
+    /**
+     * Starts the service. Reads the file and runs the encoding 
+     * given from cli options.
+     */
     public void run() {
         // read file
         readFile();
@@ -50,18 +79,24 @@ public class Service {
         System.exit(0);
     }
 
+    /**
+     * Runs the LZSS encoding.
+     */
     public void runLzss() {
         LZSS lzss = new LZSS(this.config);
         String outputPath = this.filepath + "_lzss";
         
-        System.out.println("LZSS encoding, with sliding window size " + this.config.getLzssBufferSize() + " and token size " + this.config.getLzssTokenSize());
+        System.out.println("LZSS encoding, with sliding window size " 
+            + this.config.getLzssBufferSize() 
+            + " and token size " 
+            + this.config.getLzssTokenSize());
         
         this.encoded = lzss.encode(this.content);
         this.decoded = lzss.decode(this.encoded);
 
-        writeFile(this.encoded, outputPath);
+        writeFile(outputPath);
         
-        System.out.println(io.compressionRatio(filepath, outputPath));
+        System.out.println(this.io.compressionRatio(this.filepath, outputPath));
 
         if (this.checkCompression) {
             check(outputPath);
@@ -69,17 +104,40 @@ public class Service {
     
     }
 
+    /**
+     * Runs the BWT + RLE encoding.
+     */
     public void runBwtRle() {
+        BWT bwt = new BWT();
+        RLE rle = new RLE();
+        
         BWTRLE bwtrle = new BWTRLE(this.config);
         String outputPath = this.filepath + "_bwtrle";
         
         System.out.println("BWT + RLE compression, with chunk size " + this.config.getBwtChunkSize());
+        
+        // manual combination works
+        /*String a = bwt.transform(this.content);
+        System.out.println(a);
+        this.encoded = rle.encode(a);
 
+        System.out.println(a.length() + " vs " + this.encoded.length);
+        this.decoded = rle.decode(this.encoded);
+        String b = bwt.restore(this.decoded);
+
+        System.out.println("Manual BWT + RLE works " + b.equals(this.content));
+        
+        writeFile(outputPath);
+        */
+
+        // one chunk encoding and decoding works
         this.encoded = bwtrle.encode(this.content);
-        //this.decoded = rle.decode(this.encoded);
+        this.decoded = bwtrle.decode(this.encoded);
+        
+        writeFile(outputPath);
 
-        System.out.println(this.decoded);
-
+        System.out.println(io.compressionRatio(this.filepath, outputPath));
+        
         if (this.checkCompression) {
             check(outputPath);
         }
@@ -100,180 +158,12 @@ public class Service {
         }
     }
 
-    private void writeFile(byte[] bytes, String outputPath) {
+    private void writeFile(String outputPath) {
         try {
-            io.writeByteArray(bytes, outputPath);
+            io.writeByteArray(this.encoded, outputPath);
         } catch (Exception e) {
-            //TODO: handle exception
+            System.out.println("Can not write file " + outputPath);
         }
     }
  
 }
-
-/*
-public class Main {
-
-    public static void main(String[] args) {
-        
-        Config config = new Config();
-        String filepath = null;
-        String outputPath = null;
-        
-        try {
-            filepath = args[0];
-        } catch (Exception e) {
-
-        } 
-        try {
-            outputPath = args[1];
-        } catch (Exception e) {
-
-        }
-
-        ArrayList<Integer> poo = new ArrayList<>();
-        poo.add(1);
-        
-        
-        if (filepath == null) {
-            System.out.println("Invalid filepath.");
-            
-            
-        }  else {
-
-            if (outputPath == null) {
-                outputPath = filepath + "_encoded";
-            }
-            System.out.println("Compressing file " + filepath + " ");
-            String compressionResults = new String();
-
-            System.out.println("*****");
-
-            FileIO io = new FileIO();
-            RLE rle = new RLE();
-            BWT bwt = new BWT();
-            LZSS lzss = new LZSS();
-
-            String content = new String();
-
-            try {
-                content = io.readFile(filepath);
-            } catch (Exception e) {
-                System.out.println("Can not read file " + filepath);
-            }
-
-            
-            System.out.println("BWT + RLE encoding without chunks: ");
-            // First we show that the encoding and decoding 
-            // works when we only handle strings
-            String BWTencoded = bwt.encode(content);
-            Pair<char[], int[]> RLEEncoded = rle.encode(BWTencoded);
-
-            String RLEDecoded = rle.decode(RLEEncoded);
-            String BWTDecoded = bwt.decode(RLEDecoded);
-            System.out.println("Double encoded string matches original: " + BWTDecoded.equals(content));
-            
-
-            // Second we show that the encoding and decoding works when we handle files
-            byte[] fna = rle.toBytes(RLEEncoded);
-            
-            try {
-                io.writeByteArray(fna, outputPath + "_bwtrle");
-            } catch (Exception e) {
-                
-            }
-
-            byte[] doubleEncoded = null;
-            try {
-                doubleEncoded = io.readByteArray(outputPath + "_bwtrle");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-
-            Pair<char[], int[]> doubleEncodedA = rle.fromBytes(doubleEncoded);
-
-            String RLEDecodedA = rle.decode(doubleEncodedA);
-            String BWTDecodedA = bwt.decode(RLEDecodedA);
-            System.out.println("Double encoded from file matches original: " + BWTDecodedA.equals(content));
-            
-            try {
-                io.writeFile(BWTDecodedA, filepath + "_bwtrle_restored");    
-            } catch (Exception e) {
-
-            }
-
-            System.out.println("Decoded written to file matches original file: " + io.compareFiles(filepath, filepath + "_bwtrle_restored"));
-            
-            // And finally we look at the compression rate
-            compressionResults = io.compressionRatio(filepath, outputPath + "_bwtrle");
-            System.out.println(compressionResults);
-        
-            System.out.println("*****");
-            
-            System.out.println("LZSS encoding, no sliding window: ");
-            String s = new String();
-            
-            byte[] lzssEncoded = lzss.encode(content);
-            String lzssDecoded = lzss.decodeBytes(lzssEncoded);
-            
-            byte[] lzssFromFile = null;
-            
-            try{ 
-                io.writeByteArray(lzssEncoded, outputPath + "_lzss");
-                lzssFromFile = io.readByteArray(outputPath + "_lzss");
-            } catch (IOException e) {
-                
-            }
-
-            String lzzsDecodedFromFile = lzss.decodeBytes(lzssFromFile);
-
-            System.out.println("Decoded from file matches original: " + content.equals(lzzsDecodedFromFile));
-            
-            try {
-                io.writeFile(lzzsDecodedFromFile, filepath + "_lzss_restored");    
-            } catch (Exception e) {
-                
-            }
-            
-
-            System.out.println("Decoded written to file matches original file: " + io.compareFiles(filepath, filepath + "_lzss_restored"));
-            
-            // And finally we look at the compression rate
-            compressionResults = io.compressionRatio(filepath, "_lzss_" + outputPath);
-            System.out.println(compressionResults);
-
-
-            System.out.println("*****");
-            
-            
-            // BWT+RLE in chunks
-            String flaa = new String();
-            //long genome
-            flaa = "poem.txt";
-            // short example
-            //flaa = "one.txt";
-            String tolstoy = new String();
-            try {
-                tolstoy = io.readFile(flaa);
-            } catch (Exception e) {
-                System.out.println("Can not read file " + filepath);
-            }
-
-            BWTRLE bwtRle = new BWTRLE(config);
-            ArrayList<Pair<char[], int[]>> bwtRleEncoded = bwtRle.encode(tolstoy);
-
-            int size = 0;
-            for (Pair<char[], int[]> pair : bwtRleEncoded) {
-                size += rle.toBytes(pair).length;
-            }
-
-            String doubleEncodedDecoded = bwtRle.decode(bwtRleEncoded);
-            System.out.println("Chunk encoding - decoding works with strings: " + tolstoy.equals(doubleEncodedDecoded));
-            System.out.println("String encoding ratio: " + (tolstoy.length() / (float) size));
-        
-
-
-
-        }
-    }
-} */

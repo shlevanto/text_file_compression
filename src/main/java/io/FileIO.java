@@ -1,4 +1,4 @@
-package IO;
+package io;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,8 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Class for generic file IO functionalities such as 
@@ -53,34 +51,20 @@ public class FileIO {
     }
 
     /**
-     * Writes a list of byte arrays to a file.
-     * @param list List of byte arrays to wwrite.
-     * @param filepath Path of output file.
-     * @throws IOException
+     * Writes byte array to file. Overwrites excisting files of the same name.
+     * @param bytes the array to write
+     * @param filepath the path to writ the file
      */
-    public void writeByteArrayList(ArrayList<byte[]> list, String filepath) throws IOException {
-        FileOutputStream fout = new FileOutputStream(filepath);
-            
-        for (byte[] bytes : list) {
-            try {
-                fout.write(bytes);
-            } catch (IOException e) {
-
-            }   
-        } 
-        fout.close();
-    }
-
     public void writeByteArray(byte[] bytes, String filepath) throws IOException {
         FileOutputStream fout = new FileOutputStream(filepath);
             
         try {
             fout.write(bytes);
-        }
-        catch (IOException e) {
+            fout.close();
+        } catch (IOException e) {
 
         }
-        fout.close();
+        
     }
     
     /**
@@ -133,6 +117,8 @@ public class FileIO {
      * @return output of compression rate as string.
      */
     public String compressionRatio(String original, String compressed) {
+        
+        
         StringBuilder sb = new StringBuilder();
         try {
             double originalBytes = Files.size(Path.of(original));
@@ -143,7 +129,7 @@ public class FileIO {
             sb.append("compressed size: " + compressedBytes + "\n");
             sb.append("compression ratio: " + String.format("%,.2f", ratio) + " of original size.");
         } catch (Exception e) {
-
+            System.out.println("Compression ratio could not be calculated.");
         }
 
         return sb.toString();

@@ -11,14 +11,34 @@ import java.nio.charset.Charset;
 
 public class Config {
     
+    /**
+     * Java properties class.
+     */
     private Properties properties;
+    /**
+     * Chunk size for BWT + RLE encodin.
+     */
     private int bwtChunkSize;
+    /**
+     * Not yet implemented max run length for RLE.
+     */
     private int rleMaxRunLength;
+    /**
+     * Size of sliding buffer for LZSS.
+     */
     private int lzssBufferSize;
+    /**
+     * Size of LZSS token.
+     */
     private int lzssTokenSize;
+    /**
+     * Max time of iterations that LZSS looks for a better token.
+     */
     private int lzssMaxIterations;
     
-
+    /**
+     * Constructor method, reads config.properties.
+     */
     public Config() {
         this.properties = new Properties();
         try {
@@ -36,22 +56,37 @@ public class Config {
         
     }
 
+    /**
+     * @return BWT chunk size
+     */
     public int getBwtChunkSize() {
         return this.bwtChunkSize;
     }
 
+    /**
+     * @return RLE max run length
+     */
     public int getRleMaxRunLength() {
         return this.rleMaxRunLength;
     } 
-    
+
+    /**
+     * @return LZSS buffer size
+     */
     public int getLzssBufferSize() {
         return this.lzssBufferSize;
     }
 
+    /**
+     * @return LZSS token size
+     */
     public int getLzssTokenSize() {
         return this.lzssTokenSize;
     }
 
+    /**
+     * @return max number of iterations for LZSS
+     */
     public int getLzssMaxIterations() {
         return this.lzssMaxIterations;
     }

@@ -1,41 +1,60 @@
 package cli;
 
 import java.io.IOException;
-import java.util.Arrays;
 
-import picocli.CommandLine;
-import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 import config.Config;
-import tool.Pair;
-import compressor.BWT;
-import compressor.BWTRLE;
-import compressor.LZSS;
-import compressor.RLE;
 import service.Service;
 
-
-public class Cli implements Runnable{
+/**
+ * Command line interface.
+ */
+public class Cli implements Runnable {
+    /**
+     * Configs are injected from Main.
+     */
     private Config config;
 
+    /**
+     * @param config injected, reads from the config.properties.
+     */
     public Cli(Config config) {
         this.config = config;
     }
     
+    /**
+     * File name parameter.
+     */
     @Parameters(
         index = "0",
         description = "The file to compress."
     )
     private String filepath;
 
-    @Option(names = {"-v", "--verify"}, description = "verifies that the decompression matches original content")
+    /**
+     * Option to choose if verification is run on encoding.
+     */
+    @Option(
+        names = {"-v", "--verify"}, 
+        description = "verifies that the decompression matches original content"
+        )
     private boolean checkCompression = false;
 
-    @Option(names = {"-m", "--method"}, description = "compression method: 'l' for LZSS or 'b' for BWT + RLE", required = true)
+    /**
+     * Compression method.
+     */
+    @Option(
+        names = {"-m", "--method"}, 
+        description = "compression method: 'l' for LZSS or 'b' for BWT + RLE", 
+        required = true
+        )
     private String method;
 
+    /**
+     * Dispalys help message.
+     */
     @Option(
         names = {"-h", "--help"},
         usageHelp = true,
@@ -43,6 +62,9 @@ public class Cli implements Runnable{
     )
     private boolean helpRequested = false;
 
+    /**
+     * Runs the application service.
+     */
     @Override
     public void run() {
         boolean canRun = method.equals("l") | method.equals("b");

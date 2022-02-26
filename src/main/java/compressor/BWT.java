@@ -15,7 +15,7 @@ public class BWT {
      * @param s String to be encoded.
      * @return Encoded string.
      */
-    public String encode(String s) {
+    public String transform(String s) {
         char first = 0;
         
         // The encoding is based on a sorted suffix array
@@ -38,7 +38,7 @@ public class BWT {
      * @param s Encoded string.
      * @return Decoded string.
      */
-    public String decode(String s) {
+    public String restore(String s) {
         char[] f = s.toCharArray();
         // In theory BWT makes an array of all the rotations of
         // a string and then sorts the array. The encoded string is

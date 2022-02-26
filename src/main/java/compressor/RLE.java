@@ -1,9 +1,7 @@
 package compressor;
 
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.io.ByteArrayOutputStream;
 
 import tool.Pair;
@@ -65,7 +63,7 @@ public class RLE {
             finalChars[i] = chars[i];
         }
 
-        Pair <byte[], int[]> result = new Pair<byte[], int[]>(finalChars, finalCounts);
+        Pair<byte[], int[]> result = new Pair<byte[], int[]>(finalChars, finalCounts);
         
         return toBytes(result); 
     }
@@ -80,7 +78,7 @@ public class RLE {
         
         for (int i = 0; i < encoded.length; i += 2) {
             int count = encoded[i];
-            byte c = encoded[i+1];
+            byte c = encoded[i + 1];
             
             for (int j = 0; j < count; j++) {
                 decoded.add(c);
@@ -96,7 +94,12 @@ public class RLE {
         return new String(result, StandardCharsets.UTF_8);
     }
     
-    public byte[] toBytes(Pair<byte[], int[]> pair) {
+    /**
+     * Converts the encoding to a single byte array.
+     * @param pair the pair of bytes and counts to convert
+     * @return a single byte array
+     */
+    private byte[] toBytes(Pair<byte[], int[]> pair) {
         byte[] chars = pair.getFirst();
         int[] counts = pair.getSecond();
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -117,18 +120,6 @@ public class RLE {
         }
         
         return bos.toByteArray();
-    }
-
-    public Pair<char[], int[]> fromBytes(byte[] input) {
-        char[] chars = new char[input.length / 2];
-        int[] counts = new int[input.length / 2];
-
-        for (int i = 0; i < input.length; i += 2) {
-            counts[i/2] = input[i];
-            chars[i/2] = (char) input[i+1];
-        }
-
-        return new Pair(chars, counts);
     }
 
 }

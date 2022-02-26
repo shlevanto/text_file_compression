@@ -4,15 +4,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.io.ByteArrayOutputStream;
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 
 import tool.Token;
 import config.Config;
 
 public class LZSS {
+    /**
+     * Properties contains bufferSize and tokenSize.
+     */
     private Config properties;
+    /**
+     * Size of the sliding window buffer that matching 
+     * runs of bytes are searched in.
+     */
     private int bufferSize;
+    /**
+     * Size of the token that information is stored in.
+     */
     private int tokenSize;
 
     public LZSS(Config properties) {
@@ -46,7 +55,7 @@ public class LZSS {
         // keep checking next characters for as long as they match
         int j = 1;
         while (true) {
-            if(i + j >= chars.length || index + j >= i) {
+            if (i + j >= chars.length || index + j >= i) {
                 return null;
             }
             byte nextChar = chars[i + j];
@@ -70,9 +79,14 @@ public class LZSS {
         }
     }
 
+    /**
+     * Encodes UTF-8 String to byte array.
+     * @param s UTF-8 string to encode
+     * @return encoded byte array.
+     */
     public byte[] encode(String s) {
         byte[] chars = null;
-        try{
+        try {
             chars = s.getBytes("UTF-8");
         } catch (Exception e) {
 
@@ -98,7 +112,7 @@ public class LZSS {
 
             if (token == null) {
                 buffer[i] = c;
-                    try{
+                    try {
                         bos.write(c);
                     } catch (Exception e) {
 
@@ -112,7 +126,7 @@ public class LZSS {
                 byte[] byteToken = Token.toBytes(offset, length);
                 
                 // append token to bytestream
-                try{
+                try {
                     bos.write(byteToken);
                 } catch (Exception e) {
 
@@ -132,6 +146,11 @@ public class LZSS {
         return bos.toByteArray();
     }
 
+    /**
+     * Decodes a byte array with bytes and tokens back to a string.
+     * @param input LZSS encoded byte array
+     * @return decoded String.
+     */
     public String decode(byte[] input) {
         // Here we use ArrayList instead of Stream, because
         // token deconstruction is more efficient and neat
@@ -169,4 +188,5 @@ public class LZSS {
 
         return new String(result, StandardCharsets.UTF_8);
     }
+    
 } 
