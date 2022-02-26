@@ -21,7 +21,7 @@ public class LZSSTest {
         String s = "Is this the real life?";
         byte[] encoded = lzss.encode(s);
 
-        assertTrue(1 > 0);
+        assertTrue(encoded.length > 0);
     }
 
     @Test
