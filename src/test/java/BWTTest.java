@@ -1,6 +1,7 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import compressor.BWT;
 
 public class BWTTest {
     private BWT bwt;
@@ -12,7 +13,7 @@ public class BWTTest {
     @Test 
     public void encodedIsNotOriginalInputTest() {
         String s = "Is this the real life?";
-        String encoded = bwt.encode(s);
+        String encoded = bwt.transform(s);
 
         assertFalse(s.equals(encoded));
     }
@@ -20,8 +21,8 @@ public class BWTTest {
     @Test
     public void encodeDecodeMatchesOriginalInputTest() {
         String s = "Is this just fantasy?";
-        String encoded = bwt.encode(s);
-        String decoded = bwt.decode(encoded);
+        String encoded = bwt.transform(s);
+        String decoded = bwt.restore(encoded);
         
         assertEquals(decoded, s);
     }
@@ -29,7 +30,7 @@ public class BWTTest {
     @Test 
     public void simpleEncodingCheck() {
         String s = "banana";
-        String encoded = bwt.encode(s);
+        String encoded = bwt.transform(s);
         char[] encodedByHand = {97,110,110,98,0,97,97};
         String encodedShouldBe = new String(encodedByHand);
         assertEquals(encoded, encodedShouldBe);

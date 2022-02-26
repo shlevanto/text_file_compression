@@ -6,27 +6,25 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-public class RLETest {
-    private RLE rle;
-    private FileIO io;
+import compressor.RLE;
+import tool.Pair;
 
-    public RLETest() {
-        io = new FileIO();
-        rle = new RLE(io);
-    }
+public class RLETest {
 
     @Test 
-    public void encodingReturnsPair() {
+    public void encodingHappens() {
+        RLE rle = new RLE();        
         String s = "Is this the real life?";
-        Pair<char[], int[]> encoded = rle.encode(s);
+        byte[] encoded = rle.encode(s);
 
-        assertThat(encoded, instanceOf(Pair.class));
+        assertTrue(encoded.length > 1);
     }
 
     @Test
     public void encodeDecodeMatchesOriginalInputTest() {
+        RLE rle = new RLE();
         String s = "Is this just fantasy?";
-        Pair<char[], int[]> encoded = rle.encode(s);
+        byte[] encoded = rle.encode(s);
         String decoded = rle.decode(encoded);
         
         assertEquals(decoded, s);
@@ -34,41 +32,12 @@ public class RLETest {
 
     @Test 
     public void simpleEncodingTest() {
+        RLE rle = new RLE();
         String s = "aaabba";
-        Pair<char[], int[]> encoded = rle.encode(s);
-        char[] charTarget = {'a', 'b', 'a'};
-        int[] countTarget = {3, 2, 1};
-        
-        assertTrue(Arrays.equals(encoded.getFirst(), charTarget));
-        assertTrue(Arrays.equals(encoded.getSecond(), countTarget));
+        byte[] encoded = rle.encode(s);
+        byte[] target = {3, 97, 2, 98, 1, 97};
 
+        assertArrayEquals(encoded, target);
     }
 
-    @Test
-    public void toByteArrayTest() {
-        String s = "aaabba";
-        Pair<char[], int[]> encoded = rle.encode(s);
-
-        ArrayList<byte[]> list = rle.toByteArrayList(encoded);
-
-        assertThat(list, instanceOf(ArrayList.class));
-        assertThat(list.get(0), instanceOf(byte[].class));
-        
-    }
-
-    @Test
-    public void fromByteArrayTest() {
-        byte[] bytes = {0, 0, 0, 2, 2, 1, 97, 98};
-
-        Pair<char[], int[]> fromBytes = rle.fromByteArray(bytes);
-        char[] chars = fromBytes.getFirst();
-        int[] counts = fromBytes.getSecond();
-
-        assertTrue(Arrays.equals(chars, new char[]{97, 98}));
-        assertTrue(Arrays.equals(counts, new int[]{2, 1}));
-
-
-
-        
-    }
 }
