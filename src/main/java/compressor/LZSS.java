@@ -66,7 +66,7 @@ public class LZSS {
             } else if (length < this.tokenSize) {
                 // This is causing some problems...
                 //System.out.println("Search again from " + index + 1);
-                match(chars, buffer, c, index + 1 + length, i); 
+                match(chars, buffer, c, index + length, i); 
             } else {
                 //System.out.println("Making token");
                 int[] token = {offset, length};
