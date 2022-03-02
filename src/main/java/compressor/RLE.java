@@ -76,12 +76,16 @@ public class RLE {
     public String decode(byte[] encoded) {
         ArrayList<Byte> decoded = new ArrayList<>();
         
-        for (int i = 0; i < encoded.length; i += 2) {
-            int count = encoded[i];
-            byte c = encoded[i + 1];
-            
-            for (int j = 0; j < count; j++) {
-                decoded.add(c);
+        for (int i = 0; i < encoded.length; i++) {
+            if (encoded[i] == 1) {
+                int count = encoded[i + 1];
+                byte c = encoded[i + 2];
+                for (int j = 0; j < count; j++) {
+                    decoded.add(c);
+                }
+                i += 2; // jump over the 3 bytes that hold the run 
+            } else {
+                decoded.add(encoded[i]);
             }
         }
 
@@ -105,8 +109,20 @@ public class RLE {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         for (int i = 0; i < chars.length; i++) {
+            // if there is a run, put a marker + counts + byte that is repeated
+            if (counts[i] != 1) {
+                try {
+                    bos.write(1);
+                    bos.write(counts[i]);
+                    bos.write(chars[i]);
+                } catch (Exception e) {
+                    //TODO: handle exception
+                }
+                continue;
+            }
+            
+            // otherwise just write the character
             try {
-                bos.write(counts[i]);
                 bos.write(chars[i]);
             } catch (Exception e) {
 
