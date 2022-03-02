@@ -118,27 +118,6 @@ public class Service {
         String outputPath = this.filepath + "_bwtrle";
         
         System.out.println("BWT + RLE compression, with chunk size " + this.config.getBwtChunkSize());
-        
-        /*
-        // manual combination works
-        String a = bwt.transform(this.content);
-        System.out.println(a);
-        this.encoded = rle.encode(a);
-
-        System.out.println(a.length() + " vs " + this.encoded.length);
-        this.decoded = rle.decode(this.encoded);
-        String b = bwt.restore(this.decoded);
-
-        System.out.println("Manual BWT + RLE works " + b.equals(this.content));
-        
-        writeFile(outputPath);
-        
-
-        // one chunk encoding and decoding works
-        this.encoded = bwtrle.encode(this.content);
-        System.out.println("Encoding succesfull.");
-        this.decoded = bwtrle.decode(this.encoded);
-        */
 
         this.encoded = bwtrle.encode(this.content);
         this.decoded = bwtrle.decode(this.encoded);
