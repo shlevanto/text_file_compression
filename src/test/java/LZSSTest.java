@@ -34,6 +34,15 @@ public class LZSSTest {
         assertTrue(decoded.equals(s));
         assertTrue(s.length() > encoded.length);
     }
+
+    @Test
+    public void ifNoTokensFoundEncodingDoesNotIncreaseSize() {
+        LZSS lzss = new LZSS(new Config());
+        String s = "Sam is the man, that sam sure is.";
+        byte[] encoded = lzss.encode(s);
+
+        assertTrue(s.length() == encoded.length);
+    }
     @Test
     public void encodeDecodeMatchesOriginalInputTest() {
         LZSS lzss = new LZSS(new Config());

@@ -47,29 +47,30 @@ public class BWTRLE {
         int noOfChunks = s.length() / this.chunkSize;
         
         ArrayList<String> chunks = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
 
         // add full-sized chunks to list
         for (int i = 0; i < noOfChunks; i++) {
             int end = start + this.chunkSize;
             String part = s.substring(start, end);
+            sb.append(this.bwt.transform(part));
             chunks.add(part);
             start += this.chunkSize;
         }
         
         // and remainder
+        int isRemainder = 0;
+        if (s.length() % this.chunkSize > 0) {
+            isRemainder++;
+        };
+
         chunks.add(s.substring(start));
+        sb.append(this.bwt.transform(s.substring(start)));
 
-        // first BWT and then RLE all chunks
-        ArrayList<byte[]> encodedChunks = new ArrayList<>();
-
-        for (String chunk : chunks) {
-            String bwtEncoded = this.bwt.transform(chunk);
-            byte[] doubleEncoded = this.rle.encode(bwtEncoded);
-            encodedChunks.add(doubleEncoded);
-        }
-
-        return toBytes(encodedChunks);
-    }
+        String chunked = sb.toString();
+        byte[] encoded = this.rle.encode(chunked);
+        return encoded;
+    }        
 
     /**
      * Decodes a byte array to String.
@@ -79,38 +80,31 @@ public class BWTRLE {
     public String decode(byte[] encodedChunks) {
         ArrayList<byte[]> chunks = new ArrayList();
 
-        int start = 0;
-        int noOfChunks = encodedChunks.length / this.chunkSize;
-        System.out.println("Number of complete chunks: " + noOfChunks);
+
+        // decode RLE
+        String r = rle.decode(encodedChunks);
+        StringBuilder f = new StringBuilder();
         
-        // add full-sized chunks
-        for (int i = 0; i < noOfChunks; i++) {
-            int end = start + this.chunkSize;
-            byte[] part = Arrays.copyOfRange(encodedChunks, start, end);
-            chunks.add(part);    
-            System.out.println("This shouldn't run.");
-            start += this.chunkSize;
+        // partition String to chunks
+        // and BWT restore each chunk
+        
+        int noOfEncodedChunks = r.length() / (this.chunkSize + 1); // because BWT adds one extra byte
+        int start = 0;
+
+        for (int i = 0; i < noOfEncodedChunks; i++) {
+            int end = start + this.chunkSize + 1;
+            String part = r.substring(start, end);
+            f.append(this.bwt.restore(part));    
+            start += this.chunkSize + 1;
         }
         
         // and remainder
-        chunks.add(Arrays.copyOfRange(encodedChunks, start, encodedChunks.length));    
-        
-        System.out.println(chunks.size());
+        f.append(this.bwt.restore(r.substring(start)));
+        chunks.add(Arrays.copyOfRange(encodedChunks, start, encodedChunks.length));  
 
-        // Decode tostring
-        StringBuilder sbChunksDecoded = new StringBuilder();
-        
-        for (byte[] chunk : chunks) {
-            System.out.println(chunk.length);
-            // rle decode each chunk
-            String rleDecoded = rle.decode(chunk);
-            // bwt decode each chunk
-            String bwtDecoded = bwt.restore(rleDecoded);
-            // append to string
-            sbChunksDecoded.append(bwtDecoded);
-        } 
 
-        return sbChunksDecoded.toString();
+        //return sbChunksDecoded.toString();
+        return f.toString();
     }
 
     /**

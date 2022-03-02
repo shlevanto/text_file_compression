@@ -9,6 +9,9 @@ import compressor.BWTRLE;
 import compressor.LZSS;
 import compressor.RLE;
 
+// for debugging
+import java.util.Arrays;
+
 
 public class Service {
     /**
@@ -116,8 +119,9 @@ public class Service {
         
         System.out.println("BWT + RLE compression, with chunk size " + this.config.getBwtChunkSize());
         
+        /*
         // manual combination works
-        /*String a = bwt.transform(this.content);
+        String a = bwt.transform(this.content);
         System.out.println(a);
         this.encoded = rle.encode(a);
 
@@ -128,9 +132,14 @@ public class Service {
         System.out.println("Manual BWT + RLE works " + b.equals(this.content));
         
         writeFile(outputPath);
-        */
+        
 
         // one chunk encoding and decoding works
+        this.encoded = bwtrle.encode(this.content);
+        System.out.println("Encoding succesfull.");
+        this.decoded = bwtrle.decode(this.encoded);
+        */
+
         this.encoded = bwtrle.encode(this.content);
         this.decoded = bwtrle.decode(this.encoded);
         
