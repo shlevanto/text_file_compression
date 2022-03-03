@@ -33,11 +33,36 @@ public class RLETest {
     @Test 
     public void simpleEncodingTest() {
         RLE rle = new RLE();
-        String s = "aaabba";
+        String s = "aaaabba";
         byte[] encoded = rle.encode(s);
-        byte[] target = {3, 97, 2, 98, 1, 97};
+        byte[] target = {1, 4, 97, 98, 98, 97};
 
         assertArrayEquals(encoded, target);
+    }
+
+    @Test
+    public void noRunsNoEncoding() {
+        RLE rle = new RLE();
+        String s = "qwertyuiop";
+        byte[] encoded = rle.encode(s);
+        
+        byte[] original = null;
+        try{
+            original = s.getBytes("UTF-8");
+        } catch (Exception e) {
+
+        }
+
+        assertArrayEquals(original, encoded);
+    }
+
+    @Test
+    public void justRunReturnsThreeBytes() {
+        RLE rle = new RLE();
+        String s = "aaaaaaaaaaaaaaaaaaaaaaaaa";
+        byte[] encoded = rle.encode(s);
+
+        assertTrue(encoded.length == 3);
     }
 
 }
