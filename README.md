@@ -24,6 +24,8 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 
 [Week 5](/docs/week5.md)
 
+[Week 6](/docs/week6.md)
+
 ## Test documentation
 [Week 3-4](/docs/test_documentation.md)
 
