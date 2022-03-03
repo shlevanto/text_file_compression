@@ -69,7 +69,7 @@ public class RLE {
     }
 
     /**
-     * Decodes a pair of char[] and int[] to String.
+     * Decodes an encoded byte[] to String.
      * @param encoded Pair<char[], int[]> that is encoded by RLE.encode() method.
      * @return decoded content as string.
      */
@@ -109,8 +109,11 @@ public class RLE {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         for (int i = 0; i < chars.length; i++) {
-            // if there is a run, put a marker + counts + byte that is repeated
-            if (counts[i] != 1) {
+            
+            //if there is a run longer than 3,
+            //put a marker + counts + byte that is repeated
+
+            if (counts[i] > 3) {
                 try {
                     bos.write(1);
                     bos.write(counts[i]);
@@ -121,12 +124,14 @@ public class RLE {
                 continue;
             }
             
-            // otherwise just write the character
-            try {
-                bos.write(chars[i]);
-            } catch (Exception e) {
+            // otherwise just write the character(s)
+            for (int j = 0; j < counts[i]; j++) {
+                try {
+                    bos.write(chars[i]);
+                } catch (Exception e) {
 
-            }   
+                }
+            }
         }
         
         try {
