@@ -35,14 +35,15 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 ## User guide
 The project has a simple command line interface. 
 ```
-Usage: <main class> [-hv] -m=<method> <filepath>
+Usage: <main class> [-hv] [--verbose] -m=<method> <filepath>
       <filepath>          The file to compress.
   -h, --help              displays a help message
   -m, --method=<method>   compression method: 'l' for LZSS or 'b' for BWT + RLE
   -v, --verify            verifies that the decompression matches original
                             content
+      --verbose           prints the BWT transformed string
 ```
-I don't have a build yet, nut you can run it with gradle using
+I don't have a build yet, but you can run it with gradle using
 ```
 ./gradlew <filename> -m <l or b>
 ```
