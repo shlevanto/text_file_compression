@@ -100,7 +100,6 @@ public class BWTRLE {
         
         // and remainder
         f.append(this.bwt.restore(r.substring(start)));
-        chunks.add(Arrays.copyOfRange(encodedChunks, start, encodedChunks.length));  
 
 
         //return sbChunksDecoded.toString();
