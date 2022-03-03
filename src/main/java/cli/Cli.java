@@ -53,6 +53,15 @@ public class Cli implements Runnable {
     private String method;
 
     /**
+     * Option to choose if BWT transformed string is shown.
+     */
+    @Option(
+        names = {"--verbose"}, 
+        description = "prints the BWT transformed string"
+        )
+    private boolean verbose;
+
+    /**
      * Dispalys help message.
      */
     @Option(
@@ -74,7 +83,7 @@ public class Cli implements Runnable {
         } 
 
         try {
-            Service service = new Service(config, method, checkCompression, filepath);    
+            Service service = new Service(config, method, verbose, checkCompression, filepath);    
             service.run();
         } catch (IOException e) {
             

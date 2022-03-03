@@ -27,6 +27,10 @@ public class Service {
      */
     private String method;
     /**
+     * Option: show BWT transformed string with $ indicating the end of string
+     */
+    private boolean verbose;
+    /**
      * Option: do we want to check that the compression was valid?
      * Checks if decompressed matches original.
      */
@@ -52,10 +56,11 @@ public class Service {
      */
     private String outputPath;
 
-    public Service(Config config, String method, boolean checkCompression, String filepath) throws IOException {
+    public Service(Config config, String method, boolean verbose, boolean checkCompression, String filepath) throws IOException {
         this.config = config;
         this.io = new FileIO();
         this.method = method;
+        this.verbose = verbose;
         this.checkCompression = checkCompression;
         this.content = new String();
         this.encoded = null;
@@ -111,8 +116,9 @@ public class Service {
      * Runs the BWT + RLE encoding.
      */
     public void runBwtRle() {
-        BWT bwt = new BWT();
-        RLE rle = new RLE();
+        if (this.verbose) {
+            verboseBWT();
+        }
         
         BWTRLE bwtrle = new BWTRLE(this.config);
         String outputPath = this.filepath + "_bwtrle";
@@ -152,6 +158,13 @@ public class Service {
         } catch (Exception e) {
             System.out.println("Can not write file " + outputPath);
         }
+    }
+
+    private void verboseBWT() {
+        BWT bwt = new BWT();
+        String transformed = bwt.transform(this.content);
+        char eos = 0;
+        System.out.println("***\nInput transformed with BWT: " + transformed.replace(eos, '|') + "\n***");
     }
  
 }
