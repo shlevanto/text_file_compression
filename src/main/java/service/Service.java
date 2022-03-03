@@ -84,6 +84,10 @@ public class Service {
             runBwtRle();
         }
 
+        if (this.verbose) {
+            verboseBWT();
+        }
+
         System.exit(0);
     }
 
@@ -116,10 +120,6 @@ public class Service {
      * Runs the BWT + RLE encoding.
      */
     public void runBwtRle() {
-        if (this.verbose) {
-            verboseBWT();
-        }
-        
         BWTRLE bwtrle = new BWTRLE(this.config);
         String outputPath = this.filepath + "_bwtrle";
         
