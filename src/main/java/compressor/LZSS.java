@@ -65,16 +65,16 @@ public class LZSS {
                 length++;
                 j++;
                 continue;
-            } else if (length <= this.tokenSize) {
-                // if the match is shorter than the 
-                // the size of a token, look for the next match
-                match(chars, buffer, c, index + 1, i); 
-                return null;
-            } else {
+            } else if (length > this.tokenSize) {
                 // if the match to be replaced is longer than
                 // the token replacing it, make a token
                 int[] token = {offset, length};
                 return token;
+            } else {
+                // if the match is shorter than the 
+                // the size of a token, look for the next match
+                return match(chars, buffer, c, index + 1, i); 
+                
             }
         }
     }
