@@ -1,6 +1,5 @@
 package compressor;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 
@@ -62,7 +61,7 @@ public class BWTRLE {
         int isRemainder = 0;
         if (s.length() % this.chunkSize > 0) {
             isRemainder++;
-        };
+        }
 
         chunks.add(s.substring(start));
         sb.append(this.bwt.transform(s.substring(start)));

@@ -7,11 +7,6 @@ import io.FileIO;
 import compressor.BWT;
 import compressor.BWTRLE;
 import compressor.LZSS;
-import compressor.RLE;
-
-// for debugging
-import java.util.Arrays;
-
 
 public class Service {
     /**
@@ -27,7 +22,7 @@ public class Service {
      */
     private String method;
     /**
-     * Option: show BWT transformed string with $ indicating the end of string
+     * Option: show BWT transformed string with $ indicating the end of string.
      */
     private boolean showBwt;
     /**
@@ -56,16 +51,22 @@ public class Service {
      */
     private String outputPath;
 
-    public Service(Config config, String method, boolean showBwt, boolean checkCompression, String filepath) throws IOException {
-        this.config = config;
-        this.io = new FileIO();
-        this.method = method;
-        this.showBwt = showBwt;
-        this.checkCompression = checkCompression;
-        this.content = new String();
-        this.encoded = null;
-        this.decoded = new String();
-        this.filepath = filepath;
+    public Service(
+        Config config, 
+        String method, 
+        boolean showBwt, 
+        boolean checkCompression, 
+        String filepath
+        ) throws IOException {
+            this.config = config;
+            this.io = new FileIO();
+            this.method = method;
+            this.showBwt = showBwt;
+            this.checkCompression = checkCompression;
+            this.content = new String();
+            this.encoded = null;
+            this.decoded = new String();
+            this.filepath = filepath;
     }
 
     /**

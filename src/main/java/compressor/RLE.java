@@ -119,7 +119,7 @@ public class RLE {
                     bos.write(counts[i]);
                     bos.write(chars[i]);
                 } catch (Exception e) {
-                    //TODO: handle exception
+                    System.out.println("Cannot add to encoding.");
                 }
                 continue;
             }
