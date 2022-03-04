@@ -29,7 +29,7 @@ public class Service {
     /**
      * Option: show BWT transformed string with $ indicating the end of string
      */
-    private boolean verbose;
+    private boolean showBwt;
     /**
      * Option: do we want to check that the compression was valid?
      * Checks if decompressed matches original.
@@ -56,11 +56,11 @@ public class Service {
      */
     private String outputPath;
 
-    public Service(Config config, String method, boolean verbose, boolean checkCompression, String filepath) throws IOException {
+    public Service(Config config, String method, boolean showBwt, boolean checkCompression, String filepath) throws IOException {
         this.config = config;
         this.io = new FileIO();
         this.method = method;
-        this.verbose = verbose;
+        this.showBwt = showBwt;
         this.checkCompression = checkCompression;
         this.content = new String();
         this.encoded = null;
@@ -84,8 +84,8 @@ public class Service {
             runBwtRle();
         }
 
-        if (this.verbose) {
-            verboseBWT();
+        if (this.showBwt) {
+            showBwtBWT();
         }
 
         System.exit(0);
@@ -113,7 +113,6 @@ public class Service {
         if (this.checkCompression) {
             check(outputPath);
         }
-    
     }
 
     /**
@@ -160,11 +159,13 @@ public class Service {
         }
     }
 
-    private void verboseBWT() {
+    private void showBwtBWT() {
         BWT bwt = new BWT();
         String transformed = bwt.transform(this.content);
         char eos = 0;
-        System.out.println("***\nInput transformed with BWT: " + transformed.replace(eos, '|') + "\n***");
+        System.out.println("***");
+        System.out.println("Original input: " + this.content);
+        System.out.println("Input transformed with BWT: " + transformed.replace(eos, '|'));
+        System.out.println("***");
     }
- 
 }
