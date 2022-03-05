@@ -43,6 +43,15 @@ public class Cli implements Runnable {
     private boolean checkCompression = false;
 
     /**
+     * Option to decompress a file.
+     */
+    @Option(
+        names = {"-d", "--decompress"},
+        description = "decompress the given file using chosen method"
+    )
+    private boolean decompress = false;
+
+    /**
      * Compression method.
      */
     @Option(
@@ -83,7 +92,7 @@ public class Cli implements Runnable {
         } 
 
         try {
-            Service service = new Service(config, method, showBwt, checkCompression, filepath);    
+            Service service = new Service(config, decompress, method, showBwt, checkCompression, filepath);    
             service.run();
         } catch (IOException e) {
             

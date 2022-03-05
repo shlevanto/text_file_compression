@@ -18,6 +18,10 @@ public class Service {
      */
     private FileIO io;
     /**
+     * Decompress given file.
+     */
+    private boolean decompress;
+    /**
      * Compression method, comes from Cli.
      */
     private String method;
@@ -52,7 +56,8 @@ public class Service {
     private String outputPath;
 
     public Service(
-        Config config, 
+        Config config,
+        boolean decompress, 
         String method, 
         boolean showBwt, 
         boolean checkCompression, 
@@ -60,6 +65,7 @@ public class Service {
         ) throws IOException {
             this.config = config;
             this.io = new FileIO();
+            this.decompress = decompress;
             this.method = method;
             this.showBwt = showBwt;
             this.checkCompression = checkCompression;
@@ -76,6 +82,11 @@ public class Service {
     public void run() {
         // read file
         readFile();
+
+        if (this.decompress) {
+            runDecompress();
+            System.exit(0);
+        }
 
         if (this.method.equals("l")) {
             runLzss();
@@ -107,7 +118,7 @@ public class Service {
         this.encoded = lzss.encode(this.content);
         this.decoded = lzss.decode(this.encoded);
 
-        writeFile(outputPath);
+        writeFile(this.encoded, outputPath);
         
         System.out.println(this.io.compressionRatio(this.filepath, outputPath));
 
@@ -128,7 +139,7 @@ public class Service {
         this.encoded = bwtrle.encode(this.content);
         this.decoded = bwtrle.decode(this.encoded);
         
-        writeFile(outputPath);
+        writeFile(this.encoded, outputPath);
 
         System.out.println(io.compressionRatio(this.filepath, outputPath));
         
@@ -152,9 +163,9 @@ public class Service {
         }
     }
 
-    private void writeFile(String outputPath) {
+    private void writeFile(byte[] content, String outputPath) {
         try {
-            io.writeByteArray(this.encoded, outputPath);
+            io.writeByteArray(content, outputPath);
         } catch (Exception e) {
             System.out.println("Can not write file " + outputPath);
         }
@@ -168,5 +179,38 @@ public class Service {
         System.out.println("Original input: " + this.content);
         System.out.println("Input transformed with BWT: " + transformed.replace(eos, '|'));
         System.out.println("***");
+    }
+
+    private void runDecompress() {
+        System.out.println("Decompressing " + this.filepath);
+        System.out.println("***");
+        
+        String outputPath = this.filepath + "_decompressed";
+        
+        try {
+            this.encoded = io.readByteArray(this.filepath);
+        } catch (Exception e) {
+
+        }
+
+        if (this.method.equals("l")) {
+            LZSS lzss = new LZSS(this.config);
+            this.decoded = lzss.decode(this.encoded);
+        }
+
+        if (this.method.equals("b")) {
+            BWTRLE bwtrle = new BWTRLE(this.config);
+            this.decoded = bwtrle.decode(this.encoded);
+        }
+
+        try{
+            this.io.writeFile(this.decoded, outputPath);
+        } catch (Exception e) {
+            System.out.println("Decompression failed.");
+        }
+
+        System.out.println("Decompression succesful.");
+
+        
     }
 }
