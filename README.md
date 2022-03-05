@@ -35,20 +35,25 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 ## User guide
 The project has a simple command line interface. 
 ```
-Usage: <main class> [-hv] [--verbose] -m=<method> <filepath>
+Usage: <main class> [-dhv] [--showbwt] -m=<method> <filepath>
       <filepath>          The file to compress.
+  -d, --decompress        decompress the given file using chosen method
   -h, --help              displays a help message
   -m, --method=<method>   compression method: 'l' for LZSS or 'b' for BWT + RLE
+      --showbwt           displays the BWT transformation of the input
   -v, --verify            verifies that the decompression matches original
                             content
-      --verbose           prints the BWT transformed string
 ```
-I don't have a build yet, but you can run it with gradle using
+You can run the project using gradle
 ```
 ./gradlew <filename> -m <l or b>
 ```
+or download the jar -file from releases and run
+```
+java -jar tirautin <filename> -m <l or b> <additional flags>
+```
 
-I've included two files: poem.txt is a poem in English and nucleotide-sample.txt contains some DNA sequences. The BWT + RLE encoding doesn't compress natural language, but it is effective with content that contains a limited amount of characters. 
+I've included two files: poem.txt is a poem in English and nucleotide-sample.txt contains some DNA sequences.
 
 
 
