@@ -117,8 +117,6 @@ public class FileIO {
      * @return output of compression rate as string.
      */
     public String compressionRatio(String original, String compressed) {
-        
-        
         StringBuilder sb = new StringBuilder();
         try {
             double originalBytes = Files.size(Path.of(original));

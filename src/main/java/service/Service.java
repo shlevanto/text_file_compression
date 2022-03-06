@@ -116,13 +116,13 @@ public class Service {
             + this.config.getLzssTokenSize());
         
         this.encoded = lzss.encode(this.content);
-        this.decoded = lzss.decode(this.encoded);
 
         writeFile(this.encoded, outputPath);
         
         System.out.println(this.io.compressionRatio(this.filepath, outputPath));
 
         if (this.checkCompression) {
+            this.decoded = lzss.decode(this.encoded);
             check(outputPath);
         }
     }
@@ -137,23 +137,34 @@ public class Service {
         System.out.println("BWT + RLE compression, with chunk size " + this.config.getBwtChunkSize());
 
         this.encoded = bwtrle.encode(this.content);
-        this.decoded = bwtrle.decode(this.encoded);
         
         writeFile(this.encoded, outputPath);
 
         System.out.println(io.compressionRatio(this.filepath, outputPath));
         
         if (this.checkCompression) {
+            this.decoded = bwtrle.decode(this.encoded);
             check(outputPath);
         }
     }
 
-
     private void check(String outputPath) {
+        System.out.println("*** Verification ***");
         
-        System.out.println("Decoded string matches original string: " + this.content.equals(this.decoded));
-    }
+        boolean verified = this.content.equals(this.decoded);
+        System.out.println("Decoded string matches original string: " + verified);
+        
+        outputPath += "_decompressed";
+        
+        try {
+            this.io.writeFile(this.decoded, outputPath);
+        } catch (Exception e) {
+            System.out.println("Decompression failed.");
+        }
 
+        boolean filesVerified = this.io.compareFiles(this.filepath, outputPath);
+        System.out.println("Decoded file matches original original file: " + filesVerified);
+    }
 
     private void readFile() {
         try {
@@ -202,8 +213,8 @@ public class Service {
             BWTRLE bwtrle = new BWTRLE(this.config);
             this.decoded = bwtrle.decode(this.encoded);
         }
-
-        try{
+ 
+        try {
             this.io.writeFile(this.decoded, outputPath);
         } catch (Exception e) {
             System.out.println("Decompression failed.");

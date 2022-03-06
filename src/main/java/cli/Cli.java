@@ -38,7 +38,7 @@ public class Cli implements Runnable {
      */
     @Option(
         names = {"-v", "--verify"}, 
-        description = "verifies that the decompression matches original content"
+        description = "decompresses the file and verifies that the decompression matches original content"
         )
     private boolean checkCompression = false;
 
