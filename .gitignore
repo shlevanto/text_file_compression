@@ -1,9 +1,9 @@
 .gradle
 build/
 bin/
-*.txt
+*.txt*
 *.pdf
 *_encoded*
 *_restored*
-*_lzss
-*_bwtrle
+*_lzss*
+*_bwtrle*
