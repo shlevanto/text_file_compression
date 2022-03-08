@@ -48,10 +48,15 @@ You can run the project using gradle
 ```
 ./gradlew <filename> -m <l or b>
 ```
-or download the jar -file from releases and run
+or build the project using
+```
+./gradlew fatJar
+```
+and run
 ```
 java -jar tirautin <filename> -m <l or b> <additional flags>
 ```
+There is also a ready made jar -file in releases.
 
 I've included two files: poem.txt is a poem in English and nucleotide-sample.txt contains some DNA sequences.
 

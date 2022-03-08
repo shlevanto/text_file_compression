@@ -104,27 +104,4 @@ public class BWTRLE {
         //return sbChunksDecoded.toString();
         return f.toString();
     }
-
-    /**
-     * Helper method. Combines the encoded chunks to one byte array.
-     * @param encodedChunks encoded chunks in a list
-     * @return all chunks combined to one array
-     */
-    private byte[] toBytes(ArrayList<byte[]> encodedChunks) {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        for (byte[] chunk : encodedChunks) {
-            try {
-                bos.write(chunk);
-            } catch (Exception e) {
-
-            }   
-        }
-        try {
-            bos.close();    
-        } catch (Exception e) {
-
-        }   
-        return bos.toByteArray();
-    }
 }

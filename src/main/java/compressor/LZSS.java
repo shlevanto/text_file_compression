@@ -115,7 +115,7 @@ public class LZSS {
             // find a matching character sequence
             int[] token = match(chars, buffer, c, slide, i, this.tokenSize, new int[2]);
 
-            if (token == null || token[0] == 0) {
+            if (token[0] == 0) {
                 buffer[i] = c;
                     try {
                         bos.write(c);

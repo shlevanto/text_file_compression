@@ -108,8 +108,7 @@ public class BWT {
             counter = fMap.get(key);
             sb.append(l[counter]);
             decoded[decoderIndex] = l[counter];
-            decoderIndex--;
-                        
+            decoderIndex--;           
         }
         
         String result = String.valueOf(decoded);
