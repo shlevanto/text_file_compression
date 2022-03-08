@@ -41,12 +41,12 @@ public class LZSS {
         return -1;
     }
 
-    private int[] match(byte[] chars, byte[] buffer, byte c, int startingIndex, int i) {
+    private int[] match(byte[] chars, byte[] buffer, byte c, int startingIndex, int i, int bestLength, int[] token) {
         // find index of matching character
         int index = indexOfElement(buffer, c, startingIndex, i);
         
         if (index < 0) {
-            return null;
+            return token;
         }
 
         int offset = i - index;
@@ -56,8 +56,9 @@ public class LZSS {
         int j = 1;
         while (true) {
             if (i + j >= chars.length || index + j >= i) {
-                return null;
+                return token;
             }
+
             byte nextChar = chars[i + j];
             byte nextBuffer = buffer[index + j];
 
@@ -65,18 +66,22 @@ public class LZSS {
                 length++;
                 j++;
                 continue;
-            } else if (length > this.tokenSize) {
+            } 
+            
+            if (length > bestLength) {
+                bestLength = length;
                 // if the match to be replaced is longer than
                 // the token replacing it, make a token
-                int[] token = {offset, length};
-                return token;
-            } else {
-                // if the match is shorter than the 
-                // the size of a token, look for the next match
-                return match(chars, buffer, c, index + 1, i); 
+                token[0] = offset;
+                token[1] = length;
+            }   
+            
+            // run a recursion to find an even better match
+            return match(chars, buffer, c, index + 1, i, bestLength, token); 
                 
-            }
+            
         }
+
     }
 
     /**
@@ -108,9 +113,9 @@ public class LZSS {
             }
             
             // find a matching character sequence
-            int[] token = match(chars, buffer, c, slide, i);
+            int[] token = match(chars, buffer, c, slide, i, this.tokenSize, new int[2]);
 
-            if (token == null) {
+            if (token == null || token[0] == 0) {
                 buffer[i] = c;
                     try {
                         bos.write(c);
