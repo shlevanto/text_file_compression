@@ -32,7 +32,7 @@ function decode(encoded)
 ```
 
 ### BWT
-Time complexity O(n log n) due to the sorting of the suffix array in encoding and sorting of the encoded string in the decoding method. Space complexity is case n^2, because the suffix array has rows equal to the strings length. When handling larger files, the string is divided into chunks and each chunk is then separately transformed. These chunks are parsed back to for a string, which is then compressed using RLE.
+Time complexity O(n log n) due to the sorting of the suffix array in encoding and sorting of the encoded string in the decoding method. Space complexity is case n^2, because the suffix array has rows equal to the strings length. When handling larger files, the string is divided into chunks and each chunk is then separately transformed. These chunks are parsed back to for a string, which is then compressed using RLE. The restoration is much more efficient than transformation. The LF-mapping is O(n log n) for time because it includes a sort and O(n) in space complexity. 
 
 ```
 function transform(string)
@@ -47,7 +47,7 @@ function restore(string)
 ```
 
 ### LZSS
-For the LZSS algorithm, I drew inspiration from [The Hitchhiker's Guide to Compression](https://go-compression.github.io/algorithms/lzss/). At each character LZSS scans the text that has been encoded so far and looks for a matching character. If it finds one, it matches the next chraracter and counts how long a string it can match. This match is then encoded to a token that is the encoding. The length of the token is 5 bytes so LZSS only tokenizes matches of length 5 or greater. The space complexity is O(n) because the string to be encoded and it's duplicate in the buffer is used. Time complexity is O(n log n) as for each character, the text so far is searched. This however results in very long performance times so a sliding buffer is used. This means that the algorithm will start to look for matches for at most n characters backwards where n is the buffer size.
+For the LZSS algorithm, I drew inspiration from [The Hitchhiker's Guide to Compression](https://go-compression.github.io/algorithms/lzss/). At each character LZSS scans the text that has been encoded so far and looks for a matching character. If it finds one, it matches the next chraracter and counts how long a string it can match. This match is then encoded to a token that is the encoding. The length of the token is 5 bytes so LZSS only tokenizes matches of length 5 or greater. The space complexity is O(n) because the string to be encoded and it's duplicate in the buffer is used. Time complexity is O(n log n) as for each character, the text so far is searched. This however results in very long performance times so a sliding buffer is used. This means that the algorithm will start to look for matches for at most n characters backwards where n is the buffer size. LZSS decoding time complexity is O(log n) because it only goes back to search for strings when it encounters tokens, not for every byte in the string.
 
 ```
 function encode(string)

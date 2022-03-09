@@ -12,7 +12,7 @@ Unit tests will cover basic functionalities
 FileIO has tests for succesfully reading and writing files and throwing exceptions when this fails.
 
 ### Performance tests
-xxx
+For performance testing different size samples of the same text were used. The text used was the [King James Bible](https://www.gutenberg.org/cache/epub/10/pg10.txt) from the Project Gutenberg site. The results are shown in the table and graphs below.
 
 ### Test repeatability
 All content used for the test runs will be provided in this repository. I will also build an option into the UI to run these tests. 
