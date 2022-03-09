@@ -7,6 +7,7 @@ import io.FileIO;
 import compressor.BWT;
 import compressor.BWTRLE;
 import compressor.LZSS;
+import performance.Performance;
 
 public class Service {
     /**
@@ -35,6 +36,10 @@ public class Service {
      */
     private boolean checkCompression;
     /**
+     * Option: run performance test
+     */
+    private boolean performance;
+    /**
      * Content to be encoded.
      */
     private String content;
@@ -61,7 +66,8 @@ public class Service {
         String method, 
         boolean showBwt, 
         boolean checkCompression, 
-        String filepath
+        String filepath,
+        boolean performance
         ) throws IOException {
             this.config = config;
             this.io = new FileIO();
@@ -73,6 +79,7 @@ public class Service {
             this.encoded = null;
             this.decoded = new String();
             this.filepath = filepath;
+            this.performance = performance;
     }
 
     /**
@@ -83,6 +90,10 @@ public class Service {
         // read file
         readFile();
 
+        if (this.performance) {
+            runPerformance();
+            System.exit(0);
+        }
         if (this.decompress) {
             runDecompress();
             System.exit(0);
@@ -221,7 +232,14 @@ public class Service {
         }
 
         System.out.println("Decompression succesful.");
+    }
 
-        
+    /**
+     * Runs performance tests.
+     */
+    private void runPerformance() {
+        System.out.println("Running performance test.");
+        Performance p = new Performance(this.config);
+        p.run(this.content);
     }
 }

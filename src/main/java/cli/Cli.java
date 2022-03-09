@@ -81,6 +81,15 @@ public class Cli implements Runnable {
     private boolean helpRequested = false;
 
     /**
+     * Runs perfomance tests with filepath given here.
+     */
+    @Option(
+        names = {"--performance"},
+        description = "run pergormance tests"
+    )
+    private boolean performance = false;
+
+    /**
      * Runs the application service.
      */
     @Override
@@ -92,7 +101,15 @@ public class Cli implements Runnable {
         } 
 
         try {
-            Service service = new Service(config, decompress, method, showBwt, checkCompression, filepath);    
+            Service service = new Service(
+                config, 
+                decompress, 
+                method, 
+                showBwt, 
+                checkCompression, 
+                filepath,
+                performance
+                );    
             service.run();
         } catch (IOException e) {
             
