@@ -3,6 +3,7 @@ build/
 bin/
 *.txt*
 *.pdf
+*.csv*
 *_encoded*
 *_restored*
 *_lzss*
