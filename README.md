@@ -12,8 +12,11 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 
 ## Documentation
 [Specification](/docs/specification.md)
+
 [Implementation](/docs/implementation.md)
+
 [Test documentation](/docs/test_documentation.md)
+
 [Weekly progress](/docs/weekly/)
 
 ## User guide
