@@ -10,27 +10,11 @@ Tietojenkäsittelytieteen kandidaattiohjelma.
 ## Backlog
 [Backlog](https://github.com/shlevanto/tiralabra-2022/projects/1)
 
-## Specification
-[Week 1](/docs/specification.md)
-
-## Weekly progress reports
-[Week 1](/docs/week1.md)
-
-[Week 2](/docs/week2.md)
-
-[Week 3](/docs/week3.md)
-
-[Week 4](/docs/week4.md)
-
-[Week 5](/docs/week5.md)
-
-[Week 6](/docs/week6.md)
-
-## Test documentation
-[Week 3-4](/docs/test_documentation.md)
-
-## Implementation document
-[Week 4](/docs/implementation.md)
+## Documentation
+[Specification](/docs/specification.md)
+[Implementation](/docs/implementation.md)
+[Test documentation](/docs/test_documentation.md)
+[Weekly progress](/docs/weekly/)
 
 ## User guide
 The project has a simple command line interface. 
@@ -59,6 +43,3 @@ java -jar tirautin <filename> -m <l or b> <additional flags>
 There is also a ready made jar -file in releases. Please notice that the ```config.properties``` -file included in the releases needs to be in the same folder as the jar -file that is being run.
 
 I've included two files: poem.txt is a poem in English and nucleotide-sample.txt contains some DNA sequences.
-
-
-
