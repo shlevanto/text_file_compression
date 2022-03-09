@@ -56,7 +56,7 @@ and run
 ```
 java -jar tirautin <filename> -m <l or b> <additional flags>
 ```
-There is also a ready made jar -file in releases.
+There is also a ready made jar -file in releases. Please notice that the ```config.properties``` -file included in the releases needs to be in the same folder as the jar -file that is being run.
 
 I've included two files: poem.txt is a poem in English and nucleotide-sample.txt contains some DNA sequences.
 
