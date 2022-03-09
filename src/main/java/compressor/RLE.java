@@ -114,14 +114,44 @@ public class RLE {
             //put a marker + counts + byte that is repeated
 
             if (counts[i] > 3) {
-                try {
-                    bos.write(1);
-                    bos.write(counts[i]);
-                    bos.write(chars[i]);
-                } catch (Exception e) {
-                    System.out.println("Cannot add to encoding.");
+                if (counts[i] > 127) {
+                    int chunks = counts[i] / 127;
+                    int remain = counts[i] % 127;
+            
+                    for (int j = 0; j < chunks; j++) {
+                        try {
+                            bos.write(1);
+                            bos.write(127);
+                            bos.write(chars[i]);
+                        } catch (Exception e) {
+                            System.out.println("Cannot add to encoding.");
+                        }
+
+                    }
+                    
+                    // and remainder
+                    try {
+                        bos.write(1);
+                        bos.write(remain);
+                        bos.write(chars[i]);
+                    } catch (Exception e) {
+                        System.out.println("Cannot add to encoding.");
+                    }
+                    
+                    continue;
+                } else {
+                    try {
+                        bos.write(1);
+                        bos.write(counts[i]);
+                        bos.write(chars[i]);
+                    } catch (Exception e) {
+                        System.out.println("Cannot add to encoding.");
+                    }
+                    continue;
                 }
-                continue;
+                
+                
+                
             }
             
             // otherwise just write the character(s)

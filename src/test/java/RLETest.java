@@ -65,4 +65,19 @@ public class RLETest {
         assertTrue(encoded.length == 3);
     }
 
+    @Test
+    public void longRunWorks() {
+        RLE rle = new RLE();
+        String s = "b";
+
+        for (int i = 0; i < 130; i++) {
+            s += "a";
+        }
+
+        byte[] encoded = rle.encode(s);
+        String decoded = rle.decode(encoded);
+        
+        assertEquals(decoded, s);
+    }
+
 }
