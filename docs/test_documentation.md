@@ -4,7 +4,7 @@
 The unit test coverage is reported in CodeCov [![codecov](https://codecov.io/gh/shlevanto/tiralabra-2022/branch/main/graph/badge.svg?token=0EE9F994BB)](https://codecov.io/gh/shlevanto/tiralabra-2022)
 
 ### What has been tested
-Unit tests will cover basic functionality (encoding-decoding match) and corner cases such as empty strings being given to encode.
+Unit tests will cover basic functionality (encoding-decoding match) and corner cases such as empty strings being given to encode. Unit tests also ensure that the compression doesn't increase file size.
 
 File IO will have tests for succesfully reading and writing files and throwing exceptions when this fails.
 
