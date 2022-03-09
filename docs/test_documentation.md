@@ -11,8 +11,8 @@ Unit tests will cover basic functionalities
 
 FileIO has tests for succesfully reading and writing files and throwing exceptions when this fails.
 
-### Input used
-As BWT + RLE is best suited for sequences (bits, bytes, DNA sequences etc.), I will compare this kind of data with natural text for the BWT + RLE vs. LZSS compressions. Natural language vs. random content will be compared.
+### Performance tests
+xxx
 
 ### Test repeatability
 All content used for the test runs will be provided in this repository. I will also build an option into the UI to run these tests. 
