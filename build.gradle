@@ -41,7 +41,8 @@ jacocoTestReport {
       fileTree(dir: it, exclude: [
         "**Main.class",
         "**/cli**",
-        "**/config**"
+        "**/config**",
+        "**/performance**"
         ])
       }))
     }
