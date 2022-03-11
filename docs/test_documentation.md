@@ -38,7 +38,7 @@ For performance testing different size samples of the same text were used. The t
 
 ![image](tiralabra_ratio.png)
 
-We see that both algorithms reach their optimal compression at around 4-8kb and the compression rate stays quite stable from there on.
+We see that both algorithms reach their optimal compression at around 4-8kb and the compression rate stays quite stable from there on. LZSS is better at encoding which is understandable as BWTRLE is not optimal for text and would benefit from having a small alphabet with lots of repeatability.
 
 ![image](tiralabra_compression.png)
 
