@@ -48,7 +48,6 @@ public class Performance {
             System.out.println("BWTRLE");
             runBwtrle(content, size);
             System.out.println("*****");
-
         }
     }
 
@@ -74,7 +73,7 @@ public class Performance {
         long timeMs = (stop - start) / 1000000;
 
         System.out.println("Sample: " + size + " bytes.");
-        System.out.println("Compression time: " + timeMs + "ms");
+        System.out.println("Compression time: " + String.format("%,.2f", (double) timeMs) + "ms");
         System.out.println("Compression ratio: " + String.format("%,.2f", (encoded.length * 1.0 / bytes.length)));
 
         start = System.nanoTime();
@@ -83,7 +82,7 @@ public class Performance {
 
         timeMs = (stop - start) / 1000000;
 
-        System.out.println("Decompression time: " + timeMs + "ms");
+        System.out.println("Decompression time: " + String.format("%,.2f", (double) timeMs) + "ms");
 
     }
 
@@ -109,7 +108,7 @@ public class Performance {
         long timeMs = (stop - start) / 1000000;
 
         System.out.println("Sample: " + size + " bytes.");
-        System.out.println("Time: " + timeMs + "ms");
+        System.out.println("Compression time: " + String.format("%,.2f", (double) timeMs) + "ms");
         System.out.println("Compression: " + String.format("%,.2f", (encoded.length * 1.0 / bytes.length)));
 
         start = System.nanoTime();
@@ -118,7 +117,7 @@ public class Performance {
 
         timeMs = (stop - start) / 1000000;
 
-        System.out.println("Decompression time: " + timeMs + "ms");
+        System.out.println("Decompression time: " + String.format("%,.4f", (double) timeMs) + "ms");
 
         
     }
