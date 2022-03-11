@@ -46,7 +46,7 @@ The compression time for LZSS starts off a bit faster than BWTRLE, but increases
 
 ![image](tiralabra_decompression.png)
 
-LZSS is in turn much more efficient in decoding. Again both are n log n but now for LZSS it has a much more limited amount of scanning to find the tokenized content whereas BWT has to sort each set size chunk in every case.
+LZSS is in turn much more efficient in decoding. LZSS decompression has time complexity O(log n) which clearly shows herewhereas BWT has to sort each set size chunk in every case with time complexity O(n log n).
 
 
 ### Test repeatability
