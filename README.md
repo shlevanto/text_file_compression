@@ -27,7 +27,7 @@ Usage: <main class> [-dhv] [--performance] [--showbwt] -m=<method> <filepath>
   -d, --decompress        decompress the given file using chosen method
   -h, --help              displays a help message
   -m, --method=<method>   compression method: 'l' for LZSS or 'b' for BWT + RLE
-      --performance       run pergormance tests
+      --performance       run performance tests
       --showbwt           displays the BWT transformation of the input
   -v, --verify            decompresses the file and verifies that the
                             decompression matches original content                       
