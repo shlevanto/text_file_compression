@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/shlevanto/tiralabra-2022/branch/main/graph/badge.svg?token=0EE9F994BB)](https://codecov.io/gh/shlevanto/tiralabra-2022)
 
 # tiralabra-2022
-Lab project concerning datastructures and algorithms, University of Helsinki. Course code TKT20010, spring semester 2022. 
+Lab project concerning datastructures and algorithms, University of Helsinki. Course code TKT20010, spring semester 2022. Implements two lossless compression algorithms.
 
 ## Study program
 Tietojenkäsittelytieteen kandidaattiohjelma. 
